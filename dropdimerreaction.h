@@ -7,7 +7,9 @@ class DropDimerReaction : public DualReaction
 {
 public:
     DropDimerReaction();
-    double coef() {}
+
+    double coef();
+
     void seeAt(Carbon *carbon);
     void doIt();
 };

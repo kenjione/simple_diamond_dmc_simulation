@@ -1,24 +1,30 @@
 #ifndef MIGRATIONBRIDGE_H
 #define MIGRATIONBRIDGE_H
 
+#include <vector>
+#include <utility>
 #include "monoreaction.h"
 #include "crystal.h"
 
 class MigrationBridgeReaction : public MonoReaction
 {
-private:
-    Crystal* _crystal;
-    QVector<int3> _positions;
-    QVector<QPair<Carbon*,  Carbon*> > _currBasis;
-    QVector<QPair<Carbon*,  Carbon*> > _toBasis;
 public:
-    MigrationBridgeReaction();
-    double coef() {}
-    void seeAt(Carbon *carbon);
-    void operator() (int3 to, QPair<Carbon*, Carbon*> fromBasis, QPair<Carbon*, Carbon*> toBasis);
-    void doIt();
-    void reset();
+    MigrationBridgeReaction(Crystal *crystal);
 
+    double coef();
+
+    void reset();
+    void seeAt(Carbon *carbon);
+    void doIt();
+    void operator() (const int3 &to,
+                     const std::pair<Carbon *, Carbon *> &fromBasis,
+                     const std::pair<Carbon *, Carbon *> &toBasis);
+
+private:
+    Crystal *_crystal;
+    std::vector<int3> _positions;
+    std::vector<std::pair<Carbon *,  Carbon *>> _currBasis;
+    std::vector<std::pair<Carbon *,  Carbon *>> _toBasis;
 };
 
 #endif // MIGRATIONBRIDGE_H

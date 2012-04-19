@@ -3,27 +3,18 @@
 
 class Reactor
 {
+public:
+    Reactor(float temperature, float hydroConcentration, float methylConcentration)
+        : _temperature(temperature), _hydrogenConcentration(hydroConcentration), _methylConcentration(methylConcentration) {}
+
+    float temperature() const { return _temperature; }
+    float hydrogenConcentration() const { return _hydrogenConcentration; }
+    float methylConcentration() const { return _methylConcentration; }
+
 private:
     float _temperature;
     float _hydrogenConcentration;
     float _methylConcentration;
-public:
-    Reactor(float t, float hydroC, float methylC) :_temperature(t),
-                                                   _hydrogenConcentration(hydroC),
-                                                   _methylConcentration(methylC) {}
-
-    float temperature() {
-        return _temperature;
-    }
-
-    float hydrogenConcentration() {
-        return _hydrogenConcentration;
-    }
-
-    float methylConcentration() {
-        return _methylConcentration;
-    }
-
 };
 
 #endif // REACTOR_H

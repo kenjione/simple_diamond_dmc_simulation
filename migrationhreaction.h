@@ -7,7 +7,9 @@ class MigrationHReaction : public DualReaction
 {
 public:
     MigrationHReaction();
-    double coef() {}
+
+    double coef();
+
     void seeAt(Carbon *carbon);
     void doIt();
 };
