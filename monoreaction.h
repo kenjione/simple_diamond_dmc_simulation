@@ -1,19 +1,23 @@
 #ifndef MONOREACTION_H
 #define MONOREACTION_H
 
+#include <vector>
 #include "reaction.h"
 #include "carbon.h"
-#include <QVector>
 
 class MonoReaction : public Reaction
 {
-protected:
-    QVector<Carbon*> _sites;
-    MonoReaction();
 public:
     double commonRate();
+
+    virtual void seeAt(Carbon *carbon) = 0;
+
     void reset();
-    virtual void seeAt(Carbon* carbon) = 0;
+
+protected:
+    MonoReaction();
+
+    std::vector<Carbon *> _sites;
 };
 
 #endif // MONOREACTION_H

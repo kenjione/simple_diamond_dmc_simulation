@@ -3,24 +3,23 @@
 
 #include "monoreaction.h"
 #include "crystal.h"
-#include <QSet>
 
 class FormDimerReaction : public MonoReaction
 {
-private:
-    Crystal* _crystal;
-    QSet<Carbon*>  _pairs;
 public:
-    FormDimerReaction();
+    FormDimerReaction(Crystal *crystal);
 
-    void operator()(Carbon* first, Carbon* second) {}
-
-    double coef() {
-    }
+    double coef();
 
     void reset();
+
     void seeAt(Carbon *carbon);
     void doIt();
+    void operator() (Carbon *first, Carbon *second);
+
+private:
+    Crystal *_crystal;
+    std::set<Carbon *>  _pairs;
 };
 
 #endif // FORMDIMERREACTION_H

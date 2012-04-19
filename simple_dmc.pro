@@ -15,7 +15,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     renderarea.cpp \
     playbutton.cpp \
-    button.cpp
+    button.cpp \
+    layer.cpp \
+    crystal.cpp \
+    addch2reaction.cpp \
+    etchingreaction.cpp \
+    formdimerreaction.cpp \
+    migrationbridgereaction.cpp \
+    surface.cpp
 
 HEADERS  += mainwindow.h \
     volume.h \
@@ -37,7 +44,8 @@ HEADERS  += mainwindow.h \
     button.h \
     addhreaction.h \
     addch2reaction.h \
-    abshreaction.h
+    abshreaction.h \
+    int3.h
 
 FORMS    += mainwindow.ui
 

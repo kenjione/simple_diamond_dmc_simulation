@@ -7,16 +7,24 @@ class Surface;
 
 class Reaction
 {
-protected:
-    static Reactor __reactor;
-    Surface* _surface;
-
-    Reaction(Surface* surface): _surface(surface) {}
-    virtual double coef() = 0;
 public:
+    static void setReactor(Reactor *reactor) {
+        __reactor = reactor;
+    }
+
     virtual double commonRate() = 0;
     virtual void doIt() = 0;
     virtual void reset() = 0;
+
+protected:
+    static Reactor *__reactor;
+    Surface *_surface;
+
+    Reaction(Surface *surface) : _surface(surface) {}
+
+    virtual double coef() = 0;
 };
+
+Reactor *Reaction::__reactor = 0;
 
 #endif // REACTION_H

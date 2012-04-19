@@ -2,19 +2,23 @@
 #define ADDCH2REACTION_H
 
 #include "dualreaction.h"
+#include "crystal.h"
 
 class AddCH2Reaction : public DualReaction
 {
-private:
-    Crystal* _crystal;
-    QVector<int3> _positions;
 public:
-    AddCH2Reaction(Crystal* crystal): _crystal(crystal) {}
-    double coef() {
-    }
+    AddCH2Reaction(Crystal *crystal);
+
+    double coef();
+
+    void reset();
 
     void seeAt(Carbon *carbon);
     void doIt();
+
+private:
+    Crystal *_crystal;
+    std::vector<int3> _positions;
 };
 
 #endif // ADDCH2REACTION_H

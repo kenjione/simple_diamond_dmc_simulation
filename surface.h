@@ -1,90 +1,38 @@
 #ifndef SURFACE_H
 #define SURFACE_H
 
-#define FIELD_SIZE 300
-#define SIZE_X 20
-#define SIZE_Y 15
-
+#include <map>
+#include <set>
 #include "crystal.h"
-#include <QMap>
-#include <QSet>
-
-#include <QPair>
-#include <QPair>
-#include <QVector>
-
 
 class Surface
 {
-
-private:
-    Crystal* _crystal;
-    Reaction** _reactions;
-    QSet<Carbon*> _activeCarbons;
-    QSet<Carbon*> _hydroCarbons;
-    map<Carbon*,Carbon*> _dimerBonds;
-
-    void init() {
-        _crystal->throughAllCarbonsIter(ref(*this));
-    }
 public:
+    Surface(Crystal *crystal);
 
-    Surface(Crystal* crystal): _crystal(crystal) {
-        init();
-    }
-
-    void operator() (Carbon* carbon) {
-        if ( carbon->actives() > 0 ) _activeCarbons.insert(carbon);
-        if ( carbon->hydrogens() > 0) _hydroCarbons.insert(carbon);
-    }
+    void operator() (Carbon *carbon);
 
     int numberOfSites();
 
-    // адсорбция Н2
-    void addHydrogen(Carbon* carbon) {
-        carbon->addHydrogen();
-        _hydroCarbons.insert(carbon);
-        if (carbon->actives() == 0 ) _activeCarbons.remove(carbon);
-    }
+    void addHydrogen(Carbon *carbon);
+    void removeHydrogen(Carbon *carbon);
 
-    // абсорбция Н2
-    void removeHydrogen(Carbon* carbon) {
-        carbon->absHydrogen();
-        _activeCarbons.insert(carbon);
-        if (carbon->hydrogens() == 0) _hydroCarbons.remove(carbon);
-    }
+    void addCarbon(Carbon *carbon, Carbon *bottomFirst, Carbon *bottomSecond);
+    void removeCarbon(Carbon *carbon, Carbon *bottomFirst, Carbon *bottomSecond);
+    void moveCarbon(Carbon *carbon, const int3 &to,
+                    const std::pair<Carbon *, Carbon *> &fromBasis,
+                    const std::pair<Carbon *, Carbon *> &toBasis);
 
-    // Осаждение СН3
-    void addCarbon(Carbon* carbon, Carbon* bottomFirst, Carbon* bottomSecond) {
-        carbon->formBond();
-        bottomFirst->formBond();
-        bottomSecond->formBond();
-    }
+    void addDimer(Carbon *first, Carbon *second);
+    void dropDimer(Carbon *first);
 
-    // Травление СН2
-    void removeCarbon(Carbon* carbon, Carbon* bottomFirst, Carbon* bottomSecond) {
-        carbon->dropBond();
-        bottomFirst->dropBond();
-        bottomSecond->dropBond();
-    }
-    void moveCarbon(Carbon* carbon, int3 to, QPair<Carbon*, Carbon*> fromBasis, QPair<Carbon*, Carbon*> toBasis) {
+private:
+    void init();
 
-    }
-
-    void addDimer(Carbon* first, Carbon* second) {
-        _dimerBonds[first] = second;
-        _dimerBonds[second] = first;
-        first->formBond();
-        second->formBond();
-    }
-    void dropDimer(Carbon* first) {
-        Carbon* second = _dimerBonds[first];
-        second->dropBond();
-        first->dropBond();
-        _dimerBonds[first] = 0;
-        _dimerBonds[second] = 0;
-    }
-
+    Crystal *_crystal;
+    Reaction **_reactions;
+    std::set<Carbon *> _activeCarbons, _hydroCarbons;
+    std::map<Carbon *,Carbon *> _dimerBonds;
 };
 
 #endif // surface_H

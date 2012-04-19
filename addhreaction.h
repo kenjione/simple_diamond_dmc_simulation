@@ -7,7 +7,8 @@ class AddHReaction : public MonoReaction
 {
 public:
     AddHReaction();
-    double coef() {}
+
+    double coef();
 
     void seeAt(Carbon *carbon);
     void doIt();
