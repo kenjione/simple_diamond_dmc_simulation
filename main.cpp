@@ -1,6 +1,8 @@
 #include <QtGui/QApplication>
 #include "mainwindow.h"
 
+#define NDEBUG // убрать в релизной версии
+#include <assert.h>
 
 int main(int argc, char *argv[])
 {

@@ -1,26 +1,25 @@
 #ifndef ETCHINGREACTION_H
 #define ETCHINGREACTION_H
 
-#include "crystal.h"
-
 #include "monoreaction.h"
+#include "crystal.h"
 
 class EtchingReaction : public MonoReaction
 {
-private:
-    Crystal* _crystal;
-    QSet<Carbon*>  _basis;
 public:
-    EtchingReaction();
+    EtchingReaction(Crystal *crystal);
 
-    void operator()(Carbon* first, Carbon* second) {}
-
-    double coef() {
-    }
+    double coef();
 
     void reset();
+
     void seeAt(Carbon *carbon);
     void doIt();
+    void operator() (Carbon *first, Carbon *second);
+
+private:
+    Crystal *_crystal;
+    std::set<Carbon*>  _basis;
 };
 
 #endif // ETCHINGREACTION_H

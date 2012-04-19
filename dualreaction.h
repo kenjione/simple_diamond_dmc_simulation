@@ -1,22 +1,24 @@
 #ifndef DUALREACTION_H
 #define DUALREACTION_H
 
-#include <QVector>
-#include <QPair>
-
-#include "crystal.h"
+#include <vector>
+#include <utility>
 #include "reaction.h"
 #include "carbon.h"
 
 class DualReaction : public Reaction
 {
-protected:
-    QVector<  QPair<Carbon*, Carbon*> >_sites;
-    DualReaction();
 public:
     double commonRate();
+
+    virtual void seeAt(Carbon *carbon) = 0;
+
     void reset();
-    virtual void seeAt(Carbon* carbon) = 0;
+
+protected:
+    DualReaction();
+
+    std::vector<std::pair<Carbon*, Carbon*>> _sites;
 };
 
 #endif // DUALREACTION_H

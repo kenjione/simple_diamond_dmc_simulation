@@ -1,64 +1,37 @@
 #ifndef CARBON_H
 #define CARBON_H
 
-#include <iostream>
-#include <QDebug>
-#include <QVector>
-
-using namespace std;
-
-struct int3 {
-    int x, y, z;
-};
-
+#include "int3.h"
 
 class Carbon
 {
-private:
-
-    int _activities;
-    int _hydrogens;
-    int3 _coords;
-
 public:
+    Carbon(const int3 &coords, int actives, int hydrogens)
+        : _coords(coords), _actives(actives), _hydrogens(hydrogens) {}
 
-    Carbon() {
-        _activities = rand()%3;
-        _hydrogens = 2 - _activities;
+    bool isTop();
+    int actives() const { return _actives; }
+    int hydrogens() const { return _hydrogens; }
+
+    void addHydrogen() {
+        --_actives;
+        ++_hydrogens;
     }
 
-    void addHydrogen()
-    {
-        _activities--;
-        _hydrogens++;
+    void absHydrogen() {
+        ++_actives;
+        --_hydrogens;
     }
 
-    void absHydrogen()
-    {
-        _activities++;
-        _hydrogens--;
-    }
+    void formBond() { --_actives; }
+    void dropBond() { ++_actives; }
 
-    void formBond() { _activities--; }
-    void dropBond() { _activities++; }
+    int3 coords() const { return _coords; }
+    void move(const int3 &to) { _coords = to; }
 
-    int actives() const {
-        return _activities;
-    }
-    int hydrogens() const {
-        return _hydrogens;
-    }
-    bool isTop() {}
-
-    void move(const int3 &to) {
-        _coords.x = to.x;
-        _coords.y = to.y;
-        _coords.z = to.z;
-    }
-
-    int3 coords() const {
-        return _coords;
-    }
+private:
+    int3 _coords;
+    int _actives, _hydrogens;
 };
 
 #endif // CARBON_H
