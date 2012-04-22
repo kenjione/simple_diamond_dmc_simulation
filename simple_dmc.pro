@@ -22,7 +22,13 @@ SOURCES += main.cpp\
     etchingreaction.cpp \
     formdimerreaction.cpp \
     migrationbridgereaction.cpp \
-    surface.cpp
+    surface.cpp \
+    abshreaction.cpp \
+    addhreaction.cpp \
+    dropdimerreaction.cpp \
+    migrationhreaction.cpp \
+    monoreaction.cpp \
+    dualreaction.cpp
 
 HEADERS  += mainwindow.h \
     volume.h \

@@ -13,7 +13,11 @@ public:
 
     void throughAllCarbonsIter(std::function<void (Carbon *)> sf);
 
-    void posDimerIter(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction);
+    void posDimerIter(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction) {
+//        for (/* по позициям для димера в зависимости от  z */) {
+//            reaction(carbon, currentLayer(carbon)->carbon(dimer_indexes));
+//          }
+    }
     void posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &, Carbon *, Carbon *)> reaction);
     void getBasis(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction);
     int3 topPosition(Carbon *first, Carbon* second);

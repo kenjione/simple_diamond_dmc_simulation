@@ -18,3 +18,5 @@ void Crystal::move(Carbon *carbon, const int3 &to) {
     getLayer(carbon->coords().z)->move(carbon->coords().x, carbon->coords().y, to.x, to.y);
 }
 
+int3 Crystal::topPosition(Carbon *first, Carbon *second) {
+}

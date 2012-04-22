@@ -6,11 +6,10 @@
 class DropDimerReaction : public DualReaction
 {
 public:
-    DropDimerReaction();
+    DropDimerReaction(Surface *surface);
 
     double coef();
-
-    void seeAt(Carbon *carbon);
+    void seeAt(Carbon *first, Carbon* second);
     void doIt();
 };
 

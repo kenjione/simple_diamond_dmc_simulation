@@ -4,17 +4,16 @@
 #include "monoreaction.h"
 #include "crystal.h"
 
+
 class EtchingReaction : public MonoReaction
 {
 public:
-    EtchingReaction(Crystal *crystal);
+    EtchingReaction(Surface *surface, Crystal *crystal);
 
     double coef();
-
-    void reset();
-
     void seeAt(Carbon *carbon);
     void doIt();
+
     void operator() (Carbon *first, Carbon *second);
 
 private:

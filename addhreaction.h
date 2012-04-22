@@ -6,10 +6,9 @@
 class AddHReaction : public MonoReaction
 {
 public:
-    AddHReaction();
+    AddHReaction(Surface *surface);
 
     double coef();
-
     void seeAt(Carbon *carbon);
     void doIt();
 };

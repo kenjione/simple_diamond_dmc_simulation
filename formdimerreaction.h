@@ -7,13 +7,10 @@
 class FormDimerReaction : public MonoReaction
 {
 public:
-    FormDimerReaction(Crystal *crystal);
-
-    double coef();
-
-    void reset();
-
+    FormDimerReaction(Surface *surface, Crystal *crystal);
+    double coef() {}
     void seeAt(Carbon *carbon);
+    void reset();
     void doIt();
     void operator() (Carbon *first, Carbon *second);
 

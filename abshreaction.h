@@ -6,10 +6,9 @@
 class AbsHReaction : public MonoReaction
 {
 public:
-    AbsHReaction();
+    AbsHReaction(Surface *surface);
 
     double coef();
-
     void seeAt(Carbon *carbon);
     void doIt();
 };

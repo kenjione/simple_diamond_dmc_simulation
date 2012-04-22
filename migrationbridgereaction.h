@@ -9,13 +9,12 @@
 class MigrationBridgeReaction : public MonoReaction
 {
 public:
-    MigrationBridgeReaction(Crystal *crystal);
+    MigrationBridgeReaction(Surface *surface, Crystal *crystal);
 
     double coef();
-
-    void reset();
     void seeAt(Carbon *carbon);
     void doIt();
+    void reset();
     void operator() (const int3 &to,
                      const std::pair<Carbon *, Carbon *> &fromBasis,
                      const std::pair<Carbon *, Carbon *> &toBasis);
@@ -23,8 +22,8 @@ public:
 private:
     Crystal *_crystal;
     std::vector<int3> _positions;
-    std::vector<std::pair<Carbon *,  Carbon *>> _currBasis;
-    std::vector<std::pair<Carbon *,  Carbon *>> _toBasis;
+    std::vector<std::pair<Carbon *,  Carbon *> > _currBasis;
+    std::vector<std::pair<Carbon *,  Carbon *> > _toBasis;
 };
 
 #endif // MIGRATIONBRIDGE_H

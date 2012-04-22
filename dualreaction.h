@@ -10,15 +10,14 @@ class DualReaction : public Reaction
 {
 public:
     double commonRate();
-
     virtual void seeAt(Carbon *carbon) = 0;
-
+    virtual void doIt() = 0;
     void reset();
 
 protected:
-    DualReaction();
+    DualReaction(Surface *surface);
 
-    std::vector<std::pair<Carbon*, Carbon*>> _sites;
+    std::vector<std::pair<Carbon*, Carbon*> > _sites;
 };
 
 #endif // DUALREACTION_H
