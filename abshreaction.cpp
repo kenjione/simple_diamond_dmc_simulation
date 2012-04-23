@@ -1,6 +1,6 @@
 #include "abshreaction.h"
 
-AbsHReaction::AbsHReaction(Surface *surface): AbsHReaction::MonoReaction(surface) {}
+AbsHReaction::AbsHReaction(Surface *surface) : MonoReaction(surface) {}
 
 double AbsHReaction::coef() {
     //return ...

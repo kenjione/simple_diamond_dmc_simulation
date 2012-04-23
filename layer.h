@@ -3,8 +3,6 @@
 
 #include <functional>
 #include "carbon.h"
-#include <assert.h>
-#include <cstddef>
 
 class Layer
 {

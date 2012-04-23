@@ -1,13 +1,13 @@
 #include "formdimerreaction.h"
 
 FormDimerReaction::FormDimerReaction(Surface *surface, Crystal *crystal) :
-    MonoReaction::MonoReaction(surface), _crystal(crystal) {}
+    MonoReaction(surface), _crystal(crystal) {}
 
-void FormDimerReaction::operator ()(Carbon *first, Carbon *second) {
-        if (_pairs.find(second) == _pairs.end()) { // корявая проверка на наличие.
-            _sites.push_back(first);         // Если find не находит он же выставляет указатель на end()?
-            _pairs.insert(second);
-        }
+void FormDimerReaction::operator() (Carbon *first, Carbon *second) {
+    if (_pairs.find(second) == _pairs.end()) { // корявая проверка на наличие.
+        _sites.push_back(first);               // Если find не находит он же выставляет указатель на end()?
+        _pairs.insert(second);
+    }
 }
 
 void FormDimerReaction::seeAt(Carbon *carbon) {
@@ -19,6 +19,6 @@ void FormDimerReaction::doIt() {
 }
 
 void FormDimerReaction::reset() {
-    _sites.clear();
+    MonoReaction::reset();
     _pairs.clear();
 }

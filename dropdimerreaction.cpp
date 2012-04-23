@@ -1,7 +1,6 @@
 #include "dropdimerreaction.h"
 
-DropDimerReaction::DropDimerReaction(Surface *surface):
-    DropDimerReaction::DualReaction(surface) {}
+DropDimerReaction::DropDimerReaction(Surface *surface) : DualReaction(surface) {}
 
 double DropDimerReaction::coef() {
     // return ...
@@ -12,6 +11,6 @@ void DropDimerReaction::seeAt(Carbon *first, Carbon *second) {
 }
 
 void DropDimerReaction::doIt() {
-    int site = rand()%_sites.size();
-    _surface->dropDimer(_sites[site].first);
+    int siteRandomIndex = rand() % _sites.size();
+    _surface->dropDimer(_sites[siteRandomIndex].first);
 }
