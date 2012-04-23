@@ -5,8 +5,6 @@
 #include <set>
 #include "crystal.h"
 
-#include <random>
-
 class Reaction;
 
 class Surface

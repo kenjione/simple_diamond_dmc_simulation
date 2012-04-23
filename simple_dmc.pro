@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     dropdimerreaction.cpp \
     migrationhreaction.cpp \
     monoreaction.cpp \
-    dualreaction.cpp
+    dualreaction.cpp \
+    reaction.cpp
 
 HEADERS  += mainwindow.h \
     volume.h \
