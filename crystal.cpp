@@ -6,6 +6,12 @@ void Crystal::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
     for (auto &layer : _layers) layer.throughAllCarbonsIter(sf);
 }
 
+void Crystal::posDimerIter(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction) {
+//    for (/* по позициям для димера в зависимости от  z */) {
+//        reaction(carbon, currentLayer(carbon)->carbon(dimer_indexes));
+//      }
+}
+
 void Crystal::addCarbon(Carbon *carbon) {
     getLayer(carbon->coords().z)->add(carbon, carbon->coords().x, carbon->coords().y);
 }

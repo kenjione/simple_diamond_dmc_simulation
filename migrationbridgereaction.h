@@ -12,6 +12,7 @@ public:
     MigrationBridgeReaction(Surface *surface, Crystal *crystal);
 
     double coef();
+
     void seeAt(Carbon *carbon);
     void doIt();
     void reset();

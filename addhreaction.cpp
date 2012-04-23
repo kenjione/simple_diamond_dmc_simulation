@@ -1,7 +1,6 @@
 #include "addhreaction.h"
 
-AddHReaction::AddHReaction(Surface *surface):
-    AddHReaction::MonoReaction(surface) {}
+AddHReaction::AddHReaction(Surface *surface) : MonoReaction(surface) {}
 
 double AddHReaction::coef() {
     //return ...
@@ -12,5 +11,5 @@ void AddHReaction::seeAt(Carbon *carbon)  {
 }
 
 void AddHReaction::doIt() {
-    _surface->addHydrogen(_sites[rand()%_sites.size()]);
+    _surface->addHydrogen(_sites[rand() % _sites.size()]);
 }

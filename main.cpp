@@ -3,7 +3,6 @@
 
 #define NDEBUG // убрать в релизной версии
 #include <assert.h>
-#include <random>
 
 int main(int argc, char *argv[])
 {

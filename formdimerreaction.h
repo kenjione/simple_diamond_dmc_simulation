@@ -8,7 +8,9 @@ class FormDimerReaction : public MonoReaction
 {
 public:
     FormDimerReaction(Surface *surface, Crystal *crystal);
-    double coef() {}
+
+    double coef();
+
     void seeAt(Carbon *carbon);
     void reset();
     void doIt();
