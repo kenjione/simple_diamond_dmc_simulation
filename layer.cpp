@@ -1,6 +1,6 @@
 #include "layer.h"
 #include <assert.h>
-//#include <cstddef>
+#include <cstddef>   //
 
 Layer::Layer(int size_x, int size_y): _x_size(size_x), _y_size(size_y) {
     size_t total = _x_size * _y_size;

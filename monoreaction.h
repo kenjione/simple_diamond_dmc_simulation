@@ -2,6 +2,7 @@
 #define MONOREACTION_H
 
 #include <vector>
+#include <stdlib.h>
 #include "reaction.h"
 #include "carbon.h"
 

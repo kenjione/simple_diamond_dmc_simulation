@@ -27,7 +27,6 @@ public:
 
     void addDimer(Carbon *first, Carbon *second);
     void dropDimer(Carbon *first);
-
 private:
     void init();
 

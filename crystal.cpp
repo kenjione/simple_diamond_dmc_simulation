@@ -7,9 +7,32 @@ void Crystal::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
 }
 
 void Crystal::posDimerIter(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction) {
-//    for (/* по позициям для димера в зависимости от  z */) {
-//        reaction(carbon, currentLayer(carbon)->carbon(dimer_indexes));
-//      }
+    int3 firstCarbonCoords = carbon->coords();
+    int dx = 0;
+    int dy = 0;
+    if ((firstCarbonCoords.z + 1) % 2 == 0) dx = 1;
+        else dy = 1;
+    for (int i = 0; i < 2; ++i)
+        reaction(carbon, _layers[carbon->coords().z].carbon(firstCarbonCoords.x + dx,
+                                                            firstCarbonCoords.y + dy));
+}
+
+void Crystal::getBasis(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction) {
+    int3 topPos = carbon->coords();;
+    int3 firstBottomPos = carbon->coords();;
+    int3 secondBottomPos = carbon->coords();;
+
+    if ( (topPos.z + 1) % 4 == 0 ) {firstBottomPos.y++;}
+    else if ( (topPos.z + 1) % 3 == 0 ) {firstBottomPos.x++;}
+    else if ( (topPos.z + 1) % 2 == 0 ) {firstBottomPos.y--;}
+    else {firstBottomPos.x--;}
+
+    firstBottomPos.z--;
+    secondBottomPos.z--;
+
+    Carbon *firstBottom = getLayer(firstBottomPos.z)->carbon(firstBottomPos.x,firstBottomPos.y);
+    Carbon *secondBottom = getLayer(secondBottomPos.z)->carbon(secondBottomPos.x,secondBottomPos.y);
+    reaction(firstBottom, secondBottom);
 }
 
 void Crystal::addCarbon(Carbon *carbon) {
@@ -25,4 +48,12 @@ void Crystal::move(Carbon *carbon, const int3 &to) {
 }
 
 int3 Crystal::topPosition(Carbon *first, Carbon *second) {
+    int3 topPos = first->coords();
+    if ( (topPos.z + 1) % 4 == 0 ) topPos.y--;
+    else if ( (topPos.z + 1) % 3 == 0 ) topPos.x--;
+    else if ( (topPos.z + 1) % 2 == 0 ) topPos.y++;
+    else topPos.x++;
+
+    topPos.z++;
+    return topPos;
 }

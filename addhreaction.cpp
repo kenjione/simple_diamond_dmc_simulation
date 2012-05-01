@@ -1,9 +1,10 @@
 #include "addhreaction.h"
+#include "math.h"
 
 AddHReaction::AddHReaction(Surface *surface) : MonoReaction(surface) {}
 
 double AddHReaction::coef() {
-    //return ...
+    return 2 * pow(10,13) * __reactor->hydrogenConcentration();
 }
 
 void AddHReaction::seeAt(Carbon *carbon)  {

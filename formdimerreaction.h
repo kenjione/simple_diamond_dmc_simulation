@@ -1,10 +1,10 @@
 #ifndef FORMDIMERREACTION_H
 #define FORMDIMERREACTION_H
 
-#include "monoreaction.h"
+#include "dualreaction.h"
 #include "crystal.h"
 
-class FormDimerReaction : public MonoReaction
+class FormDimerReaction : public DualReaction
 {
 public:
     FormDimerReaction(Surface *surface, Crystal *crystal);

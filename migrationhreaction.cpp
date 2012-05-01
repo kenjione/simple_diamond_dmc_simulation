@@ -1,9 +1,11 @@
 #include "migrationhreaction.h"
+#include "math.h"
 
-MigrationHReaction::MigrationHReaction(Surface *surface) : DualReaction(surface) {}
+MigrationHReaction::MigrationHReaction(Surface *surface, float r) : DualReaction(surface), _r(r) {}
 
 double MigrationHReaction::coef() {
-    // return ...
+    float R = 123.456;
+    return 2.3 * pow(10,13) * exp(-51.1/(__reactor->temperature()*R));
 }
 
 void MigrationHReaction::seeAt(Carbon *first, Carbon *second) {

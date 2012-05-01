@@ -6,11 +6,13 @@
 class MigrationHReaction : public DualReaction
 {
 public:
-    MigrationHReaction(Surface *surface);
+    MigrationHReaction(Surface *surface, float r);
 
     double coef();
     void seeAt(Carbon *first, Carbon* second);
     void doIt() ;
+private:
+    float _r;
 };
 
 #endif // MIGRATIONHREACTION_H
