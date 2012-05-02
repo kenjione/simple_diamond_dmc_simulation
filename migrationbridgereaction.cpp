@@ -5,7 +5,7 @@ MigrationBridgeReaction::MigrationBridgeReaction(Surface *surface, Crystal *crys
     MonoReaction(surface), _crystal(crystal) {}
 
 double MigrationBridgeReaction::coef() {
-    return 6.13 * (10e13) * exp(-18.269/__reactor->temperature());
+    return 6.13 * 10e13 * exp(-18.269 / __reactor->temperature());
 }
 
 void MigrationBridgeReaction::seeAt(Carbon *carbon) {

@@ -18,7 +18,7 @@ public:
 
 private:
     Crystal *_crystal;
-     std::vector<std::pair<Carbon*, Carbon*> >  _basis;
+    std::vector<std::pair<Carbon*, Carbon*> >  _basis;
 };
 
 #endif // ETCHINGREACTION_H

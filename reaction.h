@@ -1,9 +1,10 @@
 #ifndef REACTION_H
 #define REACTION_H
 
+#include <cmath>
+#include <cstdlib>
 #include "reactor.h"
 #include "surface.h"
-#include <cmath>
 
 class Reaction
 {
@@ -18,6 +19,7 @@ public:
 
 protected:
     static Reactor *__reactor;
+    static float R;
 
     Reaction(Surface *surface) : _surface(surface) {}
 

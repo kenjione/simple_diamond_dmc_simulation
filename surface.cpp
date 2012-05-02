@@ -41,14 +41,9 @@ void Surface::removeCarbon(Carbon *carbon, Carbon *bottomFirst, Carbon *bottomSe
     bottomFirst->dropBond();
     bottomSecond->dropBond();
 
-    if (_activeCarbons.find(carbon) != _activeCarbons.end())
-        _activeCarbons.insert(carbon);
-
-    if (_activeCarbons.find(bottomFirst) != _activeCarbons.end())
-        _activeCarbons.insert(bottomFirst);
-
-    if (_activeCarbons.find(bottomSecond) != _activeCarbons.end())
-        _activeCarbons.insert(bottomSecond);
+    _activeCarbons.insert(carbon);
+    _activeCarbons.insert(bottomFirst);
+    _activeCarbons.insert(bottomSecond);
 }
 
 void Surface::addDimer(Carbon *first, Carbon *second) {
@@ -70,17 +65,13 @@ void Surface::dropDimer(Carbon *first) {
     _dimerBonds.erase(first);
     _dimerBonds.erase(second);
 
-    if (_activeCarbons.find(first) != _activeCarbons.end()) _activeCarbons.insert(first);
-    if (_activeCarbons.find(second) != _activeCarbons.end()) _activeCarbons.insert(second);
+    _activeCarbons.insert(first);
+    _activeCarbons.insert(second);
 }
 
 int Surface::numberOfSites() {
     std::set<Carbon*> allSites;
     allSites.insert(_activeCarbons.begin(),_activeCarbons.end());
-
-    for (std::set<Carbon*>::iterator i = _hydroCarbons.begin(); i != _hydroCarbons.end(); ++i)
-        if (_activeCarbons.find(*i) == _activeCarbons.end())
-            allSites.insert(*i);
-
+    allSites.insert(_hydroCarbons.begin(), _hydroCarbons.end());
     return allSites.size();
 }

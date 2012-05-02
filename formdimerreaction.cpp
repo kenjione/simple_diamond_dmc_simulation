@@ -4,13 +4,13 @@ FormDimerReaction::FormDimerReaction(Surface *surface, Crystal *crystal) :
     DualReaction(surface), _crystal(crystal) {}
 
 void FormDimerReaction::operator() (Carbon *first, Carbon *second) {
-    if (_pairs.find(first)!=_pairs.end()) return;
-    _sites.push_back(std::pair<Carbon*, Carbon*> (first,second));
+    if (_pairs.find(first) != _pairs.end()) return;
+    _sites.push_back(std::pair<Carbon *, Carbon *> (first, second));
     _pairs.insert(second);
 }
 
 double FormDimerReaction::coef() {
-    return 1 * (10e12) * exp(-352.3/__reactor->temperature());
+    return 10e12 * exp(-352.3 / __reactor->temperature());
 }
 
 
