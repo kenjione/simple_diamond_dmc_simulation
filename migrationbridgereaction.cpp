@@ -1,11 +1,11 @@
 #include "migrationbridgereaction.h"
-#include "math.h"
+
 
 MigrationBridgeReaction::MigrationBridgeReaction(Surface *surface, Crystal *crystal) :
     MonoReaction(surface), _crystal(crystal) {}
 
 double MigrationBridgeReaction::coef() {
-    return 6.13 * pow(10,13) * exp(-18.269/__reactor->temperature());
+    return 6.13 * (10e13) * exp(-18.269/__reactor->temperature());
 }
 
 void MigrationBridgeReaction::seeAt(Carbon *carbon) {

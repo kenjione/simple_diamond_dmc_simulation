@@ -1,5 +1,4 @@
 #include "formdimerreaction.h"
-#include "math.h"
 
 FormDimerReaction::FormDimerReaction(Surface *surface, Crystal *crystal) :
     DualReaction(surface), _crystal(crystal) {}
@@ -11,7 +10,7 @@ void FormDimerReaction::operator() (Carbon *first, Carbon *second) {
 }
 
 double FormDimerReaction::coef() {
-    return 1 * pow(10,12) * exp(-352.3/__reactor->temperature());
+    return 1 * (10e12) * exp(-352.3/__reactor->temperature());
 }
 
 

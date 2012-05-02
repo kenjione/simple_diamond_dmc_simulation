@@ -12,9 +12,10 @@ void Crystal::posDimerIter(Carbon *carbon, std::function<void (Carbon *, Carbon 
     int dy = 0;
     if ((firstCarbonCoords.z + 1) % 2 == 0) dx = 1;
         else dy = 1;
+
     for (int i = 0; i < 2; ++i)
-        reaction(carbon, _layers[carbon->coords().z].carbon(firstCarbonCoords.x + dx,
-                                                            firstCarbonCoords.y + dy));
+        reaction(carbon, getLayer(carbon->coords().z)->carbon(firstCarbonCoords.x + dx,
+                                                              firstCarbonCoords.y + dy));
 }
 
 void Crystal::getBasis(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction) {

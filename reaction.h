@@ -3,6 +3,7 @@
 
 #include "reactor.h"
 #include "surface.h"
+#include <cmath>
 
 class Reaction
 {
