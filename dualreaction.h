@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <utility>
-#include <cstdlib>
 #include "reaction.h"
 #include "carbon.h"
 

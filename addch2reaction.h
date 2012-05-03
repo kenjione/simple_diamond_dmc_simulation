@@ -10,7 +10,7 @@ public:
     AddCH2Reaction(Surface *surface, Crystal *crystal);
 
     double coef();
-    void seeAt(Carbon *first, Carbon* second);
+    void seeAt(Carbon *first, Carbon *second);
     void doIt();
     void reset();
 

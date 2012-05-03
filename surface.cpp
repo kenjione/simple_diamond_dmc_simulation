@@ -8,7 +8,7 @@ void Surface::init() {
     _crystal->throughAllCarbonsIter(ref(*this));
 }
 
-void Surface::operator ()(Carbon *carbon) {
+void Surface::operator() (Carbon *carbon) {
     if ( carbon->actives() > 0 ) _activeCarbons.insert(carbon);
     if ( carbon->hydrogens() > 0) _hydroCarbons.insert(carbon);
 }
@@ -64,7 +64,6 @@ void Surface::dropDimer(Carbon *first) {
 
     _dimerBonds.erase(first);
     _dimerBonds.erase(second);
-
     _activeCarbons.insert(first);
     _activeCarbons.insert(second);
 }

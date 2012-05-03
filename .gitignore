@@ -1,3 +1,4 @@
 .idea
 *~
-simple_dmc.pro.user
+*.pro.user
+*.autosave

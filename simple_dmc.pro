@@ -12,9 +12,6 @@ TEMPLATE = app
 QMAKE_CXXFLAGS += -std=c++0x
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    renderarea.cpp \
-    playbutton.cpp \
     button.cpp \
     layer.cpp \
     crystal.cpp \
@@ -31,13 +28,11 @@ SOURCES += main.cpp\
     dualreaction.cpp \
     reaction.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     volume.h \
     surface.h \
-    renderarea.h \
     reactor.h \
     reaction.h \
-    playbutton.h \
     monoreaction.h \
     migrationhreaction.h \
     migrationbridgereaction.h \
@@ -54,7 +49,7 @@ HEADERS  += mainwindow.h \
     abshreaction.h \
     int3.h
 
-FORMS    += mainwindow.ui
+FORMS    +=
 
 
 
