@@ -1,4 +1,6 @@
 #include "formdimerreaction.h"
+#include <cmath>
+#include <cstdlib>
 
 FormDimerReaction::FormDimerReaction(Surface *surface, Crystal *crystal) :
     DualReaction(surface), _crystal(crystal) {}

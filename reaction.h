@@ -1,8 +1,6 @@
 #ifndef REACTION_H
 #define REACTION_H
 
-#include <cmath>
-#include <cstdlib>
 #include "reactor.h"
 #include "surface.h"
 

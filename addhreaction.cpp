@@ -1,4 +1,6 @@
 #include "addhreaction.h"
+#include <cmath>
+#include <cstdlib>
 
 AddHReaction::AddHReaction(Surface *surface) : MonoReaction(surface) {}
 

@@ -1,5 +1,6 @@
 #include "abshreaction.h"
-
+#include <cmath>
+#include <cstdlib>
 
 AbsHReaction::AbsHReaction(Surface *surface) : MonoReaction(surface) {}
 

@@ -1,4 +1,6 @@
 #include "dropdimerreaction.h"
+#include <cmath>
+#include <cstdlib>
 
 DropDimerReaction::DropDimerReaction(Surface *surface) : DualReaction(surface) {}
 

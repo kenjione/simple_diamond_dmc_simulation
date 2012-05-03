@@ -12,7 +12,6 @@ TEMPLATE = app
 QMAKE_CXXFLAGS += -std=c++0x
 
 SOURCES += main.cpp\
-    button.cpp \
     layer.cpp \
     crystal.cpp \
     addch2reaction.cpp \
@@ -43,7 +42,6 @@ HEADERS  += \
     dropdimerreaction.h \
     crystal.h \
     carbon.h \
-    button.h \
     addhreaction.h \
     addch2reaction.h \
     abshreaction.h \

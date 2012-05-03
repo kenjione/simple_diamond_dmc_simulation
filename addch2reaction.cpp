@@ -1,5 +1,6 @@
 #include "addch2reaction.h"
-
+#include <cmath>
+#include <cstdlib>
 
 AddCH2Reaction::AddCH2Reaction(Surface *surface, Crystal *crystal) :
     DualReaction(surface), _crystal(crystal) {}

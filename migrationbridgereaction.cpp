@@ -1,5 +1,6 @@
 #include "migrationbridgereaction.h"
-
+#include <cmath>
+#include <cstdlib>
 
 MigrationBridgeReaction::MigrationBridgeReaction(Surface *surface, Crystal *crystal) :
     MonoReaction(surface), _crystal(crystal) {}

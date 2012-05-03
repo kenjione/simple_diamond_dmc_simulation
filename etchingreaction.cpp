@@ -1,4 +1,6 @@
 #include "etchingreaction.h"
+#include <cmath>
+#include <cstdlib>
 
 EtchingReaction::EtchingReaction(Surface *surface, Crystal *crystal) :
     MonoReaction(surface), _crystal(crystal) {}

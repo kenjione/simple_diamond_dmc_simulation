@@ -1,4 +1,6 @@
 #include "migrationhreaction.h"
+#include <cmath>
+#include <cstdlib>
 
 MigrationHReaction::MigrationHReaction(Surface *surface) : DualReaction(surface) {}
 
