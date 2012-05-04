@@ -3,15 +3,8 @@
 
 Crystal::Crystal(int x_size, int y_size) : _x_size(x_size), _y_size(y_size), _completedLayers(0), _surface(0) {}
 
-Crystal::~Crystal() {
-    delete _surface;
-}
-
 void Crystal::init() {
-    _surface = new Surface(this);
-    _surface->init();
-
-    // далее со слоями..
+    // инитим слои...
 }
 
 void Crystal::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {

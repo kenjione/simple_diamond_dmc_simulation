@@ -4,13 +4,10 @@
 #include <deque>
 #include "layer.h"
 
-class Surface;
-
 class Crystal
 {
 public:
     Crystal(int x_size, int y_size);
-    ~Crystal();
 
     void init();
 
@@ -38,8 +35,6 @@ private:
 
     std::deque<Layer> _layers;
     int _completedLayers;
-
-    Surface *_surface;
 };
 
 #endif // CRYSTAL_H
