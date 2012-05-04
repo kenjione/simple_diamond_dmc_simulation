@@ -9,10 +9,10 @@ double DropDimerReaction::coef() {
 }
 
 void DropDimerReaction::seeAt(Carbon *first, Carbon *second) {
-    _sites.push_back(std::pair<Carbon *, Carbon *> (first,second));
+    _sites.push_back(std::pair<Carbon *, Carbon *> (first, second));
 }
 
 void DropDimerReaction::doIt() {
     int siteRandomIndex = rand() % _sites.size();
-    _surface->dropDimer(_sites[siteRandomIndex].first);
+    _surface->dropDimer(_sites[siteRandomIndex].first, _sites[siteRandomIndex].second);
 }

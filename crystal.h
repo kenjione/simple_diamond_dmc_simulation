@@ -4,12 +4,15 @@
 #include <deque>
 #include "layer.h"
 
-using namespace std;
+class Surface;
 
 class Crystal
 {
 public:
     Crystal(int x_size, int y_size);
+    ~Crystal();
+
+    void init();
 
     void throughAllCarbonsIter(std::function<void (Carbon *)> sf);
 
@@ -27,8 +30,6 @@ public:
 private:
     Crystal();
 
-    void init();
-
     Layer *getLayer(int z) {
         return &_layers[z - _completedLayers];
     }
@@ -37,6 +38,8 @@ private:
 
     std::deque<Layer> _layers;
     int _completedLayers;
+
+    Surface *_surface;
 };
 
 #endif // CRYSTAL_H

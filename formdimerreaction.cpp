@@ -7,6 +7,7 @@ FormDimerReaction::FormDimerReaction(Surface *surface, Crystal *crystal) :
 
 void FormDimerReaction::operator() (Carbon *first, Carbon *second) {
     if (_pairs.find(first) != _pairs.end()) return;
+
     _sites.push_back(std::pair<Carbon *, Carbon *> (first, second));
     _pairs.insert(second);
 }
@@ -17,7 +18,7 @@ double FormDimerReaction::coef() {
 
 
 void FormDimerReaction::seeAt(Carbon *carbon) {
-    _crystal->posDimerIter(carbon, ref(*this));
+    _crystal->posDimerIter(carbon, std::ref(*this));
 }
 
 void FormDimerReaction::doIt() {

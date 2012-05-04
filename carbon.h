@@ -9,7 +9,6 @@ public:
     Carbon(const int3 &coords, int actives, int hydrogens)
         : _coords(coords), _actives(actives), _hydrogens(hydrogens) {}
 
-    bool isTop();
     int actives() const { return _actives; }
     int hydrogens() const { return _hydrogens; }
 

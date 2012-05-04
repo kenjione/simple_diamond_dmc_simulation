@@ -14,8 +14,10 @@ double EtchingReaction::coef() {
 }
 
 void EtchingReaction::seeAt(Carbon *carbon) {
-    _crystal->getBasis(carbon, ref(*this));
+    if (carbon->actives() > 0) return;
+
     _sites.push_back(carbon);
+    _crystal->getBasis(carbon, std::ref(*this));
 }
 
 void EtchingReaction::doIt() {

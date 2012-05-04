@@ -12,6 +12,8 @@ class Surface
 public:
     Surface(Crystal *crystal);
 
+    void init();
+
     void operator() (Carbon *carbon);
 
     int numberOfSites();
@@ -26,11 +28,9 @@ public:
                     const std::pair<Carbon *, Carbon *> &toBasis);
 
     void addDimer(Carbon *first, Carbon *second);
-    void dropDimer(Carbon *first);
+    void dropDimer(Carbon *first, Carbon *second);
 
 private:
-    void init();
-
     Crystal *_crystal;
     Reaction **_reactions;
     std::set<Carbon *> _activeCarbons, _hydroCarbons;
