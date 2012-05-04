@@ -21,9 +21,9 @@ protected:
 
     Reaction(Surface *surface) : _surface(surface) {}
 
-    Surface *_surface;
-
     virtual double coef() = 0;
+
+    Surface *_surface;
 };
 
 #endif // REACTION_H
