@@ -16,6 +16,7 @@ public:
 
 protected:
     MonoReaction(Surface *surface);
+
     std::vector<Carbon *> _sites;
 };
 

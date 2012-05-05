@@ -10,7 +10,7 @@ double MigrationBridgeReaction::coef() {
 }
 
 void MigrationBridgeReaction::seeAt(Carbon *carbon) {
-
+    // допилить...
 }
 
 void MigrationBridgeReaction::operator ()(const int3 &to,

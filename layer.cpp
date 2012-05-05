@@ -1,6 +1,6 @@
 #include "layer.h"
 #include <assert.h>
-#include <cstddef>   //
+#include <cstddef>
 
 Layer::Layer(int size_x, int size_y): _x_size(size_x), _y_size(size_y) {
     size_t total = _x_size * _y_size;
@@ -24,15 +24,19 @@ Carbon *Layer::carbon(int x, int y) {
 }
 
 void Layer::add(Carbon *carbon, int x, int y) {
+    assert(_carbons[_x_size * y + x]); // проверяем что там ещё нет (на этапе разработки)
+
     _carbons[_x_size * y + x] = carbon;
 }
 
 void Layer::remove(int x, int y) {
+    assert(!_carbons[_x_size * y + x]); // проверяем что там уже есть (на этапе разработки)
+
     _carbons[_x_size * y + x] = 0;
 }
 
 void Layer::move(int from_x, int from_y, int to_x, int to_y) {
-    assert(_carbons[_x_size * to_y + to_x]);
+    assert(_carbons[_x_size * to_y + to_x]); // проверяем что там ещё нет (на этапе разработки)
 
     _carbons[_x_size * to_y + to_x] = _carbons[_x_size * from_y + from_x];
     _carbons[_x_size * from_y + from_x] = 0;
