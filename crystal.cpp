@@ -1,7 +1,7 @@
 #include "crystal.h"
 #include "surface.h"
 
-Crystal::Crystal(int x_size, int y_size) : _x_size(x_size), _y_size(y_size), _completedLayers(0), _surface(0) {}
+Crystal::Crystal(int x_size, int y_size) : _x_size(x_size), _y_size(y_size), _completedLayers(0) {}
 
 void Crystal::init() {
     // инитим слои...

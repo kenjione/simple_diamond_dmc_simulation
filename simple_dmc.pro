@@ -25,10 +25,11 @@ SOURCES += main.cpp\
     migrationhreaction.cpp \
     monoreaction.cpp \
     dualreaction.cpp \
-    reaction.cpp
+    reaction.cpp \
+    handbook.cpp \
+    handbookerror.cpp
 
 HEADERS  += \
-    volume.h \
     surface.h \
     reactor.h \
     reaction.h \
@@ -45,9 +46,6 @@ HEADERS  += \
     addhreaction.h \
     addch2reaction.h \
     abshreaction.h \
-    int3.h
-
-FORMS    +=
-
-
-
+    int3.h \
+    handbook.h \
+    handbookerror.h
