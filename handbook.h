@@ -3,7 +3,6 @@
 
 #include <map>
 #include <string>
-#include "int3.h"
 
 class Handbook {
     typedef std::map<std::string, double> VarVal;
