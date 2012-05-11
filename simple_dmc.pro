@@ -9,7 +9,7 @@ QT       += core gui
 TARGET = simple_dmc
 TEMPLATE = app
 
-QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CXXFLAGS += -std=c++0x -lboost_regex-mt
 
 SOURCES += main.cpp\
     layer.cpp \

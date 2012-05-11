@@ -1,8 +1,8 @@
 #include "handbook.h"
+#include "handbookerror.h"
+#include <boost/regex.hpp>
 #include <cstdlib>
 #include <fstream>
-#include <regex>
-#include "handbookerror.h"
 
 Handbook *Handbook::__instance = 0;
 
@@ -25,33 +25,29 @@ Handbook::Handbook(const char *configFileName) {
         throw HandbookError("Cannot open configuration file");
     }
 
-    std::regex commentRegexp(R"(^\s*#)");
-    std::regex sectionRegexp(R"(^\[(.+)\])");
-    std::regex variableRegexp(R"(\s*(\w+)\s*=\s*([\d\.e-]+)\s*)");
+    boost::regex commentRegexp("^\\s*#");
+    boost::regex sectionRegexp("^\\[(.+)\\]");
+    boost::regex variableRegexp("^\\s*(\\w+)\\s*=\\s*([\\d\\.e-]+)\\s*");
 
-    try {
-        VarVal *currentSection = 0;
+    VarVal *currentSection = 0;
 
-        std::string line;
-        while (std::getline(configFile, line)) {
-            if (std::regex_match(line, commentRegexp)) continue;
+    std::string line;
+    boost::smatch matches;
+    while (std::getline(configFile, line)) {
+        if (boost::regex_match(line, matches, commentRegexp)) continue;
 
-            std::cmatch matches;
-            if (std::regex_match(line.c_str(), matches, sectionRegexp)) {
-                std::string sectionName = matches[1].str();
-                currentSection = &_values[sectionName];
-            } else if (std::regex_match(line.c_str(), matches, variableRegexp)) {
-                if (currentSection) {
-                    std::string variable = matches[1].str();
-                    double value = atof(matches[2].str().c_str());
-                    (*currentSection)[variable] = value;
-                } else {
-                    throw HandbookError("Variable is not in section", line.c_str());
-                }
+        if (boost::regex_match(line, matches, sectionRegexp)) {
+            std::string sectionName = matches[1].str();
+            currentSection = &_values[sectionName];
+        } else if (boost::regex_match(line, matches, variableRegexp)) {
+            if (currentSection) {
+                std::string variable = matches[1].str();
+                double value = atof(matches[2].str().c_str());
+                (*currentSection)[variable] = value;
+            } else {
+                throw HandbookError("Variable is not in section", line.c_str());
             }
         }
-    } catch (std::regex_error &error) {
-        throw HandbookError("Regex error", error.what());
     }
 
     __instance = this;
