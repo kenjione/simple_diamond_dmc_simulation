@@ -25,7 +25,10 @@ SOURCES += main.cpp\
     migrationhreaction.cpp \
     monoreaction.cpp \
     dualreaction.cpp \
-    reaction.cpp
+    reaction.cpp \
+    runner.cpp \
+    saver.cpp \
+    migrationbridgeinfo.cpp
 
 HEADERS  += \
     volume.h \
@@ -45,7 +48,10 @@ HEADERS  += \
     addhreaction.h \
     addch2reaction.h \
     abshreaction.h \
-    int3.h
+    int3.h \
+    runner.h \
+    saver.h \
+    migrationbridgeinfo.h
 
 FORMS    +=
 

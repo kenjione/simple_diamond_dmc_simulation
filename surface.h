@@ -3,7 +3,9 @@
 
 #include <map>
 #include <set>
+
 #include "crystal.h"
+
 
 class Reaction;
 
@@ -11,7 +13,7 @@ class Surface
 {
 public:
     Surface(Crystal *crystal);
-
+    ~Surface();
     void init();
 
     void operator() (Carbon *carbon);
@@ -30,11 +32,13 @@ public:
     void addDimer(Carbon *first, Carbon *second);
     void dropDimer(Carbon *first, Carbon *second);
 
+    float doReaction();
+
 private:
     Crystal *_crystal;
     Reaction **_reactions;
     std::set<Carbon *> _activeCarbons, _hydroCarbons;
-    std::map<Carbon *,Carbon *> _dimerBonds;
+    std::map<Carbon *,Carbon *> _dimerBonds;    
 };
 
 #endif // surface_H

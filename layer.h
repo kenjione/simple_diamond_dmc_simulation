@@ -4,6 +4,8 @@
 #include <functional>
 #include "carbon.h"
 
+#include <vector>
+
 class Layer
 {
 public:

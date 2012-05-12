@@ -1,16 +1,124 @@
+#include <iostream>
 #include "surface.h"
 
+#include "abshreaction.h"
+#include "addhreaction.h"
+#include "etchingreaction.h"
+#include "migrationbridgereaction.h"
+#include "addch2reaction.h"
+#include "formdimerreaction.h"
+#include "dropdimerreaction.h"
+#include "migrationhreaction.h"
+#include "reactor.h"
+
+
+#include <iostream>
+
 Surface::Surface(Crystal *crystal) : _crystal(crystal) {
+    std::cout << "call Surface::Surface()\n";
     init();
 }
 
+Surface::~Surface() {
+    for (int i = 0; i < 8; i++) delete _reactions[i];
+    delete _reactions;
+}
+
 void Surface::init() {
+
+    std::cout << "call Surface::init()\n";
+
+    _crystal->init();
     _crystal->throughAllCarbonsIter(std::ref(*this));
 
-    // далее инитим реакции, и реактор
+    std::cout << "hydrocarbons: " << this->_hydroCarbons.size() << std::endl;
+    std::cout << "active carbons: " << this->_activeCarbons.size() << std::endl;
+}
+
+float Surface::doReaction() {
+    std::cout << "call Surface::doReaction()\n";
+
+    // жёстко, но действенно.
+
+    AbsHReaction *abshreaction = new AbsHReaction(this);
+    AddHReaction *addhreaction= new AddHReaction(this);
+    EtchingReaction *etchingreaction= new EtchingReaction(this, _crystal);
+    MigrationHReaction *migrationhreaction = new MigrationHReaction(this);
+    AddCH2Reaction *addch2reaction = new AddCH2Reaction(this, _crystal);
+    FormDimerReaction *formdimerreaction = new FormDimerReaction(this, _crystal);
+    DropDimerReaction *dropdimerreaction= new DropDimerReaction(this);
+    MigrationBridgeReaction *migrationbridgereaction= new MigrationBridgeReaction(this, _crystal);
+
+
+    // проверка на работоспособность каждой реакции.
+
+    // 1) осаждение водорода
+
+    for (std::set<Carbon*>::const_iterator i = _activeCarbons.begin(); i != _activeCarbons.end(); i++) addhreaction->seeAt(*i);
+        addhreaction->doIt();
+
+    // 2) удаление водорода
+  //  for (std::set<Carbon*>::const_iterator i = _hydroCarbons.begin(); i != _hydroCarbons.end(); i++) abshreaction->seeAt(*i);
+  //      abshreaction->doIt();
+
+    // 3) формирование димера
+    for (std::set<Carbon*>::const_iterator i = _activeCarbons.begin(); i != _activeCarbons.end(); i++) formdimerreaction->seeAt(*i,0);
+        formdimerreaction->doIt();
+
+    std::map<Carbon*, Carbon*>::iterator i = _dimerBonds.begin();
+
+    //std::cout << (*i).first << std::endl;
+    //std::cout << (*i).second << std::endl;
+    // 4) осаждение СН3
+
+    for (std::map<Carbon*, Carbon*>::iterator i = _dimerBonds.begin(); i != _dimerBonds.end(); i++)
+    {
+        //std::cout << (*i).first << std::endl;
+        addch2reaction->seeAt((*i).first, (*i).second);
+    }
+    addch2reaction->doIt();
+
+    /*
+
+
+      // TODO
+
+    // 4) разрыв димера
+
+
+    // 5)
+
+
+    // 6) миграция СН2
+    // 7) травление
+    // 8) Миграция водорода.
+
+
+    */
+
+
+    // считать коммон рейт по всем скоростям.
+    // нормировать.
+    // кинуть и выбрать реакцию.
+    // провести ее.
+    // зачекать изменения.
+    // сохранить.
+    // repeat.
+
+    delete abshreaction;
+    delete addhreaction;
+    delete etchingreaction;
+    delete migrationhreaction;
+    delete addch2reaction;
+    delete formdimerreaction;
+    delete dropdimerreaction;
+    delete migrationbridgereaction;
 }
 
 void Surface::operator() (Carbon *carbon) {
+
+    //std::cout << "call Surface::operator()\n";
+    //std::cout << "this carbon properties: \n  actives: " << carbon->actives() << "\n  hydro: " << carbon->hydrogens() << "\n\n";
     if (carbon->actives() > 0 ) _activeCarbons.insert(carbon);
     if (carbon->hydrogens() > 0) _hydroCarbons.insert(carbon);
 }
@@ -49,12 +157,42 @@ void Surface::removeCarbon(Carbon *carbon, Carbon *bottomFirst, Carbon *bottomSe
     _activeCarbons.insert(bottomSecond);
 }
 
+void Surface::moveCarbon(Carbon *carbon, const int3 &to, const std::pair<Carbon *, Carbon *> &fromBasis, const std::pair<Carbon *, Carbon *> &toBasis) {
+    _crystal->move(carbon, to);
+
+
+    /*
+        надо разорвать димер так чтобы у него не было активных связей,
+        т.к димерная связь идет на мостовую группу. Аналогичная ситуация
+        и с образованием димера после перемещения мостовой группы.
+    */
+
+    // добавление к димерам
+    Carbon *first = fromBasis.first;
+    Carbon *second = fromBasis.second;
+    _dimerBonds[first] = second;
+
+
+    // удаление из димеров
+    first = toBasis.first;
+    second = toBasis.second;
+    auto it = _dimerBonds.find(first);
+    if (it == _dimerBonds.end()) {
+        it = _dimerBonds.find(second);
+    }
+    _dimerBonds.erase(it);
+}
+
+
 void Surface::addDimer(Carbon *first, Carbon *second) {
     _dimerBonds[first] = second;
 //    _dimerBonds[second] = first;
 
     first->formBond();
     second->formBond();
+
+    first->setAsDimer();
+    second->setAsDimer();
 
     if (first->actives() == 0) _activeCarbons.erase(first);
     if (second->actives() == 0) _activeCarbons.erase(second);
@@ -71,6 +209,9 @@ void Surface::dropDimer(Carbon *first, Carbon *second) {
 
     second->dropBond();
     first->dropBond();
+
+    first->setAsNotDimer();
+    second->setAsNotDimer();
 
     _activeCarbons.insert(first);
     _activeCarbons.insert(second);

@@ -10,19 +10,42 @@ double MigrationBridgeReaction::coef() {
 }
 
 void MigrationBridgeReaction::seeAt(Carbon *carbon) {
-    // допилить...
+    _crystal->posMigrIter(carbon, std::ref(*this));
 }
 
-void MigrationBridgeReaction::operator ()(const int3 &to,
-                                          const std::pair<Carbon *, Carbon *> &fromBasis,
-                                          const std::pair<Carbon *, Carbon *> &toBasis) {}
+void MigrationBridgeReaction::operator () (Carbon *carbon,
+                                           const int3 &to,
+                                           Carbon *ffBasis,
+                                           Carbon *fsBasis,
+                                           Carbon *tfBasis,
+                                           Carbon *tsBasis)
+{
+    bool exist = false;
 
-void MigrationBridgeReaction::doIt() {}
+    // проверка на наличие мостовой группы в _sites
+    for (int i = 0; i < _sites.size(); i++)
+        if (_sites[i] == carbon) {
+            exist = true;
+            _infos[i].push_back(MigrationBridgeInfo(to, std::pair<Carbon *, Carbon *> (tfBasis, tsBasis)));
+        }
+    if (!exist) {
+        _sites.push_back(carbon);
+        _currBasis.push_back(std::pair<Carbon *, Carbon *> (ffBasis, fsBasis));
+        _infos.push_back(std::vector<MigrationBridgeInfo>());
+        _infos[_infos.size() - 1].push_back(MigrationBridgeInfo(to, std::pair<Carbon *, Carbon *> (tfBasis, tsBasis)));
+    }
+}
+
+void MigrationBridgeReaction::doIt() {
+    int siteRandomIndex = rand() % _sites.size();
+    Carbon *carbon = _sites[siteRandomIndex];
+    MigrationBridgeInfo &info = _infos[siteRandomIndex][rand() % _infos[siteRandomIndex].size()];
+    _surface->moveCarbon(carbon, info.position(), _currBasis[siteRandomIndex], info.toBasis());
+}
 
 void MigrationBridgeReaction::reset() {
     MonoReaction::reset();
-    _positions.clear();
+    _infos.clear();
     _currBasis.clear();
-    _toBasis.clear();
 }
 
