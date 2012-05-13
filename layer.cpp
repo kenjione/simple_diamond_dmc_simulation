@@ -2,18 +2,24 @@
 #include <assert.h>
 #include <cstddef>
 
-Layer::Layer(int size_x, int size_y): _x_size(size_x), _y_size(size_y) {
-    size_t total = _x_size * _y_size;
+#include <iostream>
 
+Layer::Layer(int size_x, int size_y): _x_size(size_x), _y_size(size_y) {
+
+    std::cout << "call Layer::Layer()\n";  //
+    size_t total = _x_size * _y_size;
     _carbons = new Carbon*[total];
     for (size_t i = 0; i < total; i++) _carbons[i] = 0;
+    std::cout << "init done\n"; //
 }
 
 Layer::~Layer() {
-    delete [] _carbons;
+    for (int i = 0; i < _x_size * _y_size; i++)
+        delete _carbons[i];
 }
 
 void Layer::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
+    std::cout << "call Layer::throughAllCarbonsIter\n"; //
     for (int i = 0; i < (_x_size * _y_size); i++) {
         if (_carbons[i]) sf(_carbons[i]);
     }
@@ -24,8 +30,7 @@ Carbon *Layer::carbon(int x, int y) {
 }
 
 void Layer::add(Carbon *carbon, int x, int y) {
-    assert(_carbons[_x_size * y + x]); // проверяем что там ещё нет (на этапе разработки)
-
+    //assert(_carbons[_x_size * y + x]); // проверяем что там ещё нет (на этапе разработки)
     _carbons[_x_size * y + x] = carbon;
 }
 

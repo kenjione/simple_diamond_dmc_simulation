@@ -11,7 +11,7 @@ public:
 
     double coef();
 
-    void seeAt(Carbon *carbon);
+    void seeAt(Carbon *first, Carbon *second);
     void reset();
     void doIt();
     void operator() (Carbon *first, Carbon *second);

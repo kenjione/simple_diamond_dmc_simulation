@@ -10,7 +10,7 @@ class DualReaction : public Reaction
 {
 public:
     double commonRate();
-    virtual void seeAt(Carbon *carbon) = 0;
+    virtual void seeAt(Carbon *first, Carbon *second) = 0;
     virtual void doIt() = 0;
     void reset();
 

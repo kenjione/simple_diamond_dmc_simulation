@@ -17,8 +17,8 @@ double FormDimerReaction::coef() {
 }
 
 
-void FormDimerReaction::seeAt(Carbon *carbon) {
-    _crystal->posDimerIter(carbon, std::ref(*this));
+void FormDimerReaction::seeAt(Carbon *first, Carbon *second) {
+    _crystal->posDimerIter(first, std::ref(*this));
 }
 
 void FormDimerReaction::doIt() {

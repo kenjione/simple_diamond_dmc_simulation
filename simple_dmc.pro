@@ -27,7 +27,10 @@ SOURCES += main.cpp\
     dualreaction.cpp \
     reaction.cpp \
     handbook.cpp \
-    handbookerror.cpp
+    handbookerror.cpp \
+    runner.cpp \
+    saver.cpp \
+    migrationbridgeinfo.cpp
 
 HEADERS  += \
     surface.h \
@@ -48,4 +51,9 @@ HEADERS  += \
     abshreaction.h \
     int3.h \
     handbook.h \
-    handbookerror.h
+    handbookerror.h \
+    runner.h \
+    saver.h \
+    migrationbridgeinfo.h
+
+FORMS    +=

@@ -4,6 +4,9 @@
 #include <deque>
 #include "layer.h"
 
+
+class Surface;
+
 class Crystal
 {
 public:
@@ -14,7 +17,7 @@ public:
     void throughAllCarbonsIter(std::function<void (Carbon *)> sf);
 
     void posDimerIter(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction);
-    void posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &, Carbon *, Carbon *)> reaction);
+    void posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &, Carbon *, Carbon *, Carbon *, Carbon *)> reaction);
     void getBasis(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction);
     int3 topPosition(Carbon *first, Carbon* second);
 
@@ -32,7 +35,6 @@ private:
     }
 
     int _x_size, _y_size;
-
     std::deque<Layer> _layers;
     int _completedLayers;
 };

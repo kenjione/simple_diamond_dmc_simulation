@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <utility>
+#include "migrationbridgeinfo.h"
 #include "monoreaction.h"
 #include "crystal.h"
 
@@ -16,15 +17,19 @@ public:
     void seeAt(Carbon *carbon);
     void doIt();
     void reset();
-    void operator() (const int3 &to,
-                     const std::pair<Carbon *, Carbon *> &fromBasis,
-                     const std::pair<Carbon *, Carbon *> &toBasis);
+    void operator() (Carbon *carbon,
+                     const int3 &to,
+                     Carbon *ffBasis,
+                     Carbon *fsBasis,
+                     Carbon *tfBasis,
+                     Carbon *tsBasis);
+                     //const std::pair<Carbon *, Carbon *> &fromBasis,
+                     //const std::pair<Carbon *, Carbon *> &toBasis);
 
 private:
     Crystal *_crystal;
-    std::vector<int3> _positions;
     std::vector<std::pair<Carbon *,  Carbon *> > _currBasis;
-    std::vector<std::pair<Carbon *,  Carbon *> > _toBasis;
+    std::vector<std::vector<MigrationBridgeInfo> > _infos;
 };
 
 #endif // MIGRATIONBRIDGE_H
