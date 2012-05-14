@@ -38,7 +38,7 @@ void Crystal::init() {
 
     for (int i = 0; i < _y_size; i++)
         for (int j = 0; j < _x_size; j++)       // 1, 1
-            _layers[1].add(new Carbon(int3(j,i,1),2,0), j, i);
+            _layers[1].add(new Carbon(int3(j,i,1),1,1), j, i);
 
     std::cout << "LAYER 2 : \n";
 

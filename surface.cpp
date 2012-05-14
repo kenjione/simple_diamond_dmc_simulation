@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cmath>
+
 #include "surface.h"
 
 #include "abshreaction.h"
@@ -11,8 +13,6 @@
 #include "migrationhreaction.h"
 #include "reactor.h"
 
-
-#include <iostream>
 
 Surface::Surface(Crystal *crystal) : _crystal(crystal) {
     std::cout << "call Surface::Surface()\n";
@@ -50,79 +50,84 @@ float Surface::doReaction() {
     DropDimerReaction *dropdimerreaction= new DropDimerReaction(this);
     MigrationBridgeReaction *migrationbridgereaction= new MigrationBridgeReaction(this, _crystal);
 
-
-    // проверка на работоспособность каждой реакции.
-
     for (Carbon *carbon : _activeCarbons) {
-        // 1) осаждение водорода
         addhreaction->seeAt(carbon);
-        // 3) формирование димера
         formdimerreaction->seeAt(carbon, 0);
     }
 
     for (Carbon *carbon : _hydroCarbons) {
-        // 2) удаление водорода
         abshreaction->seeAt(carbon);
+        migrationbridgereaction->seeAt(carbon);
+        etchingreaction->seeAt(carbon);
     }
 
     for (auto &carbons_pair : _dimerBonds) {
-        // 4) осаждение СН3
         // TODO: стоит пересмотреть метод SeeAt для DualReaction, в плане аргументов (чтобы принмало &pair вместо двух Carbon *)
         addch2reaction->seeAt(carbons_pair.first, carbons_pair.second);
+        dropdimerreaction->seeAt(carbons_pair.first, carbons_pair.second);
+        migrationhreaction->seeAt(carbons_pair.first, carbons_pair.second);
     }
 
-    // TODO: мы сначала смотрим всеми реакциями, затем нормируем по commonRate, а уже затем выполняем случайную реакцию через doIt
+    double commonRates[8] = {
+        addhreaction->commonRate(),
+        abshreaction->commonRate(),
+        addch2reaction->commonRate(),
+        formdimerreaction->commonRate(),
+        dropdimerreaction->commonRate(),
+        etchingreaction->commonRate(),
+        migrationhreaction->commonRate(),
+        migrationbridgereaction->commonRate(),
+    };
 
-//    for (std::set<Carbon*>::const_iterator i = _activeCarbons.begin(); i != _activeCarbons.end(); i++) addhreaction->seeAt(*i);
-//        addhreaction->doIt();
+    // считаем сумму скоростей во всем реакциям.
+    int sumRate = 0;
+    for (double i : commonRates) i+=sumRate;
 
-//    // 2) удаление водорода
-//  //  for (std::set<Carbon*>::const_iterator i = _hydroCarbons.begin(); i != _hydroCarbons.end(); i++) abshreaction->seeAt(*i);
-//  //      abshreaction->doIt();
+    // нормируем реакции.
+    int valuetedRates[8];
+    for (int i = 0; i < 8; i++) valuetedRates[i] = commonRates[i] / sumRate;
 
-//    // 3) формирование димера
-//    for (std::set<Carbon*>::const_iterator i = _activeCarbons.begin(); i != _activeCarbons.end(); i++) formdimerreaction->seeAt(*i,0);
-//        formdimerreaction->doIt();
+    // строим линию
+    for (int i = 1; i < 8; i++) valuetedRates[i] += valuetedRates[i-1];
 
-//    std::map<Carbon*, Carbon*>::iterator i = _dimerBonds.begin();
-
-//    //std::cout << (*i).first << std::endl;
-//    //std::cout << (*i).second << std::endl;
-//    // 4) осаждение СН3
-
-//    for (std::map<Carbon*, Carbon*>::iterator i = _dimerBonds.begin(); i != _dimerBonds.end(); i++)
-//    {
-//        //std::cout << (*i).first << std::endl;
-//        addch2reaction->seeAt((*i).first, (*i).second);
-//    }
-//    addch2reaction->doIt();
-
-    /*
+    // кидаем случайное число, выбираем реакцию и проводим ее.
+    double reactionIndex = rand() / double(RAND_MAX) ;
+    double dt = 0;
 
 
-      // TODO
-
-    // 4) разрыв димера
-
-
-    // 5)
-
-
-    // 6) миграция СН2
-    // 7) травление
-    // 8) Миграция водорода.
-
-
-    */
-
-
-    // считать коммон рейт по всем скоростям.
-    // нормировать.
-    // кинуть и выбрать реакцию.
-    // провести ее.
-    // зачекать изменения.
-    // сохранить.
-    // repeat.
+    // быдловыбор
+    if (reactionIndex < valuetedRates[0]) {
+        addhreaction->doIt();
+        dt = -log2(rand() / double(RAND_MAX)) / commonRates[0];
+    }
+    else if (reactionIndex < valuetedRates[1]) {
+        abshreaction->doIt();
+        dt = -log2(rand() / double(RAND_MAX)) / commonRates[1];
+    }
+    else if (reactionIndex < valuetedRates[2]) {
+        addch2reaction->doIt();
+        dt = -log2(rand() / double(RAND_MAX)) / commonRates[2];
+    }
+    else if (reactionIndex < valuetedRates[3]) {
+        formdimerreaction->doIt();
+        dt = -log2(rand() / double(RAND_MAX)) / commonRates[3];
+    }
+    else if (reactionIndex < valuetedRates[4]) {
+        dropdimerreaction->doIt();
+        dt = -log2(rand() / double(RAND_MAX)) / commonRates[4];
+    }
+    else if(reactionIndex < valuetedRates[5]) {
+        etchingreaction->doIt();
+        dt = -log2(rand() / double(RAND_MAX)) / commonRates[5];
+    }
+    else if (reactionIndex < valuetedRates[6]) {
+        migrationhreaction->doIt();
+        dt = -log2(rand() / double(RAND_MAX)) / commonRates[6];
+    }
+    else {
+        migrationbridgereaction->doIt();
+        dt = -log2(rand() / double(RAND_MAX)) / commonRates[7];
+    }
 
     delete abshreaction;
     delete addhreaction;
@@ -133,8 +138,7 @@ float Surface::doReaction() {
     delete dropdimerreaction;
     delete migrationbridgereaction;
 
-    // TODO должно возращать dt реакции
-//    return dt;
+    return dt;
 }
 
 void Surface::operator() (Carbon *carbon) {

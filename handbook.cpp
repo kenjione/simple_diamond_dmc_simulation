@@ -1,5 +1,6 @@
 #include "handbook.h"
 #include "handbookerror.h"
+#include <boost/regex.h>
 #include <boost/regex.hpp>
 #include <cstdlib>
 #include <fstream>
@@ -65,3 +66,4 @@ double Handbook::value(const char *sectionName, const char *variableName) const 
     throw HandbookError("Variable not found", sectionName, variableName);
     return 0;
 }
+
