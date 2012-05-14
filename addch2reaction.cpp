@@ -7,7 +7,7 @@
 AddCH2Reaction::AddCH2Reaction(Surface *surface, Crystal *crystal) :
     DualReaction(surface), _crystal(crystal) {}
 
-double AddCH2Reaction::coef() {
+double AddCH2Reaction::coef() const {
     return 1 * 10e13 * __reactor->methylConcentration();
 }
 

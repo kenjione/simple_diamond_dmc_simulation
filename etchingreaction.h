@@ -10,11 +10,13 @@ class EtchingReaction : public MonoReaction
 public:
     EtchingReaction(Surface *surface, Crystal *crystal);
 
-    double coef();
     void seeAt(Carbon *carbon);
     void doIt();
 
     void operator() (Carbon *first, Carbon *second);
+
+protected:
+    double coef() const;
 
 private:
     Crystal *_crystal;

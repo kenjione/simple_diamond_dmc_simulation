@@ -4,7 +4,7 @@
 
 MigrationHReaction::MigrationHReaction(Surface *surface) : DualReaction(surface) {}
 
-double MigrationHReaction::coef() {
+double MigrationHReaction::coef() const {
     return 2.3 * 10e13 * exp(-51.1 / (__reactor->temperature() * R));
 }
 
