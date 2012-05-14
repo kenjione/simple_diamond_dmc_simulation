@@ -1,6 +1,6 @@
 #include "migrationbridgeinfo.h"
 
-MigrationBridgeInfo::MigrationBridgeInfo(int3 position, std::pair<Carbon *, Carbon *> toBasis) :
+MigrationBridgeInfo::MigrationBridgeInfo(const int3 &position, const std::pair<Carbon *, Carbon *> &toBasis) :
     _position(position), _toBasis(toBasis)
 {
 }

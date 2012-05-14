@@ -9,7 +9,7 @@
 class Saver
 {
 public:
-    Saver(char *outFileName);
+    Saver(const char *outFileName);
     void operator() (Carbon *carbon);
     void separator();
 
