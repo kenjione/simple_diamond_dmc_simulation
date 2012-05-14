@@ -6,6 +6,8 @@ EtchingReaction::EtchingReaction(Surface *surface, Crystal *crystal) :
     MonoReaction(surface), _crystal(crystal) {}
 
 double EtchingReaction::coef() const {
+    // TODO: надо прочекать всю формулу и чётко проверить размерности. проверить __reactor->temperature() на равенство нулю %)
+
     /*
     return pow(2, ((35.345 * 7.2873 * 10e8 * __reactor->hydrogenConcentration() + 3.4063 *
                  10e16 * pow(__reactor->hydrogenConcentration(), 2)) -
