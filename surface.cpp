@@ -88,6 +88,10 @@ float Surface::doReaction() {
     std::cout << "\ncall mighbridge::commonRate\n";
     migrationbridgereaction->commonRate();
 */
+
+    // TODO: порезать код представленный в этом методе на более маленькие методы, и вызывать их последовательно!
+
+    // TODO: число 8 лучше задавать константой (в любом случае)
     double commonRates[8] = {
         addhreaction->commonRate(),
         abshreaction->commonRate(),
@@ -102,8 +106,7 @@ float Surface::doReaction() {
     // считаем сумму скоростей во всем реакциям.
     double sumRate = 0.0;
 
-    for (int i = 0; i < 8; i++)
-        sumRate+=commonRates[i];
+    for (int i = 0; i < 8; i++) sumRate += commonRates[i];
 
 //    for (double i : commonRates) {
 //        i+=sumRate;
@@ -114,16 +117,14 @@ float Surface::doReaction() {
 
     // нормируем реакции.
     double valuetedRates[8];
-    for (int i = 0; i < 8; i++)
-    {
+    for (int i = 0; i < 8; i++) {
         valuetedRates[i] = commonRates[i] / sumRate;
         std::cout << valuetedRates[i] << " ";
     }
 
     std::cout << "\nLINE:" << std::endl;
     // строим линию
-    for (int i = 1; i < 8; i++)
-    {
+    for (int i = 1; i < 8; i++) {
         valuetedRates[i] += valuetedRates[i-1];
         std::cout << valuetedRates[i] << " ";
     }
@@ -135,6 +136,7 @@ float Surface::doReaction() {
     std::cout << "\nrandindex: " << reactionIndex << std::endl;
 
     // быдловыбор
+    // TODO: этопиздец
     if (reactionIndex < valuetedRates[0]) {
         std::cout << "addreaction!";
         addhreaction->doIt();
