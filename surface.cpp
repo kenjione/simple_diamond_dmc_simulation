@@ -20,8 +20,9 @@ Surface::Surface(Crystal *crystal) : _crystal(crystal) {
 }
 
 Surface::~Surface() {
-    for (int i = 0; i < 8; i++) delete _reactions[i];
-    delete _reactions;
+// TODO Увверен, что это нужно?
+//    for (int i = 0; i < 8; i++) delete _reactions[i];
+//    delete _reactions;
 }
 
 void Surface::init() {
@@ -52,31 +53,49 @@ float Surface::doReaction() {
 
     // проверка на работоспособность каждой реакции.
 
-    // 1) осаждение водорода
-
-    for (std::set<Carbon*>::const_iterator i = _activeCarbons.begin(); i != _activeCarbons.end(); i++) addhreaction->seeAt(*i);
-        addhreaction->doIt();
-
-    // 2) удаление водорода
-  //  for (std::set<Carbon*>::const_iterator i = _hydroCarbons.begin(); i != _hydroCarbons.end(); i++) abshreaction->seeAt(*i);
-  //      abshreaction->doIt();
-
-    // 3) формирование димера
-    for (std::set<Carbon*>::const_iterator i = _activeCarbons.begin(); i != _activeCarbons.end(); i++) formdimerreaction->seeAt(*i,0);
-        formdimerreaction->doIt();
-
-    std::map<Carbon*, Carbon*>::iterator i = _dimerBonds.begin();
-
-    //std::cout << (*i).first << std::endl;
-    //std::cout << (*i).second << std::endl;
-    // 4) осаждение СН3
-
-    for (std::map<Carbon*, Carbon*>::iterator i = _dimerBonds.begin(); i != _dimerBonds.end(); i++)
-    {
-        //std::cout << (*i).first << std::endl;
-        addch2reaction->seeAt((*i).first, (*i).second);
+    for (Carbon *carbon : _activeCarbons) {
+        // 1) осаждение водорода
+        addhreaction->seeAt(carbon);
+        // 3) формирование димера
+        formdimerreaction->seeAt(carbon, 0);
     }
-    addch2reaction->doIt();
+
+    for (Carbon *carbon : _hydroCarbons) {
+        // 2) удаление водорода
+        abshreaction->seeAt(carbon);
+    }
+
+    for (auto &carbons_pair : _dimerBonds) {
+        // 4) осаждение СН3
+        // TODO: стоит пересмотреть метод SeeAt для DualReaction, в плане аргументов (чтобы принмало &pair вместо двух Carbon *)
+        addch2reaction->seeAt(carbons_pair.first, carbons_pair.second);
+    }
+
+    // TODO: мы сначала смотрим всеми реакциями, затем нормируем по commonRate, а уже затем выполняем случайную реакцию через doIt
+
+//    for (std::set<Carbon*>::const_iterator i = _activeCarbons.begin(); i != _activeCarbons.end(); i++) addhreaction->seeAt(*i);
+//        addhreaction->doIt();
+
+//    // 2) удаление водорода
+//  //  for (std::set<Carbon*>::const_iterator i = _hydroCarbons.begin(); i != _hydroCarbons.end(); i++) abshreaction->seeAt(*i);
+//  //      abshreaction->doIt();
+
+//    // 3) формирование димера
+//    for (std::set<Carbon*>::const_iterator i = _activeCarbons.begin(); i != _activeCarbons.end(); i++) formdimerreaction->seeAt(*i,0);
+//        formdimerreaction->doIt();
+
+//    std::map<Carbon*, Carbon*>::iterator i = _dimerBonds.begin();
+
+//    //std::cout << (*i).first << std::endl;
+//    //std::cout << (*i).second << std::endl;
+//    // 4) осаждение СН3
+
+//    for (std::map<Carbon*, Carbon*>::iterator i = _dimerBonds.begin(); i != _dimerBonds.end(); i++)
+//    {
+//        //std::cout << (*i).first << std::endl;
+//        addch2reaction->seeAt((*i).first, (*i).second);
+//    }
+//    addch2reaction->doIt();
 
     /*
 
@@ -113,13 +132,16 @@ float Surface::doReaction() {
     delete formdimerreaction;
     delete dropdimerreaction;
     delete migrationbridgereaction;
+
+    // TODO должно возращать dt реакции
+//    return dt;
 }
 
 void Surface::operator() (Carbon *carbon) {
 
     //std::cout << "call Surface::operator()\n";
     //std::cout << "this carbon properties: \n  actives: " << carbon->actives() << "\n  hydro: " << carbon->hydrogens() << "\n\n";
-    if (carbon->actives() > 0 ) _activeCarbons.insert(carbon);
+    if (carbon->actives() > 0) _activeCarbons.insert(carbon);
     if (carbon->hydrogens() > 0) _hydroCarbons.insert(carbon);
 }
 
@@ -157,9 +179,11 @@ void Surface::removeCarbon(Carbon *carbon, Carbon *bottomFirst, Carbon *bottomSe
     _activeCarbons.insert(bottomSecond);
 }
 
-void Surface::moveCarbon(Carbon *carbon, const int3 &to, const std::pair<Carbon *, Carbon *> &fromBasis, const std::pair<Carbon *, Carbon *> &toBasis) {
+void Surface::moveCarbon(Carbon *carbon, const int3 &to,
+                         const std::pair<Carbon *, Carbon *> &fromBasis,
+                         const std::pair<Carbon *, Carbon *> &toBasis)
+{
     _crystal->move(carbon, to);
-
 
     /*
         надо разорвать димер так чтобы у него не было активных связей,
@@ -168,9 +192,15 @@ void Surface::moveCarbon(Carbon *carbon, const int3 &to, const std::pair<Carbon 
     */
 
     // добавление к димерам
+    // TODO: димер не образуется автоматически, при миграции мостовой группы, образуются просто активные связи
     Carbon *first = fromBasis.first;
+    first->dropBond();
+    _activeCarbons.insert(first);
     Carbon *second = fromBasis.second;
-    _dimerBonds[first] = second;
+    fromBasis.second->dropBond();
+    _activeCarbons.insert(second);
+//    _dimerBonds[first] = second;
+
 
 
     // удаление из димеров
@@ -180,7 +210,16 @@ void Surface::moveCarbon(Carbon *carbon, const int3 &to, const std::pair<Carbon 
     if (it == _dimerBonds.end()) {
         it = _dimerBonds.find(second);
     }
-    _dimerBonds.erase(it);
+
+    if (it != _dimerBonds.end()) {
+        _dimerBonds.erase(it);
+        first->setAsNotDimer();
+        second->setAsNotDimer();
+    } else {
+        // может мигрировать не только на димеры, но и на активные атомы
+        first->formBond();
+        second->formBond();
+    }
 }
 
 

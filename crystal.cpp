@@ -1,10 +1,7 @@
 #include "crystal.h"
-#include "surface.h"
 
-
+Crystal::Crystal(int x_size, int y_size) : _x_size(x_size), _y_size(y_size), _completedLayers(0) {}
 #include <iostream>
-
-Crystal::Crystal(int x_size, int y_size) : _x_size(x_size), _y_size(y_size), _completedLayers(0), _surface(0) {}
 
 void Crystal::init() {
     // инициализация первых двух слоев
@@ -64,61 +61,119 @@ void Crystal::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
     for (auto &layer : _layers) layer.throughAllCarbonsIter(sf);
 }
 
+void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &, Carbon *, Carbon *, Carbon *, Carbon *)> reaction) {
+    // посмотрел по истории - ничего небыло тут.
 
-void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &, Carbon *, Carbon *, Carbon *, Carbon *)> reaction)
-{
-    // убилось :(
+    const int3 &currentCoords = carbon->coords();
+    int3 flatNeighboursCoords[4];
+    for (int3 &neighbourCoords : flatNeighboursCoords) neighbourCoords = currentCoords;
+
+    int less_x, more_x;
+    torusCoordinate('x', currentCoords.x, less_x, more_x);
+
+    int less_y, more_y;
+    torusCoordinate('y', currentCoords.y, less_y, more_y);
+
+    if (currentCoords.z % 2 == 0) {
+        flatNeighboursCoords[0].y = less_y;
+        flatNeighboursCoords[1].y = more_y;
+        flatNeighboursCoords[2].x = less_x;
+        flatNeighboursCoords[3].x = more_x;
+    } else {
+        flatNeighboursCoords[0].x = less_x;
+        flatNeighboursCoords[1].x = more_x;
+        flatNeighboursCoords[2].y = less_y;
+        flatNeighboursCoords[3].y = more_y;
+    }
+
+    Carbon *currBasisCarbons[2];
+    getBasisCarbons(carbon, currBasisCarbons);
+
+    for (int3 &neighbourCoords : flatNeighboursCoords) {
+        Carbon *neighbourCarbon = getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y);
+        Carbon *toBasisCarbons[2];
+        getBasisCarbons(neighbourCarbon, toBasisCarbons);
+
+        reaction(carbon, neighbourCoords, currBasisCarbons[0], currBasisCarbons[1], toBasisCarbons[0], toBasisCarbons[1]);
+    }
 }
+
 void Crystal::posDimerIter(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction) {
 
-    // выполнить проверку на выход за границы!
+    //    std::cout << "call Crystal::posMigrIter\n";
 
-    std::cout << "call Crystal::posMigrIter\n";
-    int3 firstCarbonCoords = carbon->coords();
+    const int3 &currentCoords = carbon->coords();
+    int3 directNeighboursCoords[2];
+    for (int3 &neighbourCoords : directNeighboursCoords) neighbourCoords = currentCoords;
 
-    std::cout << "  fcc: {" << firstCarbonCoords.x << ", " << firstCarbonCoords.y << "}";
+    if (currentCoords.z % 2 == 0) {
+        int less_y, more_y;
+        torusCoordinate('y', currentCoords.y, less_y, more_y);
 
-    int dx = 0;
-    int dy = 0;
+        directNeighboursCoords[0].y = less_y;
+        directNeighboursCoords[1].y = more_y;
+    } else {
+        int less_x, more_x;
+        torusCoordinate('x', currentCoords.x, less_x, more_x);
 
-    if ((firstCarbonCoords.z) % 2 == 0) dx = 1;
-    else dy = 1;
-
-    // проверка не выход за границу
-    if (firstCarbonCoords.x + dx == _x_size) firstCarbonCoords.x = 0;
-    if (firstCarbonCoords.y + dy == _y_size) firstCarbonCoords.y = 0;
-
-    std::cout << "  scc: {" << firstCarbonCoords.x + dx << ", " << firstCarbonCoords.y + dy << "}\n";
-    for (int i = 0; i < 2; ++i) {
-        reaction(carbon, getLayer(carbon->coords().z)->carbon(firstCarbonCoords.x + dx,
-                                                              firstCarbonCoords.y + dy));
+        directNeighboursCoords[0].x = less_x;
+        directNeighboursCoords[1].x = more_x;
     }
+
+    for (int3 &neighbourCoords : directNeighboursCoords) {
+        reaction(carbon, getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y));
+    }
+
+    // выполнить проверку на выход за границы!
+//    int3 firstCarbonCoords = carbon->coords();
+
+//    std::cout << "  fcc: {" << firstCarbonCoords.x << ", " << firstCarbonCoords.y << "}";
+
+//    int dx = 0;
+//    int dy = 0;
+
+//    if ((firstCarbonCoords.z) % 2 == 0) dx = 1;
+//    else dy = 1;
+
+//    // проверка не выход за границу
+//    if (firstCarbonCoords.x + dx == _x_size) firstCarbonCoords.x = 0;
+//    if (firstCarbonCoords.y + dy == _y_size) firstCarbonCoords.y = 0;
+
+//    std::cout << "  scc: {" << firstCarbonCoords.x + dx << ", " << firstCarbonCoords.y + dy << "}\n";
+//    for (int i = 0; i < 2; ++i) {
+//        reaction(carbon, getLayer(carbon->coords().z)->carbon(firstCarbonCoords.x + dx,
+//                                                              firstCarbonCoords.y + dy));
+//    }
 }
 
 void Crystal::getBasis(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction) {
-    int3 topPos = carbon->coords();
-    int3 firstBottomPos = carbon->coords();
-    int3 secondBottomPos = carbon->coords();
+    Carbon *bottomCarbons[2];
+    getBasisCarbons(carbon, bottomCarbons);
+    reaction(bottomCarbons[0], bottomCarbons[1]);
 
-    if ((topPos.z + 1) % 4 == 0) {
-        firstBottomPos.y++;
-    } else if ((topPos.z + 1) % 3 == 0) {
-        firstBottomPos.x++;
-    } else if ((topPos.z + 1) % 2 == 0) {
-        firstBottomPos.y--;
-    } else {
-        firstBottomPos.x--;
-    }
+//    int3 topPos = carbon->coords();
+//    int3 firstBottomPos = carbon->coords();
+//    int3 secondBottomPos = carbon->coords();
 
-    // TODO:
-    // нужны поверки на выход за пределы
+//    if ((topPos.z + 1) % 4 == 0) {
+//        firstBottomPos.y++;
+//    } else if ((topPos.z + 1) % 3 == 0) {
+//        firstBottomPos.x++;
+//    } else if ((topPos.z + 1) % 2 == 0) {
+//        firstBottomPos.y--;
+//    } else {
+//        firstBottomPos.x--;
+//    }
 
-    firstBottomPos.z--;
-    secondBottomPos.z--;
+//    // TODO:
+//    // нужны поверки на выход за пределы
 
-    Carbon *firstBottom = getLayer(firstBottomPos.z)->carbon(firstBottomPos.x, firstBottomPos.y);
-    Carbon *secondBottom = getLayer(secondBottomPos.z)->carbon(secondBottomPos.x, secondBottomPos.y);
-    reaction(firstBottom, secondBottom);
+//    firstBottomPos.z--;
+//    secondBottomPos.z--;
+
+//    Carbon *firstBottom = getLayer(firstBottomPos.z)->carbon(firstBottomPos.x, firstBottomPos.y);
+//    Carbon *secondBottom = getLayer(secondBottomPos.z)->carbon(secondBottomPos.x, secondBottomPos.y);
+//    reaction(firstBottom, secondBottom);
 }
 
 void Crystal::addCarbon(Carbon *carbon) {
@@ -135,20 +190,82 @@ void Crystal::move(Carbon *carbon, const int3 &to) {
 }
 
 int3 Crystal::topPosition(Carbon *first, Carbon *second) {
+    const int3 &coords1 = first->coords();
+    const int3 &coords2 = second->coords();
 
-    // от обоих карбонов
+    const int3 *sc1 = (coords1 < coords2) ? &coords1 : &coords2;
+    const int3 *sc2 = (coords1 < coords2) ? &coords2 : &coords1;
 
-    int3 topPos = first->coords();
-    topPos.z++;
+    int3 topNeighbourCoords;
+    topNeighbourCoords.z = sc1->z + 1;
+    if (sc1->z % 2 == 1) topNeighbourCoords.y = sc1->y;
+    else topNeighbourCoords.x = sc1->x;
 
-    if (topPos.z % 4 == 3) topPos.y--;
-    else if (topPos.z % 4 == 2) ;
-    else if (topPos.z % 4 == 1) topPos.x--;
-    else {
-        topPos.x--;
-        topPos.y--;
+    if (sc1->z % 4 == 3) {
+        topNeighbourCoords.x = ((sc2->x - sc1->x) == 1) ? sc2->x : sc1->x;
+    } else if (sc1->z % 4 == 2) {
+        topNeighbourCoords.y = ((sc2->y - sc1->y) == 1) ? sc2->y : sc1->y;
+    } else if (sc1->z % 4 == 1) {
+        topNeighbourCoords.x = ((sc2->x - sc1->x) == 1) ? sc1->x : sc2->x;
+    } else { // sc1->z % 4 == 0
+        topNeighbourCoords.y = ((sc2->y - sc1->y) == 1) ? sc1->y : sc2->y;
     }
 
+    return topNeighbourCoords;
 
-    return topPos;
+    // TODO: нужно от обоих карбонов!
+//    int3 topPos = first->coords();
+//    topPos.z++;
+
+//    if (topPos.z % 4 == 3) topPos.y--;
+//    else if (topPos.z % 4 == 2) ;
+//    else if (topPos.z % 4 == 1) topPos.x--;
+//    else {
+//        topPos.x--;
+//        topPos.y--;
+//    }
+
+//    return topPos;
+}
+
+// изменяет передаваемые bottomCarbons
+void Crystal::getBasisCarbons(const Carbon *carbon, Carbon *bottomCarbons[2]) {
+    const int3 &currentCoords = carbon->coords();
+    int3 bottomNeighboursCoords[2];
+    for (int3 &bottomCoords : bottomNeighboursCoords) {
+        bottomCoords = currentCoords;
+        --bottomCoords.z;
+    }
+
+    int less_x, more_x;
+    torusCoordinate('x', currentCoords.x, less_x, more_x);
+
+    int less_y, more_y;
+    torusCoordinate('y', currentCoords.y, less_y, more_y);
+
+    if (currentCoords.z % 4 == 3) {
+        bottomNeighboursCoords[0].y = less_y;
+    } else if (currentCoords.z % 4 == 2) {
+        bottomNeighboursCoords[1].x = more_x;
+    } else if (currentCoords.z % 4 == 1) {
+        bottomNeighboursCoords[1].y = more_y;
+    } else { // current_coords.z % 4 == 0
+        bottomNeighboursCoords[0].x = less_x;
+    }
+
+    for (int i = 0; i < 2; ++i) {
+        bottomCarbons[i] = getLayer(bottomNeighboursCoords[i].z)->carbon(bottomNeighboursCoords[i].x, bottomNeighboursCoords[i].y);
+    }
+}
+
+void Crystal::torusCoordinate(char coord, int current, int& less, int& more) const {
+    int max;
+    if (coord == 'x') max = _x_size - 1;
+    else max = _y_size - 1;
+
+    less = current - 1;
+    if (less < 0) less = max;
+
+    more = current + 1;
+    if (more > max) more = 0;
 }

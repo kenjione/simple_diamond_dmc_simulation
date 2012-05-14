@@ -36,7 +36,7 @@ public:
 
 private:
     Crystal *_crystal;
-    Reaction **_reactions;
+//    Reaction **_reactions;
     std::set<Carbon *> _activeCarbons, _hydroCarbons;
     std::map<Carbon *,Carbon *> _dimerBonds;    
 };

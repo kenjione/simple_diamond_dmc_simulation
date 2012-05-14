@@ -8,7 +8,7 @@
 class MigrationBridgeInfo
 {
 public:
-    MigrationBridgeInfo(int3 position, std::pair<Carbon *, Carbon *> toBasis);
+    MigrationBridgeInfo(const int3 &position, const std::pair<Carbon *, Carbon *> &toBasis);
     int3 position();
     std::pair<Carbon *, Carbon *> toBasis();
 
