@@ -4,7 +4,6 @@
 #include "reactor.h"
 #include "surface.h"
 
-
 class Reaction
 {
 public:
