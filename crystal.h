@@ -4,9 +4,6 @@
 #include <deque>
 #include "layer.h"
 
-
-class Surface;
-
 class Crystal
 {
 public:

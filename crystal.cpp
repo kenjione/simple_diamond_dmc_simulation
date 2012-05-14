@@ -62,10 +62,10 @@ void Crystal::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
 }
 
 
-void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &, Carbon *, Carbon *, Carbon *, Carbon *)> reaction)
-{
-    // убилось :(
+void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &, Carbon *, Carbon *, Carbon *, Carbon *)> reaction) {
+    // посмотрел по истории - ничего небыло тут.
 }
+
 void Crystal::posDimerIter(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction) {
 
     // выполнить проверку на выход за границы!
@@ -133,8 +133,7 @@ void Crystal::move(Carbon *carbon, const int3 &to) {
 
 int3 Crystal::topPosition(Carbon *first, Carbon *second) {
 
-    // от обоих карбонов
-
+    // TODO: нужно от обоих карбонов!
     int3 topPos = first->coords();
     topPos.z++;
 

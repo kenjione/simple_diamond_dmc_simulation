@@ -210,6 +210,8 @@ void Surface::moveCarbon(Carbon *carbon, const int3 &to,
 
     if (it != _dimerBonds.end()) {
         _dimerBonds.erase(it);
+        first->setAsNotDimer();
+        second->setAsNotDimer();
     } else {
         // может мигрировать не только на димеры, но и на активные атомы
         first->formBond();

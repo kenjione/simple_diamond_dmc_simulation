@@ -10,6 +10,7 @@ double MigrationBridgeReaction::coef() {
 }
 
 void MigrationBridgeReaction::seeAt(Carbon *carbon) {
+    if (carbon->actives() + carbon->hydrogens() <= 1) return;
     _crystal->posMigrIter(carbon, std::ref(*this));
 }
 
