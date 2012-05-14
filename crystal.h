@@ -24,15 +24,13 @@ public:
 
     void dropCompletedLayers();
 
-    void getBasisCarbons(const Carbon *carbon, Carbon *bottomCarbons[]);
-    void torusCoordinate(char coord, int current, int &less, int &more) const;
-
 private:
     Crystal();
 
-    Layer *getLayer(int z) {
-        return &_layers[z - _completedLayers];
-    }
+    Layer *getLayer(int z) { return &_layers[z - _completedLayers]; }
+
+    void getBasisCarbons(const Carbon *carbon, Carbon *bottomCarbons[]);
+    void torusCoordinate(char coord, int current, int &less, int &more) const;
 
     int _x_size, _y_size;
     std::deque<Layer> _layers;
