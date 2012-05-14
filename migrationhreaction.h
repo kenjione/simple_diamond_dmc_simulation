@@ -8,9 +8,11 @@ class MigrationHReaction : public DualReaction
 public:
     MigrationHReaction(Surface *surface);
 
-    double coef();
     void seeAt(Carbon *first, Carbon* second);
     void doIt() ;
+
+protected:
+    double coef() const;
 };
 
 #endif // MIGRATIONHREACTION_H

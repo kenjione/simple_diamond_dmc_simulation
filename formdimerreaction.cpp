@@ -12,7 +12,7 @@ void FormDimerReaction::operator() (Carbon *first, Carbon *second) {
     _pairs.insert(second);
 }
 
-double FormDimerReaction::coef() {
+double FormDimerReaction::coef() const {
     return 10e12 * exp(-352.3 / __reactor->temperature());
 }
 

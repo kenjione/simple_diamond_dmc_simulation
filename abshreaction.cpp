@@ -4,7 +4,7 @@
 
 AbsHReaction::AbsHReaction(Surface *surface) : MonoReaction(surface) {}
 
-double AbsHReaction::coef() {
+double AbsHReaction::coef() const {
     return 5.2 * 10e3 * __reactor->hydrogenConcentration() * exp(-3360 / __reactor->temperature());
 }
 

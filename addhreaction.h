@@ -8,9 +8,11 @@ class AddHReaction : public MonoReaction
 public:
     AddHReaction(Surface *surface);
 
-    double coef();
     void seeAt(Carbon *carbon);
     void doIt();
+
+protected:
+    double coef() const;
 };
 
 #endif // ADDHREACTION_H

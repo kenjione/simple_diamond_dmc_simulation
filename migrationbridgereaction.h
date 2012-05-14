@@ -12,19 +12,17 @@ class MigrationBridgeReaction : public MonoReaction
 public:
     MigrationBridgeReaction(Surface *surface, Crystal *crystal);
 
-    double coef();
-
     void seeAt(Carbon *carbon);
     void doIt();
     void reset();
-    void operator() (Carbon *carbon,
-                     const int3 &to,
-                     Carbon *ffBasis,
-                     Carbon *fsBasis,
-                     Carbon *tfBasis,
-                     Carbon *tsBasis);
+    void operator() (Carbon *carbon, const int3 &to,
+                     Carbon *ffBasis, Carbon *fsBasis,
+                     Carbon *tfBasis, Carbon *tsBasis);
                      //const std::pair<Carbon *, Carbon *> &fromBasis,
                      //const std::pair<Carbon *, Carbon *> &toBasis);
+
+protected:
+    double coef() const;
 
 private:
     Crystal *_crystal;
