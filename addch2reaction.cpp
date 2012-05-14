@@ -25,15 +25,15 @@ void AddCH2Reaction::seeAt(Carbon *first, Carbon *second) {
         std::cout << "topPos = { " << _crystal->topPosition(first, second).x << ", "<< _crystal->topPosition(first, second).y << ", " << _crystal->topPosition(first, second).z << "\n\n";
         };
 
-    if (first->actives() > 0) pushPair(first, second);
-    if (second->actives() > 0) pushPair(second, first);
+    if (first->actives() > 0) pushPair(first, second); else std::cout << "can't push coz hasn't actives\n";
+    if (second->actives() > 0) pushPair(second, first); else std::cout << "can't push coz hasn't actives\n";
 }
 
 void AddCH2Reaction::doIt() {
 
     if  (_sites.size() == 0 )
     {
-        std::cout << "not availible. _sites is empty.\n";
+        std::cout << "call AddCH2Reaction()::doIt is not availible. _sites is empty.\n";
         return;
     }
     int siteRandomIndex = rand() % _sites.size();

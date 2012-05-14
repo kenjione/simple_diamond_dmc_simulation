@@ -2,6 +2,7 @@
 #define RUNNER_H
 
 #include "reactor.h"
+#include "reaction.h"
 #include "surface.h"
 #include "saver.h"
 class Runner

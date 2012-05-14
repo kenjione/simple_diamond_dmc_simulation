@@ -68,6 +68,26 @@ float Surface::doReaction() {
         migrationhreaction->seeAt(carbons_pair.first, carbons_pair.second);
     }
 
+    //std::cout << addhreaction->commonRate();
+
+/*
+    std::cout << "\ncall addh::commonRate\n";
+    addhreaction->commonRate();
+    std::cout << "\ncall absh::commonRate\n";
+    abshreaction->commonRate();
+    std::cout << "\ncall addch2::commonRate\n";
+    addch2reaction->commonRate();
+    std::cout << "\ncall formdim::commonRate\n";
+    formdimerreaction->commonRate();
+    std::cout << "\ncall dropdim::commonRate\n";
+    dropdimerreaction->commonRate();
+    std::cout << "\ncall etching::commonRate\n";
+    etchingreaction->commonRate();
+    std::cout << "\ncall migrh::commonRate\n";
+    migrationhreaction->commonRate();
+    std::cout << "\ncall mighbridge::commonRate\n";
+    migrationbridgereaction->commonRate();
+*/
     double commonRates[8] = {
         addhreaction->commonRate(),
         abshreaction->commonRate(),
@@ -80,54 +100,83 @@ float Surface::doReaction() {
     };
 
     // считаем сумму скоростей во всем реакциям.
-    int sumRate = 0;
-    for (double i : commonRates) i+=sumRate;
+    double sumRate = 0.0;
+
+    for (int i = 0; i < 8; i++)
+        sumRate+=commonRates[i];
+
+//    for (double i : commonRates) {
+//        i+=sumRate;
+//        std::cout << i << " ";
+//    }
+
+    std::cout << "\nSUMRATE: " << sumRate << std::endl;
 
     // нормируем реакции.
-    int valuetedRates[8];
-    for (int i = 0; i < 8; i++) valuetedRates[i] = commonRates[i] / sumRate;
+    double valuetedRates[8];
+    for (int i = 0; i < 8; i++)
+    {
+        valuetedRates[i] = commonRates[i] / sumRate;
+        std::cout << valuetedRates[i] << " ";
+    }
 
+    std::cout << "\nLINE:" << std::endl;
     // строим линию
-    for (int i = 1; i < 8; i++) valuetedRates[i] += valuetedRates[i-1];
+    for (int i = 1; i < 8; i++)
+    {
+        valuetedRates[i] += valuetedRates[i-1];
+        std::cout << valuetedRates[i] << " ";
+    }
+
 
     // кидаем случайное число, выбираем реакцию и проводим ее.
     double reactionIndex = rand() / double(RAND_MAX) ;
     double dt = 0;
-
+    std::cout << "\nrandindex: " << reactionIndex << std::endl;
 
     // быдловыбор
     if (reactionIndex < valuetedRates[0]) {
+        std::cout << "addreaction!";
         addhreaction->doIt();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[0];
     }
     else if (reactionIndex < valuetedRates[1]) {
+        std::cout << "abshreaction!";
         abshreaction->doIt();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[1];
     }
     else if (reactionIndex < valuetedRates[2]) {
+        std::cout << "addch2reaction!";
         addch2reaction->doIt();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[2];
     }
     else if (reactionIndex < valuetedRates[3]) {
+        std::cout << "formdimer!";
         formdimerreaction->doIt();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[3];
     }
     else if (reactionIndex < valuetedRates[4]) {
+        std::cout << "dropdimer!";
         dropdimerreaction->doIt();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[4];
     }
     else if(reactionIndex < valuetedRates[5]) {
+        std::cout << "etching!";
         etchingreaction->doIt();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[5];
     }
     else if (reactionIndex < valuetedRates[6]) {
+        std::cout << "migrH!";
         migrationhreaction->doIt();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[6];
     }
     else {
         migrationbridgereaction->doIt();
+        std::cout << "migrBridge!";
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[7];
     }
+
+    std::cout << "\ndt = " << dt << std::endl;
 
     delete abshreaction;
     delete addhreaction;

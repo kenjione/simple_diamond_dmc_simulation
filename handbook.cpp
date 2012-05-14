@@ -4,7 +4,7 @@
 #include <boost/regex.hpp>
 #include <cstdlib>
 #include <fstream>
-
+/*
 Handbook *Handbook::__instance = 0;
 
 Handbook *Handbook::instance() {
@@ -67,3 +67,4 @@ double Handbook::value(const char *sectionName, const char *variableName) const 
     return 0;
 }
 
+*/
