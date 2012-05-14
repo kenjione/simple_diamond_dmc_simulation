@@ -9,10 +9,9 @@ class MonoReaction : public Reaction
 {
 public:
     double commonRate();
+    void reset();
 
     virtual void seeAt(Carbon *carbon) = 0;
-    virtual void doIt() = 0;
-    void reset();
 
 protected:
     MonoReaction(Surface *surface);
