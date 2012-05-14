@@ -24,6 +24,8 @@ public:
 
     void dropCompletedLayers();
 
+    void torusCoordinate(char coord, int current, int &less, int &more) const;
+
 private:
     Crystal();
 
