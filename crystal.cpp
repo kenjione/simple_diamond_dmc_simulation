@@ -260,8 +260,8 @@ void Crystal::getBasisCarbons(const Carbon *carbon, Carbon *bottomCarbons[2]) {
 
 void Crystal::torusCoordinate(char coord, int current, int& less, int& more) const {
     int max;
-    if (coord == 'x') max = _sizes.x - 1;
-    else max = _sizes.y - 1;
+    if (coord == 'x') max = _x_size - 1;
+    else max = _y_size - 1;
 
     less = current - 1;
     if (less < 0) less = max;

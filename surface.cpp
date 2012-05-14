@@ -65,7 +65,7 @@ float Surface::doReaction() {
         abshreaction->seeAt(carbon);
     }
 
-    for (pair<Carbon *, Carbon *> &carbons_pair : _dimerBonds) {
+    for (auto &carbons_pair : _dimerBonds) {
         // 4) осаждение СН3
         // TODO: стоит пересмотреть метод SeeAt для DualReaction, в плане аргументов (чтобы принмало &pair вместо двух Carbon *)
         addch2reaction->seeAt(carbons_pair.first, carbons_pair.second);
@@ -132,6 +132,9 @@ float Surface::doReaction() {
     delete formdimerreaction;
     delete dropdimerreaction;
     delete migrationbridgereaction;
+
+    // TODO должно возращать dt реакции
+//    return dt;
 }
 
 void Surface::operator() (Carbon *carbon) {

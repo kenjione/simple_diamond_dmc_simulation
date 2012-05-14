@@ -57,3 +57,6 @@ HEADERS  += \
     migrationbridgeinfo.h
 
 FORMS    +=
+
+OTHER_FILES += \
+    Makefile

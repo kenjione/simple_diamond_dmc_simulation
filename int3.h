@@ -4,6 +4,7 @@
 struct int3 {
     int x, y, z;
 
+    int3() : x(0), y(0), z(0) {}
     int3(int x, int y, int z) : x(x), y(y), z(z) {}
 
     bool operator< (const int3& oi) const {

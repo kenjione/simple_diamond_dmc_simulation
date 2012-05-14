@@ -24,6 +24,7 @@ public:
 
     void dropCompletedLayers();
 
+    void getBasisCarbons(const Carbon *carbon, Carbon *bottomCarbons[]);
     void torusCoordinate(char coord, int current, int &less, int &more) const;
 
 private:

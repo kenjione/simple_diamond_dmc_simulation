@@ -2,7 +2,7 @@
 #include <stdio.h> //
 #include <iostream> //
 
-Saver::Saver(char *outFileName)
+Saver::Saver(const char *outFileName)
 {
     std::cout << "call Saver::Saver()\n"; //
     _outFile.open(outFileName, std::ios_base::out);
@@ -12,7 +12,7 @@ Saver::Saver(char *outFileName)
 void Saver::operator ()(Carbon *carbon) {
     //std::cout << "call Saver::operator()\n"; //
     int3 coords = carbon->coords();
-    int state;
+    int state = -333;
 
     switch (carbon->hydrogens())
     {
@@ -28,7 +28,7 @@ void Saver::operator ()(Carbon *carbon) {
     }
 
     if (carbon->isDimer()) state = 5;
-    _outFile << state << " " << coords.x+1 << " " << coords.y+1 << " " << coords.z+1 << std::endl;
+    _outFile << state << " " << coords.x << " " << coords.y << " " << coords.z << std::endl;
 }
 
 void Saver::separator() {

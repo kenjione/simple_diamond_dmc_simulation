@@ -14,24 +14,21 @@ void MigrationBridgeReaction::seeAt(Carbon *carbon) {
     _crystal->posMigrIter(carbon, std::ref(*this));
 }
 
-void MigrationBridgeReaction::operator() (Carbon *carbon,
-                                           const int3 &to,
-                                           Carbon *ffBasis,
-                                           Carbon *fsBasis,
-                                           Carbon *tfBasis,
-                                           Carbon *tsBasis)
+void MigrationBridgeReaction::operator() (Carbon *carbon, const int3 &to,
+                                           Carbon *ffBasis, Carbon *fsBasis,
+                                           Carbon *tfBasis, Carbon *tsBasis)
 {
     // проверяем куда мигрируем
     if (!(tfBasis->isDimer() && tsBasis->isDimer()) && !(tfBasis->actives() > 0 && tsBasis->actives() > 0)) return;
 
-    auto migrationInfoLambda = []() {
-        MigrationBridgeInfo(to, std::pair<Carbon *, Carbon *>(tfBasis, tsBasis));
+    auto migrationInfoLambda = [&to, &tfBasis, &tsBasis]() {
+        return MigrationBridgeInfo(to, std::pair<Carbon *, Carbon *>(tfBasis, tsBasis));
     };
 
     bool exist = false;
 
     // проверка на наличие мостовой группы в _sites
-    for (int i = 0; i < _sites.size(); i++) {
+    for (size_t i = 0; i < _sites.size(); i++) {
         if (_sites[i] == carbon) {
             exist = true;
             _infos[i].push_back(migrationInfoLambda());
