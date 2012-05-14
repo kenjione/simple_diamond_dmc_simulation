@@ -8,6 +8,13 @@ Runner::Runner() {
     _saver = new Saver("/home/alex/Monte-Carlo/ohmygodkillme.txt");
 }
 
+Runner::~Runner() {
+    delete _crystal;
+    delete _surface;
+    delete _reactor;
+    delete _saver;
+}
+
 void Runner::run() {
     std::cout << "call Runner::run()\n";
     _surface->doReaction();
@@ -20,9 +27,3 @@ void Runner::save() {
     _saver->closer();
 }
 
-Runner::~Runner() {
-    delete _crystal;
-    delete _surface;
-    delete _reactor;
-    delete _saver;
-}

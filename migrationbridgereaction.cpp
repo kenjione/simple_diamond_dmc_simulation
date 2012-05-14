@@ -5,7 +5,7 @@
 MigrationBridgeReaction::MigrationBridgeReaction(Surface *surface, Crystal *crystal) :
     MonoReaction(surface), _crystal(crystal) {}
 
-double MigrationBridgeReaction::coef() {
+double MigrationBridgeReaction::coef() const {
     return 6.13 * 10e13 * exp(-18.269 / __reactor->temperature());
 }
 

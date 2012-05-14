@@ -8,8 +8,9 @@ class Runner
 {
 public:
     Runner();
-    void run();
     ~Runner();
+
+    void run();
 
 private:
     float _totalTime;

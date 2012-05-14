@@ -8,9 +8,11 @@ class AbsHReaction : public MonoReaction
 public:
     AbsHReaction(Surface *surface);
 
-    double coef();
     void seeAt(Carbon *carbon);
     void doIt();
+
+protected:
+    double coef() const;
 };
 
 #endif // ABSHREACTION_H

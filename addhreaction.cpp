@@ -4,7 +4,7 @@
 
 AddHReaction::AddHReaction(Surface *surface) : MonoReaction(surface) {}
 
-double AddHReaction::coef() {
+double AddHReaction::coef() const {
     return 2 * 10e13 * __reactor->hydrogenConcentration();
 }
 

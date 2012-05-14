@@ -22,7 +22,7 @@ protected:
 
     Reaction(Surface *surface) : _surface(surface) {}
 
-    virtual double coef() = 0;
+    virtual double coef() const = 0;
 
     Surface *_surface;
 };

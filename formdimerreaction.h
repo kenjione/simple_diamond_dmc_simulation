@@ -9,12 +9,13 @@ class FormDimerReaction : public DualReaction
 public:
     FormDimerReaction(Surface *surface, Crystal *crystal);
 
-    double coef();
-
     void seeAt(Carbon *first, Carbon *second);
     void reset();
     void doIt();
     void operator() (Carbon *first, Carbon *second);
+
+protected:
+    double coef() const;
 
 private:
     Crystal *_crystal;
