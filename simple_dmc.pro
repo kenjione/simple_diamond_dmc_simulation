@@ -9,7 +9,7 @@ QT       += core gui
 TARGET = simple_dmc
 TEMPLATE = app
 
-QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CXXFLAGS += -std=c++0x -lboost_regex-mt
 
 SOURCES += main.cpp\
     layer.cpp \
@@ -26,12 +26,13 @@ SOURCES += main.cpp\
     monoreaction.cpp \
     dualreaction.cpp \
     reaction.cpp \
+    handbook.cpp \
+    handbookerror.cpp \
     runner.cpp \
     saver.cpp \
     migrationbridgeinfo.cpp
 
 HEADERS  += \
-    volume.h \
     surface.h \
     reactor.h \
     reaction.h \
@@ -49,11 +50,10 @@ HEADERS  += \
     addch2reaction.h \
     abshreaction.h \
     int3.h \
+    handbook.h \
+    handbookerror.h \
     runner.h \
     saver.h \
     migrationbridgeinfo.h
 
 FORMS    +=
-
-
-

@@ -4,9 +4,6 @@
 #include <deque>
 #include "layer.h"
 
-
-class Surface;
-
 class Crystal
 {
 public:
@@ -27,6 +24,8 @@ public:
 
     void dropCompletedLayers();
 
+    void torusCoordinate(char coord, int current, int &less, int &more) const;
+
 private:
     Crystal();
 
@@ -35,7 +34,6 @@ private:
     }
 
     int _x_size, _y_size;
-    Surface *_surface;
     std::deque<Layer> _layers;
     int _completedLayers;
 };

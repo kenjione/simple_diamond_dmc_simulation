@@ -5,7 +5,7 @@ MigrationBridgeInfo::MigrationBridgeInfo(int3 position, std::pair<Carbon *, Carb
 {
 }
 
-std::pair<Carbon *, Carbon *> MigrationBridgeInfo::toBasis() {
+std::pair MigrationBridgeInfo::toBasis() {
     return _toBasis;
 }
 
