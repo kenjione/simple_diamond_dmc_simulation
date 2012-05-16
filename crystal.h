@@ -22,6 +22,7 @@ public:
     void removeCarbon(Carbon *carbon);
     void move(Carbon *carbon, const int3 &to);
 
+    bool hasAbove(Carbon *first, Carbon *second);
     void dropCompletedLayers();
 
 private:

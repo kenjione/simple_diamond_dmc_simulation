@@ -1,17 +1,21 @@
-#include "saver.h"
-#include <stdio.h> //
-#include <iostream> //
+#include "crystalsaver.h"
 
-Saver::Saver(char *outFileName)
-{
-    //_outFile.open(outFileName, std::ios_base::out);
+CrystalSaver::CrystalSaver(char *outFileName, Crystal *crystal) :
+    Saver(outFileName), _crystal(crystal) {
+    _outFile.open(outFileName, std::ios_base::out);
     //if (_outFile == NULL) std::cout << "    ...file not created..\n"; else std::cout << "   ...file created!\n"; //
 }
 
-/*
+void CrystalSaver::save() {
+    _crystal->throughAllCarbonsIter(std::ref(*this));
+    separator();
+}
 
-void Saver::operator ()(Carbon *carbon) {
-    //std::cout << "call Saver::operator()\n"; //
+void CrystalSaver::separator() {
+    _outFile << "0 0 0 0" << std::endl;
+}
+
+void CrystalSaver::operator ()(Carbon *carbon) {
 
     int3 coords = carbon->coords();
     int state = -333;
@@ -31,15 +35,5 @@ void Saver::operator ()(Carbon *carbon) {
 
     if (carbon->isDimer()) state = 5;
     _outFile << state << " " << coords.x << " " << coords.y << " " << coords.z << std::endl;
-}
 
-void Saver::separator() {
-    std::cout << "call Saver::separator()\n"; //
-    _outFile << "0 0 0 0" << std::endl;
-}
-
-*/
-// без этого метода пока не выдумал как файлик закрывать
-void Saver::closer() {
-    _outFile.close();
 }

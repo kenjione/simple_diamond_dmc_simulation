@@ -18,6 +18,7 @@ public:
 protected:
     static Reactor *__reactor;
     static float R;
+    int _times;
 
     Reaction(Surface *surface) : _surface(surface) {}
 

@@ -65,6 +65,12 @@ void Crystal::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
     for (auto &layer : _layers) layer.throughAllCarbonsIter(sf);
 }
 
+bool Crystal::hasAbove(Carbon *first, Carbon *second) {
+    int3 coords = topPosition(first, second);
+
+    return (getLayer(coords.z)->carbon(coords.x, coords.y));
+}
+
 void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &, Carbon *, Carbon *, Carbon *, Carbon *)> reaction) {
     // посмотрел по истории - ничего небыло тут.
 

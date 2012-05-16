@@ -6,8 +6,8 @@
 
 #include "crystal.h"
 
-
 class Reaction;
+class ReactionsPool;
 
 class Surface
 {
@@ -32,13 +32,15 @@ public:
     void addDimer(Carbon *first, Carbon *second);
     void dropDimer(Carbon *first, Carbon *second);
 
-    float doReaction();
+    float doReaction(ReactionsPool *reactionPool);
 
 private:
     Crystal *_crystal;
 //    Reaction **_reactions;
+
     std::set<Carbon *> _activeCarbons, _hydroCarbons;
-    std::map<Carbon *,Carbon *> _dimerBonds;    
+    std::map<Carbon *,Carbon *> _dimerBonds;
+    ReactionsPool *_reactionsPool;
 };
 
 #endif // surface_H

@@ -9,14 +9,12 @@
 class Saver
 {
 public:
-    Saver(const char *outFileName);
-    void operator() (Carbon *carbon);
-    void separator();
-
+    Saver(char *outFileName);
+    virtual void save() = 0;
     //
     void closer();
 
-private:
+protected:
     std::ofstream _outFile;
 };
 

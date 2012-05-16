@@ -30,7 +30,11 @@ SOURCES += main.cpp\
     handbookerror.cpp \
     runner.cpp \
     saver.cpp \
-    migrationbridgeinfo.cpp
+    migrationbridgeinfo.cpp \
+    reactionspool.cpp \
+    reactionpoolsaver.cpp \
+    surfacesaver.cpp \
+    crystalsaver.cpp
 
 HEADERS  += \
     surface.h \
@@ -54,7 +58,11 @@ HEADERS  += \
     handbookerror.h \
     runner.h \
     saver.h \
-    migrationbridgeinfo.h
+    migrationbridgeinfo.h \
+    reactionspool.h \
+    reactionpoolsaver.h \
+    surfacesaver.h \
+    crystalsaver.h
 
 FORMS    +=
 

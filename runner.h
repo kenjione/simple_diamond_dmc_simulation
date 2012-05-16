@@ -5,6 +5,11 @@
 #include "reaction.h"
 #include "surface.h"
 #include "saver.h"
+
+#include "reactionpoolsaver.h"
+#include "surfacesaver.h"
+#include "crystalsaver.h"
+
 class Runner
 {
 public:
@@ -18,7 +23,8 @@ private:
     Crystal *_crystal;
     Surface *_surface;
     Reactor *_reactor;
-    Saver *_saver;
+    ReactionsPool *_reactionsPool;
+    Saver *_savers[3];
 
     void save();
 };
