@@ -2,10 +2,15 @@
 #include <cmath>
 #include <cstdlib>
 
-AddHReaction::AddHReaction(Surface *surface) : MonoReaction(surface) {}
+#include <iostream> //
+
+AddHReaction::AddHReaction(Surface *surface) : MonoReaction(surface) {
+    // _k = Handbook.instance()->value("addhreaction", "k");
+}
 
 double AddHReaction::coef() const {
-    return 2 * 10e13 * __reactor->hydrogenConcentration();
+    return 2 * 1e13 * __reactor->hydrogenConcentration();
+    // return _k * __reactor->hydrogenConcentration();
 }
 
 void AddHReaction::seeAt(Carbon *carbon)  {

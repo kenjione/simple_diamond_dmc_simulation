@@ -2,11 +2,13 @@
 #include <cmath>
 #include <cstdlib>
 
+#include <iostream> //
+
 MigrationBridgeReaction::MigrationBridgeReaction(Surface *surface, Crystal *crystal) :
     MonoReaction(surface), _crystal(crystal) {}
 
 double MigrationBridgeReaction::coef() const {
-    return 6.13 * 10e13 * exp(-18.269 / __reactor->temperature());
+    return 6.13 * 1e13 * exp(-18.269 / __reactor->temperature());
 }
 
 void MigrationBridgeReaction::seeAt(Carbon *carbon) {

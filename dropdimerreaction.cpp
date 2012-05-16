@@ -2,10 +2,12 @@
 #include <cmath>
 #include <cstdlib>
 
+#include <iostream> //
+
 DropDimerReaction::DropDimerReaction(Surface *surface) : DualReaction(surface) {}
 
 double DropDimerReaction::coef() const {
-    return 4.79 * 10e13 * exp(-7196.8 / __reactor->temperature());
+    return 4.79 * 1e13 * exp(-7196.8 / __reactor->temperature());
 }
 
 void DropDimerReaction::seeAt(Carbon *first, Carbon *second) {

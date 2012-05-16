@@ -21,7 +21,11 @@ void Crystal::init() {
 
     for (int i = 0; i < _y_size; i++)
         for (int j = 0; j < _x_size; j++)
-            _layers[0].add(new Carbon(int3(j,i,0),0,0), j, i);
+            _layers[0].add(new Carbon(int3(j,i,0),2,0), j, i);
+
+//    for (int i = 0; i < _y_size; i++)
+//        for (int j = 0; j < _x_size; j++)
+//            _layers[0].carbon(j, i)->setAsDimer();
 
     std::cout << "LAYER 1 : \n";
 
@@ -31,7 +35,7 @@ void Crystal::init() {
             std::cout << _layers[0].carbon(j, i) << " ";
         std::cout << "\n";
     }
-
+/*
     // второй слой с *-с-Н
 
     _layers.push_back(Layer(_x_size, _y_size));
@@ -49,7 +53,7 @@ void Crystal::init() {
         std::cout << "\n";
     }
 
-
+*/
     //_layers.push_back(Layer(_x_size, _y_size));
     //addCarbon(new Carbon(int3(5,5,2),0,2));
 
@@ -92,6 +96,8 @@ void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const in
     for (int3 &neighbourCoords : flatNeighboursCoords) {
         Carbon *neighbourCarbon = getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y);
         Carbon *toBasisCarbons[2];
+
+        // где-то тут он вылетает. Мб обращается к координатам карбона которого нет.
         getBasisCarbons(neighbourCarbon, toBasisCarbons);
 
         reaction(carbon, neighbourCoords, currBasisCarbons[0], currBasisCarbons[1], toBasisCarbons[0], toBasisCarbons[1]);
@@ -121,7 +127,8 @@ void Crystal::posDimerIter(Carbon *carbon, std::function<void (Carbon *, Carbon 
     }
 
     for (int3 &neighbourCoords : directNeighboursCoords) {
-        reaction(carbon, getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y));
+        if (carbon->actives() < 4 && getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y)->actives() < 4)
+            reaction(carbon, getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y));
     }
 
     // выполнить проверку на выход за границы!
@@ -177,8 +184,22 @@ void Crystal::getBasis(Carbon *carbon, std::function<void (Carbon *, Carbon *)> 
 }
 
 void Crystal::addCarbon(Carbon *carbon) {
-    _layers.push_back(Layer(_x_size, _y_size));
+    std::cout << "          ... _layers level = " << _layers.size() - 1 << ", z = " << carbon->coords().z << std::endl;
+    if ((_layers.size() - 1) < carbon->coords().z) _layers.push_back(Layer(_x_size, _y_size));
     getLayer(carbon->coords().z)->add(carbon, carbon->coords().x, carbon->coords().y);
+
+
+//    for (int f = 0; f < _layers.size(); f++)
+//    {
+//        std::cout << "\n ---- #" << f << " ----\n";
+//        for (int i = 0; i < _y_size; i++)
+//        {
+//            for (int j = 0; j < _x_size; j++)
+//                std::cout << _layers[f].carbon(j, i) << " ";
+//            std::cout << std::endl;
+//        }
+//    }
+
 }
 
 void Crystal::removeCarbon(Carbon *carbon) {

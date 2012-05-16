@@ -21,3 +21,14 @@ private:
 };
 
 #endif /* HANDBOOK_H */
+
+/////////////////////////
+//
+// [reactor]
+// #T = 1100
+// T = 1200
+
+// [addhreaction]
+//  k =
+
+// Handbook.instance()->value("reactor", "T");

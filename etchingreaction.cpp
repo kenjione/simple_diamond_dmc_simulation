@@ -2,6 +2,8 @@
 #include <cmath>
 #include <cstdlib>
 
+#include <iostream> //
+
 EtchingReaction::EtchingReaction(Surface *surface, Crystal *crystal) :
     MonoReaction(surface), _crystal(crystal) {}
 
@@ -14,7 +16,7 @@ double EtchingReaction::coef() const {
                 (38.931  - 1.2038 * 10e9 * __reactor->hydrogenConcentration() +
                  5.9123 * 10e16 * pow(__reactor->hydrogenConcentration(), 2)) / __reactor->temperature()));
     */ // не считает скорость. Вернее считает но результат получается inf
-    return 100000; // поставил от балды просто для проверки
+    return 2.6 * 1e10; // поставил вручную просто для проверки
 }
 
 void EtchingReaction::seeAt(Carbon *carbon) {

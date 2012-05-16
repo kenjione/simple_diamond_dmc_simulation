@@ -15,7 +15,6 @@
 
 
 Surface::Surface(Crystal *crystal) : _crystal(crystal) {
-    std::cout << "call Surface::Surface()\n";
     init();
 }
 
@@ -27,18 +26,18 @@ Surface::~Surface() {
 
 void Surface::init() {
 
-    std::cout << "call Surface::init()\n";
 
     _crystal->init();
     _crystal->throughAllCarbonsIter(std::ref(*this));
 
+    std::cout << "\n----------------\n";
     std::cout << "hydrocarbons: " << this->_hydroCarbons.size() << std::endl;
     std::cout << "active carbons: " << this->_activeCarbons.size() << std::endl;
+    std::cout << "dimers: " << this->_dimerBonds.size() << std::endl;
+    std::cout << "----------------\n\n";
 }
 
 float Surface::doReaction() {
-    std::cout << "call Surface::doReaction()\n";
-
     // жёстко, но действенно.
 
     AbsHReaction *abshreaction = new AbsHReaction(this);
@@ -50,6 +49,8 @@ float Surface::doReaction() {
     DropDimerReaction *dropdimerreaction= new DropDimerReaction(this);
     MigrationBridgeReaction *migrationbridgereaction= new MigrationBridgeReaction(this, _crystal);
 
+    std::cout << "  ...seeAt in sets\n";
+
     for (Carbon *carbon : _activeCarbons) {
         addhreaction->seeAt(carbon);
         formdimerreaction->seeAt(carbon, 0);
@@ -57,7 +58,7 @@ float Surface::doReaction() {
 
     for (Carbon *carbon : _hydroCarbons) {
         abshreaction->seeAt(carbon);
-        migrationbridgereaction->seeAt(carbon);
+        //migrationbridgereaction->seeAt(carbon);
         etchingreaction->seeAt(carbon);
     }
 
@@ -67,6 +68,7 @@ float Surface::doReaction() {
         dropdimerreaction->seeAt(carbons_pair.first, carbons_pair.second);
         migrationhreaction->seeAt(carbons_pair.first, carbons_pair.second);
     }
+
 
     //std::cout << addhreaction->commonRate();
 
@@ -103,6 +105,17 @@ float Surface::doReaction() {
         migrationbridgereaction->commonRate(),
     };
 
+    std::cout << "\n ---- commonRates ------\n";
+    std::cout << "AddHReaction: " << commonRates[0] << "\n";
+    std::cout << "AbsHReaction: " << commonRates[1] << "\n";
+    std::cout << "AddCH2Reaction: " << commonRates[2] << "\n";
+    std::cout << "FormDimerReaction: " << commonRates[3] << "\n";
+    std::cout << "DropDimerReaction: " << commonRates[4] << "\n";
+    std::cout << "EtchingReaction: " << commonRates[5] << "\n";
+    std::cout << "MigrationHReaction: " << commonRates[6] << "\n";
+    std::cout << "MigrationBridgeReaction: " << commonRates[7] << "\n";
+    std::cout << " -----------------------\n";
+
     // считаем сумму скоростей во всем реакциям.
     double sumRate = 0.0;
 
@@ -113,68 +126,65 @@ float Surface::doReaction() {
 //        std::cout << i << " ";
 //    }
 
-    std::cout << "\nSUMRATE: " << sumRate << std::endl;
+    std::cout << "\n    ...sumRate: " << sumRate << std::endl;
 
     // нормируем реакции.
     double valuetedRates[8];
     for (int i = 0; i < 8; i++) {
         valuetedRates[i] = commonRates[i] / sumRate;
-        std::cout << valuetedRates[i] << " ";
     }
 
-    std::cout << "\nLINE:" << std::endl;
     // строим линию
     for (int i = 1; i < 8; i++) {
         valuetedRates[i] += valuetedRates[i-1];
-        std::cout << valuetedRates[i] << " ";
     }
-
 
     // кидаем случайное число, выбираем реакцию и проводим ее.
     double reactionIndex = rand() / double(RAND_MAX) ;
     double dt = 0;
-    std::cout << "\nrandindex: " << reactionIndex << std::endl;
 
-    // быдловыбор
-    // TODO: этопиздец
+    // выбор
+    // TODO:
+
+    std::cout << "\n    ...choose reaction... ";
     if (reactionIndex < valuetedRates[0]) {
-        std::cout << "addreaction!";
+        std::cout << "addhreaction!\n";
         addhreaction->doIt();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[0];
     }
     else if (reactionIndex < valuetedRates[1]) {
-        std::cout << "abshreaction!";
+        std::cout << "abshreaction!\n";
         abshreaction->doIt();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[1];
     }
     else if (reactionIndex < valuetedRates[2]) {
-        std::cout << "addch2reaction!";
+        std::cout << "addch2reaction!\n";
         addch2reaction->doIt();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[2];
     }
     else if (reactionIndex < valuetedRates[3]) {
-        std::cout << "formdimer!";
+        std::cout << "formdimer!\n";
         formdimerreaction->doIt();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[3];
     }
     else if (reactionIndex < valuetedRates[4]) {
-        std::cout << "dropdimer!";
+        std::cout << "dropdimer!\n";
         dropdimerreaction->doIt();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[4];
     }
     else if(reactionIndex < valuetedRates[5]) {
-        std::cout << "etching!";
+        std::cout << "etching!\n";
         etchingreaction->doIt();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[5];
     }
     else if (reactionIndex < valuetedRates[6]) {
-        std::cout << "migrH!";
+        std::cout << "migrH!\n";
         migrationhreaction->doIt();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[6];
     }
     else {
         migrationbridgereaction->doIt();
-        std::cout << "migrBridge!";
+        std::cout << "migrBridge!\n";
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[7];
     }
 
@@ -215,8 +225,22 @@ void Surface::removeHydrogen(Carbon *carbon) {
 void Surface::addCarbon(Carbon *carbon, Carbon *bottomFirst, Carbon *bottomSecond) {
     _crystal->addCarbon(carbon);
 
-    bottomFirst->formBond();
-    bottomSecond->formBond();
+    // надо ли? и так же связь остается у каждого.
+    // bottomFirst->formBond();
+    // bottomSecond->formBond();
+
+    // а вот из множества димеров их исключить наверное следовало бы
+    auto it = _dimerBonds.find(bottomFirst);
+    if (it == _dimerBonds.end()) {
+        // если не нашли по first, ищем по second
+        it = _dimerBonds.find(bottomSecond);
+    }
+
+    _dimerBonds.erase(it); // удаляем димер из хеша
+
+    bottomFirst->setAsNotDimer();
+    bottomSecond->setAsNotDimer();
+
 
     _hydroCarbons.insert(carbon);
     if (bottomFirst->actives() == 0) _activeCarbons.erase(bottomFirst);

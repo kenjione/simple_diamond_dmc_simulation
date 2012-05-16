@@ -4,13 +4,13 @@
 
 Saver::Saver(const char *outFileName)
 {
-    std::cout << "call Saver::Saver()\n"; //
     _outFile.open(outFileName, std::ios_base::out);
-    if (_outFile == NULL) std::cout << "not exist..\n"; else std::cout << "EXIST!\n"; //
+    if (_outFile == NULL) std::cout << "    ...file not created..\n"; else std::cout << "   ...file created!\n"; //
 }
 
 void Saver::operator ()(Carbon *carbon) {
     //std::cout << "call Saver::operator()\n"; //
+
     int3 coords = carbon->coords();
     int state = -333;
 
