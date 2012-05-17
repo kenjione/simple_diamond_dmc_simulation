@@ -7,9 +7,22 @@
 ReactionsPool::ReactionsPool(Surface *surface, Crystal *crystal) :
     _absH(surface), _addH(surface), _formDimer(surface, crystal), _dropDimer(surface),
     _addCH2(surface, crystal), _etching(surface, crystal), _migrationBridge(surface, crystal), _migrationH(surface)
-{}
+{
+
+    _reactions[0] = &_absH;
+    _reactions[1] = &_addH;
+    _reactions[2] = &_formDimer;
+    _reactions[3] = &_dropDimer;
+    _reactions[4] = &_addCH2;
+    _reactions[5] = &_etching;
+    _reactions[6] = &_migrationBridge;
+    _reactions[7] = &_migrationH;
+}
 
 void ReactionsPool::seeAtActives(std::set<Carbon *> activeCarbons) {
+
+    std::cout << "\n (param) Active: " << activeCarbons.size();
+
     for (Carbon *carbon : activeCarbons) {
         _addH.seeAt(carbon);
         _formDimer.seeAt(carbon, 0);
@@ -17,6 +30,9 @@ void ReactionsPool::seeAtActives(std::set<Carbon *> activeCarbons) {
 }
 
 void ReactionsPool::seeAtHydrogens(std::set<Carbon *> hydroCarbons) {
+
+    std::cout << "\n (param) Hydro: " << hydroCarbons.size();
+
     for (Carbon *carbon : hydroCarbons) {
         _absH.seeAt(carbon);
         //_migrationBridge->seeAt(carbon);
@@ -24,10 +40,13 @@ void ReactionsPool::seeAtHydrogens(std::set<Carbon *> hydroCarbons) {
     }
 }
 void ReactionsPool::seeAtDimer(std::map<Carbon *, Carbon *> dimers) {
+
+    std::cout << "\n (param) Dimers: " << dimers.size();
+
     for (auto &carbons_pair : dimers) {
         // TODO: стоит пересмотреть метод SeeAt для DualReaction, в плане аргументов (чтобы принмало &pair вместо двух Carbon *)
         _addCH2.seeAt(carbons_pair.first, carbons_pair.second);
-        _dropDimer.seeAt(carbons_pair.first, carbons_pair.second);
+        //_dropDimer.seeAt(carbons_pair.first, carbons_pair.second);
         _migrationH.seeAt(carbons_pair.first, carbons_pair.second);
     }
 }
@@ -122,6 +141,11 @@ float ReactionsPool::doReaction() {
 
     std::cout << "\ndt = " << dt << std::endl;
     return dt;
+}
+
+void ReactionsPool::reset() {
+    for (int i = 0; i < REACTIONS_NUM; i++)
+        _reactions[i]->reset();
 }
 
 double ReactionsPool::totalRate() {

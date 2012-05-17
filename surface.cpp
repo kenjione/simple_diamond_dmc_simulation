@@ -40,6 +40,7 @@ void Surface::init() {
 
 float Surface::doReaction(ReactionsPool *reactionPool) {
 
+    reactionPool->reset();
     reactionPool->seeAtActives(_activeCarbons);
     reactionPool->seeAtHydrogens(_hydroCarbons);
     reactionPool->seeAtDimer(_dimerBonds);

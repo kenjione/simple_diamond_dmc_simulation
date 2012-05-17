@@ -11,6 +11,11 @@
 #include "migrationhreaction.h"
 
 
+#define REACTIONS_NUM 8
+#define MONOREACTIONS_NUM 4
+#define DUALREACTIONS_NUM 4
+
+
 class ReactionsPool
 {
 public:
@@ -32,10 +37,10 @@ private:
     MigrationBridgeReaction _migrationBridge;
     MigrationHReaction _migrationH;
 
-    MonoReaction *_mono[4];
-    DualReaction *_dual[4];
+    MonoReaction *_mono[MONOREACTIONS_NUM];
+    DualReaction *_dual[DUALREACTIONS_NUM];
 
-    Reaction *_reactions[8];
+    Reaction *_reactions[REACTIONS_NUM];
 
     Surface *_surface;
     Crystal *_crystal;

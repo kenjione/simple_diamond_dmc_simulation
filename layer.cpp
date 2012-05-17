@@ -23,6 +23,7 @@ void Layer::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
 }
 
 Carbon *Layer::carbon(int x, int y) {
+    //if (_carbons[_x_size * y  + x] == 0) return false;
     return _carbons[_x_size * y  + x];
 }
 

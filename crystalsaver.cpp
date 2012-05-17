@@ -33,7 +33,7 @@ void CrystalSaver::operator ()(Carbon *carbon) {
         break;
     }
 
-    if (carbon->isDimer()) state = 5;
+    if (carbon->isDimer()) state = 6;
     _outFile << state << " " << coords.x << " " << coords.y << " " << coords.z << std::endl;
 
 }

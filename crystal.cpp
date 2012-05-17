@@ -13,15 +13,15 @@ void Crystal::init() {
     for (int i = 0; i < _y_size; i++)
     {
         for (int j = 0; j < _x_size; j++)
-            std::cout << _layers[0].carbon(j, i) << " ";
+            if (getLayer(0)->carbon(j, i) == 0 ) std::cout << "[ ]";// << " ";
         std::cout << "\n";
     }
 
     // первый слой с чистыми карбонами
 
     for (int i = 0; i < _y_size; i++)
-        for (int j = 0; j < _x_size; j++)
-            _layers[0].add(new Carbon(int3(j,i,0),2,0), j, i);
+        for (int j = 0; j < _x_size; j++)    // 2, 0
+            _layers[0].add(new Carbon(int3(j,i,0),1,1), j, i);
 
 //    for (int i = 0; i < _y_size; i++)
 //        for (int j = 0; j < _x_size; j++)
@@ -68,6 +68,7 @@ void Crystal::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
 bool Crystal::hasAbove(Carbon *first, Carbon *second) {
     int3 coords = topPosition(first, second);
 
+    if (coords.z <= _layers.size() - 1)
     return (getLayer(coords.z)->carbon(coords.x, coords.y));
 }
 
@@ -112,7 +113,7 @@ void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const in
 
 void Crystal::posDimerIter(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction) {
 
-    //    std::cout << "call Crystal::posMigrIter\n";
+    std::cout << "call Crystal::posMigrIter\n";
 
     const int3 &currentCoords = carbon->coords();
     int3 directNeighboursCoords[2];
@@ -133,8 +134,9 @@ void Crystal::posDimerIter(Carbon *carbon, std::function<void (Carbon *, Carbon 
     }
 
     for (int3 &neighbourCoords : directNeighboursCoords) {
-        if (carbon->actives() < 4 && getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y)->actives() < 4)
-            reaction(carbon, getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y));
+        if (getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y)!=0)
+            if (carbon->actives() < 4 && getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y)->actives() < 4)
+                reaction(carbon, getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y));
     }
 
     // выполнить проверку на выход за границы!
@@ -161,6 +163,9 @@ void Crystal::posDimerIter(Carbon *carbon, std::function<void (Carbon *, Carbon 
 
 void Crystal::getBasis(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction) {
     Carbon *bottomCarbons[2];
+
+    if (carbon->coords().z == 0) return; // костыль для первого слоя
+
     getBasisCarbons(carbon, bottomCarbons);
     reaction(bottomCarbons[0], bottomCarbons[1]);
 
@@ -237,6 +242,8 @@ int3 Crystal::topPosition(Carbon *first, Carbon *second) {
     } else { // sc1->z % 4 == 0
         topNeighbourCoords.y = ((sc2->y - sc1->y) == 1) ? sc1->y : sc2->y;
     }
+
+    std::cout << "\n ... coords {" << topNeighbourCoords.x << ", " << topNeighbourCoords.y << ", " << topNeighbourCoords.z <<"}\n";
 
     return topNeighbourCoords;
 

@@ -16,11 +16,12 @@ double EtchingReaction::coef() const {
                 (38.931  - 1.2038 * 10e9 * __reactor->hydrogenConcentration() +
                  5.9123 * 10e16 * pow(__reactor->hydrogenConcentration(), 2)) / __reactor->temperature()));
     */ // не считает скорость. Вернее считает но результат получается inf
-    return 2.6 * 1e10; // поставил вручную просто для проверки
+                 //10
+    return 2.6 * 1e3; // поставил вручную просто для проверки
 }
 
 void EtchingReaction::seeAt(Carbon *carbon) {
-    if (carbon->actives() > 0) return;
+    if ((carbon->actives() > 0) || carbon->isDimer()) return;
 
     _sites.push_back(carbon);
     _crystal->getBasis(carbon, std::ref(*this));
