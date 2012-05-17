@@ -7,8 +7,8 @@
 class CrystalSaver : public Saver
 {
 public:
-    CrystalSaver(char *outFileName, Crystal *crystal);
-    void operator ()(Carbon *carbon);
+    CrystalSaver(const char *outFileName, Crystal *crystal);
+    void operator() (Carbon *carbon);
     void save();
 
 private:

@@ -7,7 +7,7 @@
 class SurfaceSaver : public Saver
 {
 public:
-    SurfaceSaver(char *outFileName, Surface *surface);
+    SurfaceSaver(const char *outFileName, Surface *surface);
     void save();
 
 private:

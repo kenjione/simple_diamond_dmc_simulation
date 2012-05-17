@@ -1,10 +1,6 @@
 #include "crystalsaver.h"
 
-CrystalSaver::CrystalSaver(char *outFileName, Crystal *crystal) :
-    Saver(outFileName), _crystal(crystal) {
-    _outFile.open(outFileName, std::ios_base::out);
-    //if (_outFile == NULL) std::cout << "    ...file not created..\n"; else std::cout << "   ...file created!\n"; //
-}
+CrystalSaver::CrystalSaver(const char *outFileName, Crystal *crystal) : Saver(outFileName), _crystal(crystal) {}
 
 void CrystalSaver::save() {
     _crystal->throughAllCarbonsIter(std::ref(*this));
@@ -15,7 +11,7 @@ void CrystalSaver::separator() {
     _outFile << "0 0 0 0" << std::endl;
 }
 
-void CrystalSaver::operator ()(Carbon *carbon) {
+void CrystalSaver::operator() (Carbon *carbon) {
 
     int3 coords = carbon->coords();
     int state = -333;

@@ -1,45 +1,14 @@
 #include "saver.h"
-#include <stdio.h> //
 #include <iostream> //
 
-Saver::Saver(char *outFileName)
-{
-    //_outFile.open(outFileName, std::ios_base::out);
-    //if (_outFile == NULL) std::cout << "    ...file not created..\n"; else std::cout << "   ...file created!\n"; //
-}
-
-/*
-
-void Saver::operator ()(Carbon *carbon) {
-    //std::cout << "call Saver::operator()\n"; //
-
-    int3 coords = carbon->coords();
-    int state = -333;
-
-    switch (carbon->hydrogens())
-    {
-    case 0:
-        state = (carbon->actives() == 0) ? 1 : 2;
-        break;
-    case 1:
-        state = 3;
-        break;
-    case 2:
-        state = 4;
-        break;
+Saver::Saver(const char *outFileName) : _outFile(outFileName) {
+    if (!_outFile) {
+        std::cerr << outFileName << " file not created!\n";
+    } else {
+        std::cout << "   ...file created!\n";
     }
-
-    if (carbon->isDimer()) state = 5;
-    _outFile << state << " " << coords.x << " " << coords.y << " " << coords.z << std::endl;
 }
 
-void Saver::separator() {
-    std::cout << "call Saver::separator()\n"; //
-    _outFile << "0 0 0 0" << std::endl;
-}
-
-*/
-// без этого метода пока не выдумал как файлик закрывать
-void Saver::closer() {
+Saver::~Saver() {
     _outFile.close();
 }

@@ -24,7 +24,7 @@ private:
     Surface *_surface;
     Reactor *_reactor;
     ReactionsPool *_reactionsPool;
-    Saver *_savers[3];
+    Saver *_savers[3]; // TODO: циферка!!
 
     void save();
 };
