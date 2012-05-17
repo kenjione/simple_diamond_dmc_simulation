@@ -101,41 +101,49 @@ float ReactionsPool::doReaction() {
     if (reactionIndex < valuetedRates[0]) {
         std::cout << "addhreaction!\n";
         _addH.doIt();
+        _addH.incTimes();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[0];
     }
     else if (reactionIndex < valuetedRates[1]) {
         std::cout << "abshreaction!\n";
         _absH.doIt();
+        _absH.incTimes();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[1];
     }
     else if (reactionIndex < valuetedRates[2]) {
         std::cout << "addch2reaction!\n";
         _addCH2.doIt();
+        _addCH2.incTimes();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[2];
     }
     else if (reactionIndex < valuetedRates[3]) {
         std::cout << "formdimer!\n";
         _formDimer.doIt();
+        _formDimer.incTimes();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[3];
     }
     else if (reactionIndex < valuetedRates[4]) {
         std::cout << "dropdimer!\n";
         _dropDimer.doIt();
+        _dropDimer.incTimes();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[4];
     }
     else if(reactionIndex < valuetedRates[5]) {
         std::cout << "etching!\n";
         _etching.doIt();
+        _etching.incTimes();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[5];
     }
     else if (reactionIndex < valuetedRates[6]) {
         std::cout << "migrH!\n";
         _migrationH.doIt();
+        _migrationH.incTimes();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[6];
     }
     else {
-        _migrationBridge.doIt();
         std::cout << "migrBridge!\n";
+        _migrationBridge.doIt();
+        _migrationBridge.incTimes();
         dt = -log2(rand() / double(RAND_MAX)) / commonRates[7];
     }
 
@@ -149,5 +157,15 @@ void ReactionsPool::reset() {
 }
 
 double ReactionsPool::totalRate() {
+    // срань comming soon...
+}
 
+int *ReactionsPool::reactionTimes() {
+    int times[REACTIONS_NUM];
+
+    for (int i = 0; i < REACTIONS_NUM; i++) {
+        times[i] = _reactions[i]->times();
+        std::cout << "\n" << times[i];
+    }
+    return times;
 }

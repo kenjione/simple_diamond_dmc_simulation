@@ -15,16 +15,19 @@ public:
     virtual void doIt() = 0;
     virtual void reset() = 0;
 
+    void incTimes() { _times++; }
+    const int times() { return _times; }
+
 protected:
     static Reactor *__reactor;
     static float R;
-    int _times;
 
-    Reaction(Surface *surface) : _surface(surface) {}
+    Reaction(Surface *surface) : _surface(surface), _times(0) {}
 
     virtual double coef() const = 0;
 
     Surface *_surface;
+    int _times;
 };
 
 #endif // REACTION_H
