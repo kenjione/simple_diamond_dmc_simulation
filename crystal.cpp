@@ -68,8 +68,7 @@ void Crystal::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
 bool Crystal::hasAbove(Carbon *first, Carbon *second) {
     int3 coords = topPosition(first, second);
 
-    if (coords.z <= _layers.size() - 1)
-    return (getLayer(coords.z)->carbon(coords.x, coords.y));
+    if (coords.z <= _layers.size() - 1) return (getLayer(coords.z)->carbon(coords.x, coords.y));
     else return false;
 }
 
