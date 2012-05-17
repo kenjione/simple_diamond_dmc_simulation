@@ -1,18 +1,16 @@
 #ifndef SAVER_H
 #define SAVER_H
 
-//#include <iostream>
 #include <fstream>
-//#include <ostream>
 #include "carbon.h"
 
 class Saver
 {
 public:
-    Saver(char *outFileName);
+    Saver(const char *outFileName);
+    virtual ~Saver();
+
     virtual void save() = 0;
-    //
-    void closer();
 
 protected:
     std::ofstream _outFile;

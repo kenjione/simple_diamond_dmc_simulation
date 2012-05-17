@@ -12,7 +12,7 @@ Runner::Runner() {
 
     //char outFileName[] = "/home/alex/Monte-Carlo/";
 
-    _savers[0] = new ReactionPoolSaver("/home/alex/Monte-Carlo/ReactionSaver.txt", _reactionsPool);
+    _savers[0] = new ReactionPoolSaver("/home/alex/Monte-Carlo/ReactionsSaver.txt", _reactionsPool);
     _savers[1] = new SurfaceSaver("/home/alex/Monte-Carlo/SurfaceSaver.txt", _surface);
     _savers[2] = new CrystalSaver("/home/alex/Monte-Carlo/CrystalSaver.txt", _crystal);
 }
@@ -21,8 +21,7 @@ Runner::~Runner() {
     delete _crystal;
     delete _surface;
     delete _reactor;
-    for (int i = 0; i < 3; i++)
-        delete _savers[i];
+    for (int i = 0; i < 3; i++) delete _savers[i];
 }
 
 void Runner::run() {
@@ -32,14 +31,10 @@ void Runner::run() {
         _surface->doReaction(_reactionsPool);
         save();
     }
-
-    // ...
-    _savers[0]->save();
-    _savers[0]->closer();
-    _savers[2]->closer();
 }
 
 void Runner::save() {
-    _savers[2]->save();
-}
+    // for (int i = 0; i < 3; i++) _savers[i]->save();
 
+    _savers[0]->save();
+}
