@@ -25,7 +25,7 @@ Runner::~Runner() {
 }
 
 void Runner::run() {
-    for (int i = 0; i < 1000; i++)
+    for (int i = 0; i < 10; i++)
     {
         std::cout << "___________________________ " << i << " ___________________________\n\n";
         _surface->doReaction(_reactionsPool);
@@ -35,6 +35,6 @@ void Runner::run() {
 
 void Runner::save() {
     // for (int i = 0; i < 3; i++) _savers[i]->save();
-    _savers[2]->save();
-}
 
+    _savers[0]->save();
+}

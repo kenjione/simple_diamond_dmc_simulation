@@ -25,6 +25,7 @@ public:
     void seeAtDimer(std::map<Carbon *, Carbon *> dimers);
 
     float doReaction();
+    int *reactionTimes();
     void reset();
 
 private:
@@ -46,6 +47,7 @@ private:
     Crystal *_crystal;
 
     double totalRate();
+
 };
 
 #endif // REACTIONSPOOL_H
