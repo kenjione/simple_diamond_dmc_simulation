@@ -1,6 +1,8 @@
 #ifndef SURFACE_H
 #define SURFACE_H
 
+#include <deque>
+#include <string>
 #include <map>
 #include <set>
 
@@ -14,11 +16,14 @@ class Surface
 public:
     Surface(Crystal *crystal);
     ~Surface();
-    void init();
 
+    std::deque<std::string> setsNames() const;
+    std::deque<int> setsNumbers() const;
+
+    void init();
     void operator() (Carbon *carbon);
 
-    int numberOfSites();
+    int numberOfSites(); // TODO: этот метод используется?
 
     void addHydrogen(Carbon *carbon);
     void removeHydrogen(Carbon *carbon);
@@ -33,6 +38,8 @@ public:
     void dropDimer(Carbon *first, Carbon *second);
 
     float doReaction(ReactionsPool *reactionPool);
+
+
 
 private:
     Crystal *_crystal;

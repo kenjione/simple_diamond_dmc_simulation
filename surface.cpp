@@ -10,34 +10,39 @@ Surface::Surface(Crystal *crystal) : _crystal(crystal) {
 Surface::~Surface() {
 }
 
-void Surface::init() {
+std::deque<std::string> Surface::setsNames() const {
+    std::deque<std::string> names;
+    names.push_back("Hydrocarbons");
+    names.push_back("Active carbons");
+    names.push_back("Dimers");
+    return names;
+}
 
+std::deque<int> Surface::setsNumbers() const {
+    std::deque<int> numbers;
+    numbers.push_back(_hydroCarbons.size());
+    numbers.push_back(_activeCarbons.size());
+    numbers.push_back(_dimerBonds.size());
+    return numbers;
+}
+
+void Surface::init() {
     _crystal->init();
     _crystal->throughAllCarbonsIter(std::ref(*this));
+}
 
-    std::cout << "\n----------------\n";
-    std::cout << "hydrocarbons: " << this->_hydroCarbons.size() << std::endl;
-    std::cout << "active carbons: " << this->_activeCarbons.size() << std::endl;
-    std::cout << "dimers: " << this->_dimerBonds.size() << std::endl;
-    std::cout << "----------------\n\n";
+void Surface::operator() (Carbon *carbon) {
+    if (carbon->actives() > 0) _activeCarbons.insert(carbon);
+    if (carbon->hydrogens() > 0) _hydroCarbons.insert(carbon);
 }
 
 float Surface::doReaction(ReactionsPool *reactionPool) {
-
     reactionPool->reset();
     reactionPool->seeAtActives(_activeCarbons);
     reactionPool->seeAtHydrogens(_hydroCarbons);
     reactionPool->seeAtDimer(_dimerBonds);
 
     return reactionPool->doReaction();
-}
-
-void Surface::operator() (Carbon *carbon) {
-
-    //std::cout << "call Surface::operator()\n";
-    //std::cout << "this carbon properties: \n  actives: " << carbon->actives() << "\n  hydro: " << carbon->hydrogens() << "\n\n";
-    if (carbon->actives() > 0) _activeCarbons.insert(carbon);
-    if (carbon->hydrogens() > 0) _hydroCarbons.insert(carbon);
 }
 
 void Surface::addHydrogen(Carbon *carbon) {

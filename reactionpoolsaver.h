@@ -1,14 +1,14 @@
 #ifndef REACTIONPOOLSAVER_H
 #define REACTIONPOOLSAVER_H
 
-#include "saver.h"
+#include "timenumbercurvessaver.h"
 #include "reactionspool.h"
 
-class ReactionPoolSaver : public Saver
+class ReactionPoolSaver : public TimeNumberCurvesSaver
 {
 public:
     ReactionPoolSaver(const char *outFileName, ReactionsPool *reactionPool);
-    void save();
+    void save(float time);
 
 private:
     ReactionsPool *_reactionPool;
