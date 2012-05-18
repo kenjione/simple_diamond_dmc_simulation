@@ -16,7 +16,7 @@ public:
     virtual void reset() = 0;
 
     void incTimes() { _times++; }
-    const int times() { return _times; }
+    int times() const { return _times; }
 
 protected:
     static Reactor *__reactor;

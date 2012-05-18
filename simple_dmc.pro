@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     reactionspool.cpp \
     reactionpoolsaver.cpp \
     surfacesaver.cpp \
-    crystalsaver.cpp
+    crystalsaver.cpp \
+    timenumbercurvessaver.cpp
 
 HEADERS  += \
     surface.h \
@@ -62,7 +63,8 @@ HEADERS  += \
     reactionspool.h \
     reactionpoolsaver.h \
     surfacesaver.h \
-    crystalsaver.h
+    crystalsaver.h \
+    timenumbercurvessaver.h
 
 FORMS    +=
 

@@ -10,7 +10,7 @@ public:
     Saver(const char *outFileName);
     virtual ~Saver();
 
-    virtual void save() = 0;
+    virtual void save(float time) = 0;
 
 protected:
     std::ofstream _outFile;

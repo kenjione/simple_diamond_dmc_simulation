@@ -2,7 +2,7 @@
 
 CrystalSaver::CrystalSaver(const char *outFileName, Crystal *crystal) : Saver(outFileName), _crystal(crystal) {}
 
-void CrystalSaver::save() {
+void CrystalSaver::save(float time) {
     _crystal->throughAllCarbonsIter(std::ref(*this));
     separator();
 }
@@ -30,6 +30,6 @@ void CrystalSaver::operator() (Carbon *carbon) {
     }
 
     if (carbon->isDimer()) state = 6;
-    _outFile << state << " " << coords.x << " " << coords.y << " " << coords.z << std::endl;
+    _outFile << state << " " << coords.x << " " << coords.y << " " << coords.z << "\n";
 
 }
