@@ -7,7 +7,7 @@
 class ReactionPoolSaver : public Saver
 {
 public:
-    ReactionPoolSaver(char *outFileName, ReactionsPool *reactionPool);
+    ReactionPoolSaver(const char *outFileName, ReactionsPool *reactionPool);
     void save();
 
 private:

@@ -1,29 +1,13 @@
 #include <iostream>
 #include <cmath>
-
 #include "surface.h"
-
-#include "abshreaction.h"
-#include "addhreaction.h"
-#include "etchingreaction.h"
-#include "migrationbridgereaction.h"
-#include "addch2reaction.h"
-#include "formdimerreaction.h"
-#include "dropdimerreaction.h"
-#include "migrationhreaction.h"
-#include "reactor.h"
 #include "reactionspool.h"
-
 
 Surface::Surface(Crystal *crystal) : _crystal(crystal) {
     init();
-    _reactionsPool = new ReactionsPool(this, _crystal);
 }
 
 Surface::~Surface() {
-// TODO Увверен, что это нужно?
-//    for (int i = 0; i < 8; i++) delete _reactions[i];
-//    delete _reactions;
 }
 
 void Surface::init() {
