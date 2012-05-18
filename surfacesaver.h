@@ -1,14 +1,14 @@
 #ifndef SURFACESAVER_H
 #define SURFACESAVER_H
 
-#include "saver.h"
+#include "timenumbercurvessaver.h"
 #include "surface.h"
 
-class SurfaceSaver : public Saver
+class SurfaceSaver : public TimeNumberCurvesSaver
 {
 public:
     SurfaceSaver(const char *outFileName, Surface *surface);
-    void save();
+    void save(float time);
 
 private:
     Surface *_surface;

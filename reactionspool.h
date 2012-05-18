@@ -1,6 +1,9 @@
 #ifndef REACTIONSPOOL_H
 #define REACTIONSPOOL_H
 
+#include <deque>
+#include <string>
+
 #include "abshreaction.h"
 #include "addch2reaction.h"
 #include "addhreaction.h"
@@ -20,12 +23,15 @@ class ReactionsPool
 {
 public:
     ReactionsPool(Surface *surface, Crystal *crystal);
+
+    std::deque<std::string> reactionsNames() const;
+    std::deque<int> reactionsTimes() const;
+
     void seeAtActives(std::set<Carbon *> activeCarbons);
     void seeAtHydrogens(std::set<Carbon *> hydroCarbons);
     void seeAtDimer(std::map<Carbon *, Carbon *> dimers);
 
     float doReaction();
-    int *reactionTimes();
     void reset();
 
 private:

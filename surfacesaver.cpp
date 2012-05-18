@@ -1,7 +1,11 @@
 #include "surfacesaver.h"
 
-SurfaceSaver::SurfaceSaver(const char *outFileName, Surface *surface) : Saver(outFileName), _surface(surface) {}
+SurfaceSaver::SurfaceSaver(const char *outFileName, Surface *surface)
+    : TimeNumberCurvesSaver(outFileName), _surface(surface)
+{
+    saveHeader(_surface->setsNames());
+}
 
-void SurfaceSaver::save() {}
-
-// сохранение множеств
+void SurfaceSaver::save(float time) {
+    saveValuesLine(time, _surface->setsNumbers());
+}
