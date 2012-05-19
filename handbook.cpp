@@ -1,17 +1,13 @@
 #include "handbook.h"
 #include "handbookerror.h"
-#include <boost/regex.h>
 #include <boost/regex.hpp>
 #include <cstdlib>
 #include <fstream>
-/*
+
 Handbook *Handbook::__instance = 0;
 
 Handbook *Handbook::instance() {
-    if (!__instance) {
-        throw HandbookError("Handbook is not initialized");
-    }
-
+    if (!__instance) throw HandbookError("Handbook is not initialized");
     return __instance;
 }
 
@@ -23,19 +19,19 @@ Handbook::Handbook(const char *configFileName) {
     std::fstream configFile(configFileName);
 
     if (!configFile.is_open()) {
-        throw HandbookError("Cannot open configuration file");
+        throw HandbookError("Cannot open configuration file", configFileName);
     }
 
     boost::regex commentRegexp("^\\s*#");
     boost::regex sectionRegexp("^\\[(.+)\\]");
-    boost::regex variableRegexp("^\\s*(\\w+)\\s*=\\s*([\\d\\.e-]+)\\s*");
+    boost::regex variableRegexp("^\\s*([\\(\\)A-Za-z0-9_-]+)\\s*=\\s*([\\d\\.e-]+)\\s*#?.");
 
     VarVal *currentSection = 0;
 
     std::string line;
     boost::smatch matches;
     while (std::getline(configFile, line)) {
-        if (boost::regex_match(line, matches, commentRegexp)) continue;
+        if (line.length() == 0 || boost::regex_match(line, matches, commentRegexp)) continue;
 
         if (boost::regex_match(line, matches, sectionRegexp)) {
             std::string sectionName = matches[1].str();
@@ -56,7 +52,7 @@ Handbook::Handbook(const char *configFileName) {
 
 double Handbook::value(const char *sectionName, const char *variableName) const {
     auto sectionPair = _values.find(sectionName);
-    if (sectionPair != _values.end()) {
+    if (sectionPair != _values.cend()) {
         auto variablePair = sectionPair->second.find(variableName);
         if (variablePair != sectionPair->second.end()) {
             return variablePair->second;
@@ -67,4 +63,10 @@ double Handbook::value(const char *sectionName, const char *variableName) const 
     return 0;
 }
 
-*/
+int Handbook::sizeX() const {
+    return value("sizes", "x");
+}
+
+int Handbook::sizeY() const {
+    return value("sizes", "y");
+}
