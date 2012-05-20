@@ -34,7 +34,7 @@ Runner::~Runner() {
 }
 
 void Runner::run() {
-    for (int i = 0; i < _configurator.steps(); i++) {
+    for (size_t i = 0; i < _configurator.steps(); i++) {
         std::cout << "___________________________ " << i << " ___________________________\n\n";
         _surface->doReaction(_reactionsPool);
 
