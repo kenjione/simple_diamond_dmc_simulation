@@ -9,7 +9,9 @@ QT       += core gui
 TARGET = simple_dmc
 TEMPLATE = app
 
-QMAKE_CXXFLAGS += -std=c++0x -lboost_regex-mt
+QMAKE_CXXFLAGS += -std=c++0x
+
+LIBS += -L/usr/lib64 -lboost_regex
 
 SOURCES += main.cpp\
     layer.cpp \
@@ -35,7 +37,8 @@ SOURCES += main.cpp\
     reactionpoolsaver.cpp \
     surfacesaver.cpp \
     crystalsaver.cpp \
-    timenumbercurvessaver.cpp
+    timenumbercurvessaver.cpp \
+    configurator.cpp
 
 HEADERS  += \
     surface.h \
@@ -64,9 +67,13 @@ HEADERS  += \
     reactionpoolsaver.h \
     surfacesaver.h \
     crystalsaver.h \
-    timenumbercurvessaver.h
+    timenumbercurvessaver.h \
+    configurator.h \
+    parse_error.h \
+    parse_params_error.h
 
 FORMS    +=
 
 OTHER_FILES += \
-    Makefile
+    Makefile \
+    handbook.cnf

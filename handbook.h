@@ -13,6 +13,8 @@ public:
     Handbook(const char *configFileName);
 
     double value(const char *sectionName, const char *variableName) const;
+    int sizeX() const;
+    int sizeY() const;
 
 private:
     static Handbook *__instance;
@@ -21,14 +23,3 @@ private:
 };
 
 #endif /* HANDBOOK_H */
-
-/////////////////////////
-//
-// [reactor]
-// #T = 1100
-// T = 1200
-
-// [addhreaction]
-//  k =
-
-// Handbook.instance()->value("reactor", "T");
