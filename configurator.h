@@ -31,7 +31,7 @@ public:
     unsigned int steps() const { return _steps; }
     unsigned int anyStep() const { return _any_step; }
 
-    const char *outFileName(const char *suffix) const;
+    std::string outFileName(const char *suffix) const;
 
 private:
 	std::string _program_name;

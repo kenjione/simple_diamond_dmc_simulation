@@ -9,7 +9,7 @@
 class Layer
 {
 public:
-    Layer(int size_x, int size_y);
+    Layer(int sizeX, int sizeY);
     ~Layer();
 
     void throughAllCarbonsIter(std::function<void (Carbon *)> sf);
@@ -23,7 +23,7 @@ public:
 private:
     Layer();
 
-    int _x_size, _y_size;
+    int _sizeX, _sizeY;
     Carbon** _carbons;
 };
 

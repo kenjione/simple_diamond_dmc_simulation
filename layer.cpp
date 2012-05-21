@@ -4,48 +4,48 @@
 
 #include <iostream>
 
-Layer::Layer(int size_x, int size_y): _x_size(size_x), _y_size(size_y) {
-    size_t total = _x_size * _y_size;
+Layer::Layer(int sizeX, int sizeY): _sizeX(sizeX), _sizeY(sizeY) {
+    size_t total = _sizeX * _sizeY;
     _carbons = new Carbon*[total];
     for (size_t i = 0; i < total; i++) _carbons[i] = 0;
     std::cout << "          ... new layer init done\n"; //
 }
 
 Layer::~Layer() {
-    for (int i = 0; i < _x_size * _y_size; i++)
-        delete _carbons[i];
+    for (int i = 0; i < _sizeX * _sizeY; i++) delete _carbons[i];
 }
 
 void Layer::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
-    for (int i = 0; i < (_x_size * _y_size); i++) {
+    for (int i = 0; i < (_sizeX * _sizeY); i++) {
         if (_carbons[i]) sf(_carbons[i]);
     }
 }
 
 Carbon *Layer::carbon(int x, int y) {
-    //if (_carbons[_x_size * y  + x] == 0) return false;
-    return _carbons[_x_size * y  + x];
+    return _carbons[_sizeX * y  + x];
 }
 
-void Layer::add(Carbon *carbon, int x, int y) {
-    //assert(_carbons[_x_size * y + x]); // проверяем что там ещё нет (на этапе разработки)
-    _carbons[_x_size * y + x] = carbon;
+void Layer::add(Carbon *crb, int x, int y) {
+//    if (crb) assert(carbon(x, y)); // проверяем что там ещё нет (на этапе разработки)
+    _carbons[_sizeX * y + x] = crb;
 }
 
 void Layer::remove(int x, int y) {
-    //assert(!_carbons[_x_size * y + x]); // проверяем что там уже есть (на этапе разработки)
-
-    _carbons[_x_size * y + x] = 0;
+    assert(!carbon(x, y)); // проверяем что там уже есть (на этапе разработки)
+    _carbons[_sizeX * y + x] = 0;
 }
 
 void Layer::move(int from_x, int from_y, int to_x, int to_y) {
-    //assert(_carbons[_x_size * to_y + to_x]); // проверяем что там ещё нет (на этапе разработки)
+    assert(carbon(from_x, from_y)); // проверяем откуда мигрируем (на этапе разработки)
+    assert(!carbon(to_x, to_y)); // проверяем куда мигрируем (на этапе разработки)
 
-    int3 newcoords = _carbons[_x_size * from_y + from_x]->coords();
+    Carbon *targetCarbon = carbon(from_x, from_y);
+    int3 newcoords = targetCarbon->coords();
     newcoords.x = to_x;
     newcoords.y = to_y;
-    _carbons[_x_size * from_y + from_x]->move(newcoords);
-    _carbons[_x_size * to_y + to_x] = _carbons[_x_size * from_y + from_x];
-    _carbons[_x_size * from_y + from_x] = 0;
+    targetCarbon->move(newcoords);
+
+    add(targetCarbon, to_x, to_y);
+    add(0, from_x, from_y);
 }
 

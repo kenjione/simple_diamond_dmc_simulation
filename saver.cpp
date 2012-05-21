@@ -3,9 +3,9 @@
 
 Saver::Saver(const char *outFileName) : _outFile(outFileName) {
     if (!_outFile) {
-        std::cerr << outFileName << " file not created!\n";
+        std::cerr << " file \"" << outFileName << "\" NOT created!\n";
     } else {
-        std::cout << "   ...file created!\n";
+        std::cout << "   ...file \"" << outFileName << "\" created!\n";
     }
 }
 
