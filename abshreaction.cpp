@@ -10,7 +10,7 @@ AbsHReaction::AbsHReaction(Surface *surface) : MonoReaction(surface) {}
 
 double AbsHReaction::coef() const {
     //             13
-    return 5.2 * 1e15 * __reactor->hydrogenConcentration() * exp(-3360 / __reactor->temperature());
+    return 5.2 * 1e13 * __reactor->hydrogenConcentration() * exp(-3360 / __reactor->temperature());
 }
 
 void AbsHReaction::seeAt(Carbon *carbon) {

@@ -75,7 +75,7 @@ void ReactionsPool::seeAtDimer(std::map<Carbon *, Carbon *> dimers) {
     for (auto &carbons_pair : dimers) {
         // TODO: стоит пересмотреть метод SeeAt для DualReaction, в плане аргументов (чтобы принмало &pair вместо двух Carbon *)
         _addCH2.seeAt(carbons_pair.first, carbons_pair.second);
-        //_dropDimer.seeAt(carbons_pair.first, carbons_pair.second);
+        _dropDimer.seeAt(carbons_pair.first, carbons_pair.second);
         _migrationH.seeAt(carbons_pair.first, carbons_pair.second);
     }
 }

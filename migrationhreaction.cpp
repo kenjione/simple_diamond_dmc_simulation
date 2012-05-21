@@ -8,7 +8,7 @@ MigrationHReaction::MigrationHReaction(Surface *surface) : DualReaction(surface)
 
 double MigrationHReaction::coef() const {
                 // 13
-    return 2.3 * 1e-5 * exp(-51.1 / (__reactor->temperature() * R));
+    return 2.3 * 1e13 * exp(-51.1 / (__reactor->temperature() * R));
 }
 
 void MigrationHReaction::seeAt(Carbon *first, Carbon *second) {

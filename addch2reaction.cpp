@@ -9,7 +9,7 @@ AddCH2Reaction::AddCH2Reaction(Surface *surface, Crystal *crystal) :
 
 double AddCH2Reaction::coef() const {
     // 1 * 1e13 * [CH3];
-    return 1 * 1e22 * __reactor->methylConcentration();
+    return 1 * 1e13 * __reactor->methylConcentration();
 }
 
 void AddCH2Reaction::seeAt(Carbon *first, Carbon *second) {
