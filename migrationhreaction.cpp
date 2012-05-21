@@ -2,7 +2,7 @@
 #include <cmath>
 #include <cstdlib>
 
-#include <iostream> //
+//#include <iostream> //
 
 MigrationHReaction::MigrationHReaction(Surface *surface) : DualReaction(surface) {}
 

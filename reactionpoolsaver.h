@@ -8,10 +8,15 @@ class ReactionPoolSaver : public TimeNumberCurvesSaver
 {
 public:
     ReactionPoolSaver(const char *outFileName, ReactionsPool *reactionPool);
+    ~ReactionPoolSaver();
+
     void save(float time);
 
 private:
     ReactionsPool *_reactionPool;
+
+    double _totalTime;
+    std::deque<int> _reactionsTimes;
 };
 
 #endif // REACTIONPOOLSAVER_H

@@ -15,8 +15,6 @@
 
 
 #define REACTIONS_NUM 8
-#define MONOREACTIONS_NUM 4
-#define DUALREACTIONS_NUM 4
 
 
 class ReactionsPool
@@ -43,9 +41,6 @@ private:
     EtchingReaction _etching;
     MigrationBridgeReaction _migrationBridge;
     MigrationHReaction _migrationH;
-
-    MonoReaction *_mono[MONOREACTIONS_NUM];
-    DualReaction *_dual[DUALREACTIONS_NUM];
 
     Reaction *_reactions[REACTIONS_NUM];
 
