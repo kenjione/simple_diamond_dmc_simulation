@@ -40,7 +40,7 @@ void Crystal::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
 bool Crystal::hasAbove(Carbon *first, Carbon *second) {
     int3 coords = topPosition(first, second);
 
-    if (coords.z <= _layers.size() - 1) return (getLayer(coords.z)->carbon(coords.x, coords.y));
+    if ((size_t)coords.z <= _layers.size() - 1) return (getLayer(coords.z)->carbon(coords.x, coords.y));
     else return false;
 }
 
@@ -142,7 +142,7 @@ void Crystal::getBasis(Carbon *carbon, std::function<void (Carbon *, Carbon *)> 
 
 void Crystal::addCarbon(Carbon *carbon) {
 //    std::cout << "          ... _layers level = " << _layers.size() - 1 << ", z = " << carbon->coords().z << std::endl;
-    if (_layers.size() == carbon->coords().z) {
+    if ((size_t)carbon->coords().z == _layers.size()) {
         createLayer();
    //     std::cout << "\nLAYER CREATED!!!! D:";
     }
