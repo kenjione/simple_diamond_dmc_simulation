@@ -42,7 +42,6 @@ std::deque<int> ReactionsPool::reactionsTimes() const {
     std::deque<int> times;
     for (int i = 0; i < REACTIONS_NUM; i++) {
         times.push_back(_reactions[i]->times());
-        std::cout << "\n" << times[i];
     }
 
     return times;
@@ -83,30 +82,26 @@ void ReactionsPool::seeAtDimer(std::map<Carbon *, Carbon *> dimers) {
 float ReactionsPool::doReaction() {
 
     double commonRates[8];
-
     for (int i = 0; i < REACTIONS_NUM; i++) commonRates[i] = _reactions[i]->commonRate();
 
     // нормируем реакции.
     double valuetedRates[8];
-    for (int i = 0; i < 8; i++) {
-        valuetedRates[i] = commonRates[i] / totalRate();
-    }
-
+    double tr = totalRate();
+    for (int i = 0; i < 8; i++) valuetedRates[i] = commonRates[i] / tr;
     // строим линию
-    for (int i = 1; i < 8; i++) {
-        valuetedRates[i] += valuetedRates[i-1];
-    }
+    for (int i = 1; i < 8; i++) valuetedRates[i] += valuetedRates[i-1];
+
+    auto random01 = []() { return rand() / double(RAND_MAX); };
 
     // кидаем случайное число, выбираем реакцию и проводим ее.
-    double reactionIndex = rand() / double(RAND_MAX) ;
+    double reactionIndex = random01();
     double dt = 0; 
 
-    for (int i = 0; i < REACTIONS_NUM; i++)
-    {
+    for (int i = 0; i < REACTIONS_NUM; i++) {
         if (reactionIndex < valuetedRates[i]) {
             _reactions[i]->doIt();
             _reactions[i]->incTimes();
-            dt = -log2(rand() / double(RAND_MAX)) / commonRates[i];
+            dt = -log(random01()) / commonRates[i];
             break;
         }
     }
