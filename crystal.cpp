@@ -3,6 +3,7 @@
 
 Crystal::Crystal(int sizeX, int sizeY) : _sizeX(sizeX), _sizeY(sizeY), _completedLayers(0) {
 //    std::cout << "CRYSTAL SIZE: " << _sizeX << "x" << _sizeY << std::endl;
+    init();
 }
 
 void Crystal::init() {
