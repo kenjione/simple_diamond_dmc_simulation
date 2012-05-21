@@ -33,9 +33,13 @@ void Configurator::parseParams(int argc, char* argv[]) {
 		else if (boost::regex_match(current_param, matches, rx_config_file_name)) _config_file_name = matches[2];
         else if (boost::regex_match(current_param, matches, rx_size_x)) _sizeX = atoi(matches[2].str().c_str());
         else if (boost::regex_match(current_param, matches, rx_size_y)) _sizeY = atoi(matches[2].str().c_str());
-        else if (boost::regex_match(current_param, matches, rx_steps)) _steps = atoi(matches[2].str().c_str());
-        else if (boost::regex_match(current_param, matches, rx_any_step)) _any_step = atoi(matches[2].str().c_str());
-		else if (i == argc - 1 && boost::regex_match(current_param, matches, rx_prefix)) _prefix = matches[1];
+        else if (boost::regex_match(current_param, matches, rx_steps)) {
+            std::stringstream ss(matches[2].str());
+            ss >> _steps;
+        } else if (boost::regex_match(current_param, matches, rx_any_step)) {
+            std::stringstream ss(matches[2].str());
+            ss >> _any_step;
+        } else if (i == argc - 1 && boost::regex_match(current_param, matches, rx_prefix)) _prefix = matches[1];
         else throw ParseParamsError("Undefined parameter", current_param.c_str());
 	}
 }
