@@ -101,9 +101,16 @@ void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const in
     getBasisCarbons(carbon, currBasisCarbons);
 
     for (int3 &neighbourCoords : flatNeighboursCoords) {
-        Carbon *neighbourCarbon = getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y);
+        // обращается к соседнему карбону (а вернее в дальнейшем к его координатам), которого даже нет на слое.
+        // решил сделать через создание нового карбона, который будем использовать для расчета координат пары нижних карбонов
+
+     // Carbon *neighbourCarbon = getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y);
+        Carbon neighbour_carbon(neighbourCoords, 0,2);
+
         Carbon *toBasisCarbons[2];
-        getBasisCarbons(neighbourCarbon, toBasisCarbons);
+
+     // getBasisCarbons(neighbourCarbon, toBasisCarbons);
+        getBasisCarbons(&neighbour_carbon, toBasisCarbons);
 
         reaction(carbon, neighbourCoords, currBasisCarbons[0], currBasisCarbons[1], toBasisCarbons[0], toBasisCarbons[1]);
     }

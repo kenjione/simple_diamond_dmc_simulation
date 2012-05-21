@@ -64,7 +64,7 @@ void ReactionsPool::seeAtHydrogens(std::set<Carbon *> hydroCarbons) {
 
     for (Carbon *carbon : hydroCarbons) {
         _absH.seeAt(carbon);
-        //_migrationBridge->seeAt(carbon);
+        _migrationBridge.seeAt(carbon);
         _etching.seeAt(carbon);
     }
 }
