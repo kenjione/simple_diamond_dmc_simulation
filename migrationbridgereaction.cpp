@@ -13,7 +13,7 @@ double MigrationBridgeReaction::coef() const {
 
 void MigrationBridgeReaction::seeAt(Carbon *carbon) {
     // на первых итерациях лезет искать bottomNeighbours у карбонов на первом слое (т.е пытается применить getLayer для z = -1)
-    if ((carbon->actives() + carbon->hydrogens() <= 1) || carbon->coords().z == 0 || carbon->isDimer()) return;
+    if ((carbon->actives() + carbon->hydrogens() <= 1) || carbon->isDimer()) return;
     _crystal->posMigrIter(carbon, std::ref(*this));
 }
 

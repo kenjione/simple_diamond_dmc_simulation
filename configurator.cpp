@@ -65,8 +65,8 @@ std::string Configurator::help() const {
     return result.str();
 }
 
-const char *Configurator::outFileName(const char *suffix) const {
+std::string Configurator::outFileName(const char *suffix) const {
     std::stringstream result;
     result << _prefix << "-" << suffix << ".txt";
-    return result.str().c_str();
+    return result.str();
 }

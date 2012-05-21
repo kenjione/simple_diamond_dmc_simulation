@@ -22,9 +22,9 @@ Runner::Runner(const Configurator &configurator) : _configurator(configurator), 
 
     //char outFileName[] = "/home/alex/Monte-Carlo/";
 
-    _savers[0] = new ReactionPoolSaver(_configurator.outFileName("reactions"), _reactionsPool);
-    _savers[1] = new SurfaceSaver(_configurator.outFileName("species"), _surface);
-    _savers[2] = new CrystalSaver(_configurator.outFileName("crystal"), _crystal);
+    _savers[0] = new ReactionPoolSaver(_configurator.outFileName("reactions").c_str(), _reactionsPool);
+    _savers[1] = new SurfaceSaver(_configurator.outFileName("species").c_str(), _surface);
+    _savers[2] = new CrystalSaver(_configurator.outFileName("crystal").c_str(), _crystal);
 }
 
 Runner::~Runner() {
