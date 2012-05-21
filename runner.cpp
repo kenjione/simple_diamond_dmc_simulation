@@ -3,7 +3,7 @@
 #include <cstring>
 
 Runner::Runner() {
-    _crystal = new Crystal(8, 8); // 25 15
+    _crystal = new Crystal(4, 4); // 25 15
     _surface = new Surface(_crystal);
     _reactor = new Reactor(1200, 1e-9, 1e-10); // TODO: забрать из Handbook
     _reactionsPool = new ReactionsPool(_surface, _crystal);
@@ -25,7 +25,7 @@ Runner::~Runner() {
 }
 
 void Runner::run() {
-    for (int i = 0; i < 1000; i++)
+    for (int i = 0; i < 20; i++)
     {
         std::cout << "___________________________ " << i << " ___________________________\n\n";
         _surface->doReaction(_reactionsPool);

@@ -41,6 +41,10 @@ void Layer::remove(int x, int y) {
 void Layer::move(int from_x, int from_y, int to_x, int to_y) {
     //assert(_carbons[_x_size * to_y + to_x]); // проверяем что там ещё нет (на этапе разработки)
 
+    int3 newcoords = _carbons[_x_size * from_y + from_x]->coords();
+    newcoords.x = to_x;
+    newcoords.y = to_y;
+    _carbons[_x_size * from_y + from_x]->move(newcoords);
     _carbons[_x_size * to_y + to_x] = _carbons[_x_size * from_y + from_x];
     _carbons[_x_size * from_y + from_x] = 0;
 }
