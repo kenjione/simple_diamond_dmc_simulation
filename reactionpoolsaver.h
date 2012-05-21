@@ -10,7 +10,7 @@ public:
     ReactionPoolSaver(const char *outFileName, ReactionsPool *reactionPool);
     ~ReactionPoolSaver();
 
-    void save(float time);
+    void save(double time);
 
 private:
     ReactionsPool *_reactionPool;

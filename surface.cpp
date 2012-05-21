@@ -36,7 +36,7 @@ void Surface::operator() (Carbon *carbon) {
     if (carbon->hydrogens() > 0) _hydroCarbons.insert(carbon);
 }
 
-float Surface::doReaction(ReactionsPool *reactionPool) {
+double Surface::doReaction(ReactionsPool *reactionPool) {
     reactionPool->reset();
     reactionPool->seeAtActives(_activeCarbons);
     reactionPool->seeAtHydrogens(_hydroCarbons);

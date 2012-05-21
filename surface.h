@@ -37,7 +37,7 @@ public:
     void addDimer(Carbon *first, Carbon *second);
     void dropDimer(Carbon *first, Carbon *second);
 
-    float doReaction(ReactionsPool *reactionPool);
+    double doReaction(ReactionsPool *reactionPool);
 
 
 
