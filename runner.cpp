@@ -37,9 +37,12 @@ Runner::~Runner() {
 
 void Runner::run() {
     for (size_t i = 0; i < _configurator.steps(); i++) {
-        std::cout << "___________________________ " << i << " ___________________________\n\n";
+//        std::cout << "___________________________ " << i << " ___________________________\n\n";
         _totalTime += _surface->doReaction(_reactionsPool);
-        if (i % _configurator.anyStep() == 0) save();
+        if (i % _configurator.anyStep() == 0) {
+            std::cout << ((double)i * 100 / _configurator.steps()) << "%" << std::endl;
+            save();
+        }
     }
 }
 

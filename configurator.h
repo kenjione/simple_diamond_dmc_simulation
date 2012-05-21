@@ -38,7 +38,7 @@ private:
 	bool _need_help;
 	std::string _config_file_name;
     int _sizeX, _sizeY;
-    unsigned int _steps, _any_step;
+    unsigned long long _steps, _any_step;
 	std::string _prefix;
 };
 

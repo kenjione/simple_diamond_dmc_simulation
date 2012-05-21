@@ -41,7 +41,7 @@ std::deque<int> ReactionsPool::reactionsTimes() const {
 
 void ReactionsPool::seeAtActives(std::set<Carbon *> activeCarbons) {
 
-    std::cout << "\n (param) Active: " << activeCarbons.size();
+//    std::cout << "\n (param) Active: " << activeCarbons.size();
 
     for (Carbon *carbon : activeCarbons) {
         _addH.seeAt(carbon);
@@ -51,7 +51,7 @@ void ReactionsPool::seeAtActives(std::set<Carbon *> activeCarbons) {
 
 void ReactionsPool::seeAtHydrogens(std::set<Carbon *> hydroCarbons) {
 
-    std::cout << "\n (param) Hydro: " << hydroCarbons.size();
+//    std::cout << "\n (param) Hydro: " << hydroCarbons.size();
 
     for (Carbon *carbon : hydroCarbons) {
         _absH.seeAt(carbon);
@@ -61,7 +61,7 @@ void ReactionsPool::seeAtHydrogens(std::set<Carbon *> hydroCarbons) {
 }
 void ReactionsPool::seeAtDimer(std::map<Carbon *, Carbon *> dimers) {
 
-    std::cout << "\n (param) Dimers: " << dimers.size();
+//    std::cout << "\n (param) Dimers: " << dimers.size();
 
     for (auto &carbons_pair : dimers) {
         // TODO: стоит пересмотреть метод SeeAt для DualReaction, в плане аргументов (чтобы принмало &pair вместо двух Carbon *)
@@ -79,7 +79,11 @@ double ReactionsPool::doReaction() {
     // нормируем реакции.
     double valuetedRates[8];
     double tr = totalRate();
-    for (int i = 0; i < 8; i++) valuetedRates[i] = commonRates[i] / tr;
+    for (int i = 0; i < 8; i++) {
+        valuetedRates[i] = commonRates[i] / tr;
+//        std::cout << valuetedRates[i] << std::endl;
+    }
+
     // строим линию
     for (int i = 1; i < 8; i++) valuetedRates[i] += valuetedRates[i-1];
 
@@ -97,7 +101,7 @@ double ReactionsPool::doReaction() {
         }
     }
 
-    std::cout << "\ndt = " << dt << std::endl;
+//    std::cout << "\ndt = " << dt << std::endl;
     return dt;
 }
 
