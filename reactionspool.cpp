@@ -15,14 +15,6 @@ ReactionsPool::ReactionsPool(Surface *surface, Crystal *crystal) :
     _reactions[5] = &_formDimer;
     _reactions[6] = &_dropDimer;
     _reactions[7] = &_migrationH;
-
-    for (int i = 0; i < MONOREACTIONS_NUM; i++) {
-        _mono[i] = static_cast<MonoReaction *>(_reactions[i]);
-    }
-
-    for (int i = 0; i < DUALREACTIONS_NUM; i++) {
-        _dual[i] = static_cast<DualReaction *>(_reactions[MONOREACTIONS_NUM + i]);
-    }
 }
 
 std::deque<std::string> ReactionsPool::reactionsNames() const {
@@ -79,7 +71,7 @@ void ReactionsPool::seeAtDimer(std::map<Carbon *, Carbon *> dimers) {
     }
 }
 
-float ReactionsPool::doReaction() {
+double ReactionsPool::doReaction() {
 
     double commonRates[8];
     for (int i = 0; i < REACTIONS_NUM; i++) commonRates[i] = _reactions[i]->commonRate();
@@ -92,7 +84,6 @@ float ReactionsPool::doReaction() {
     for (int i = 1; i < 8; i++) valuetedRates[i] += valuetedRates[i-1];
 
     auto random01 = []() { return rand() / double(RAND_MAX); };
-
     // кидаем случайное число, выбираем реакцию и проводим ее.
     double reactionIndex = random01();
     double dt = 0; 

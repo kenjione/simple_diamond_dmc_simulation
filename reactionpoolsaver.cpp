@@ -10,7 +10,7 @@ ReactionPoolSaver::~ReactionPoolSaver() {
     saveValuesLine(_totalTime, _reactionsTimes);
 }
 
-void ReactionPoolSaver::save(float time) {
-    _totalTime += time;
+void ReactionPoolSaver::save(double time) {
+    _totalTime = time;
     _reactionsTimes = _reactionPool->reactionsTimes();
 }

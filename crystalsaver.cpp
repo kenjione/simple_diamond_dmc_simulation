@@ -2,7 +2,7 @@
 
 CrystalSaver::CrystalSaver(const char *outFileName, Crystal *crystal) : Saver(outFileName), _crystal(crystal) {}
 
-void CrystalSaver::save(float time) {
+void CrystalSaver::save(double time) {
     _crystal->throughAllCarbonsIter(std::ref(*this));
     separator();
 }

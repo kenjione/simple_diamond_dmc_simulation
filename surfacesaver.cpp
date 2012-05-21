@@ -6,6 +6,6 @@ SurfaceSaver::SurfaceSaver(const char *outFileName, Surface *surface)
     saveHeader(_surface->setsNames());
 }
 
-void SurfaceSaver::save(float time) {
+void SurfaceSaver::save(double time) {
     saveValuesLine(time, _surface->setsNumbers());
 }
