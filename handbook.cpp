@@ -24,7 +24,7 @@ Handbook::Handbook(const char *configFileName) {
 
     boost::regex commentRegexp("^\\s*#");
     boost::regex sectionRegexp("^\\[(.+)\\]");
-    boost::regex variableRegexp("^\\s*([\\(\\)A-Za-z0-9_-]+)\\s*=\\s*([\\d\\.e-]+)\\s*#?.");
+    boost::regex variableRegexp("^\\s*([\\(\\)A-Za-z0-9_-]+)\\s*=\\s*([\\d\\.e-]+)");
 
     VarVal *currentSection = 0;
 

@@ -7,7 +7,7 @@
 class Crystal
 {
 public:
-    Crystal(int x_size, int y_size);
+    Crystal(int sizeX, int sizeY);
 
     void init();
 
@@ -29,11 +29,13 @@ private:
     Crystal();
 
     Layer *getLayer(int z) { return &_layers[z - _completedLayers]; }
+    void createLayer();
+    void createLayer(int actives, int hydrogens);
 
-    void getBasisCarbons(const Carbon *carbon, Carbon *bottomCarbons[]);
+    void getBasisCarbons(const int3 &currentCoords, Carbon *bottomCarbons[]);
     void torusCoordinate(char coord, int current, int &less, int &more) const;
 
-    int _x_size, _y_size;
+    int _sizeX, _sizeY;
     std::deque<Layer> _layers;
     int _completedLayers;
 };
