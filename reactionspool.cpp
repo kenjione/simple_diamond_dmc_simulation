@@ -82,27 +82,9 @@ void ReactionsPool::seeAtDimer(std::map<Carbon *, Carbon *> dimers) {
 
 float ReactionsPool::doReaction() {
 
-    double commonRates[8] = {
-        _addH.commonRate(),
-        _absH.commonRate(),
-        _addCH2.commonRate(),
-        _formDimer.commonRate(),
-        _dropDimer.commonRate(),
-        _etching.commonRate(),
-        _migrationH.commonRate(),
-        _migrationBridge.commonRate(),
-    };
+    double commonRates[8];
 
-    std::cout << "\n ---- commonRates ------\n";
-    std::cout << "AddHReaction: " << commonRates[0] << "\n";
-    std::cout << "AbsHReaction: " << commonRates[1] << "\n";
-    std::cout << "AddCH2Reaction: " << commonRates[2] << "\n";
-    std::cout << "FormDimerReaction: " << commonRates[3] << "\n";
-    std::cout << "DropDimerReaction: " << commonRates[4] << "\n";
-    std::cout << "EtchingReaction: " << commonRates[5] << "\n";
-    std::cout << "MigrationHReaction: " << commonRates[6] << "\n";
-    std::cout << "MigrationBridgeReaction: " << commonRates[7] << "\n";
-    std::cout << " -----------------------\n";
+    for (int i = 0; i < REACTIONS_NUM; i++) commonRates[i] = _reactions[i]->commonRate();
 
     // нормируем реакции.
     double valuetedRates[8];
@@ -117,56 +99,16 @@ float ReactionsPool::doReaction() {
 
     // кидаем случайное число, выбираем реакцию и проводим ее.
     double reactionIndex = rand() / double(RAND_MAX) ;
-    double dt = 0;
+    double dt = 0; 
 
-    std::cout << "\n    ...choose reaction... ";
-    if (reactionIndex < valuetedRates[0]) {
-        std::cout << "addhreaction!\n";
-        _addH.doIt();
-        _addH.incTimes();
-        dt = -log2(rand() / double(RAND_MAX)) / commonRates[0];
-    }
-    else if (reactionIndex < valuetedRates[1]) {
-        std::cout << "abshreaction!\n";
-        _absH.doIt();
-        _absH.incTimes();
-        dt = -log2(rand() / double(RAND_MAX)) / commonRates[1];
-    }
-    else if (reactionIndex < valuetedRates[2]) {
-        std::cout << "addch2reaction!\n";
-        _addCH2.doIt();
-        _addCH2.incTimes();
-        dt = -log2(rand() / double(RAND_MAX)) / commonRates[2];
-    }
-    else if (reactionIndex < valuetedRates[3]) {
-        std::cout << "formdimer!\n";
-        _formDimer.doIt();
-        _formDimer.incTimes();
-        dt = -log2(rand() / double(RAND_MAX)) / commonRates[3];
-    }
-    else if (reactionIndex < valuetedRates[4]) {
-        std::cout << "dropdimer!\n";
-        _dropDimer.doIt();
-        _dropDimer.incTimes();
-        dt = -log2(rand() / double(RAND_MAX)) / commonRates[4];
-    }
-    else if(reactionIndex < valuetedRates[5]) {
-        std::cout << "etching!\n";
-        _etching.doIt();
-        _etching.incTimes();
-        dt = -log2(rand() / double(RAND_MAX)) / commonRates[5];
-    }
-    else if (reactionIndex < valuetedRates[6]) {
-        std::cout << "migrH!\n";
-        _migrationH.doIt();
-        _migrationH.incTimes();
-        dt = -log2(rand() / double(RAND_MAX)) / commonRates[6];
-    }
-    else {
-        std::cout << "migrBridge!\n";
-        _migrationBridge.doIt();
-        _migrationBridge.incTimes();
-        dt = -log2(rand() / double(RAND_MAX)) / commonRates[7];
+    for (int i = 0; i < REACTIONS_NUM; i++)
+    {
+        if (reactionIndex < valuetedRates[i]) {
+            _reactions[i]->doIt();
+            _reactions[i]->incTimes();
+            dt = -log2(rand() / double(RAND_MAX)) / commonRates[i];
+            break;
+        }
     }
 
     std::cout << "\ndt = " << dt << std::endl;
