@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstring>
 
+
 Runner::Runner(const Configurator &configurator) : _configurator(configurator), _handbook(configurator.configFileName())
 {
     int sizeX, sizeY;
