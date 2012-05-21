@@ -12,7 +12,7 @@ public:
 
 protected:
     void saveHeader(const std::deque<std::string> &names);
-    void saveValuesLine(float time, const std::deque<int> &numbers);
+    void saveValuesLine(double time, const std::deque<int> &numbers);
 };
 
 #endif // TIMENUMBERSCURVESSAVER_H

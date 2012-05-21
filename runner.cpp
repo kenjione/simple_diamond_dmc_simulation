@@ -3,7 +3,8 @@
 #include <cstring>
 
 
-Runner::Runner(const Configurator &configurator) : _configurator(configurator), _handbook(configurator.configFileName())
+Runner::Runner(const Configurator &configurator)
+    : _configurator(configurator), _handbook(configurator.configFileName()), _totalTime(0)
 {
     int sizeX, sizeY;
     if (_configurator.sizeX() > 0 && _configurator.sizeY() > 0) {
@@ -37,8 +38,7 @@ Runner::~Runner() {
 void Runner::run() {
     for (size_t i = 0; i < _configurator.steps(); i++) {
         std::cout << "___________________________ " << i << " ___________________________\n\n";
-        _surface->doReaction(_reactionsPool);
-
+        _totalTime += _surface->doReaction(_reactionsPool);
         if (i % _configurator.anyStep() == 0) save();
     }
 }

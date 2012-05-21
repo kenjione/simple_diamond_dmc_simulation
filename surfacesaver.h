@@ -8,7 +8,7 @@ class SurfaceSaver : public TimeNumberCurvesSaver
 {
 public:
     SurfaceSaver(const char *outFileName, Surface *surface);
-    void save(float time);
+    void save(double time);
 
 private:
     Surface *_surface;

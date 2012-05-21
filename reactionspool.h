@@ -29,7 +29,7 @@ public:
     void seeAtHydrogens(std::set<Carbon *> hydroCarbons);
     void seeAtDimer(std::map<Carbon *, Carbon *> dimers);
 
-    float doReaction();
+    double doReaction();
     void reset();
 
 private:
