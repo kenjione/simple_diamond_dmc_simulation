@@ -1,11 +1,17 @@
 #ifndef REACTOR_H
 #define REACTOR_H
 
+#include "handbook.h"
+
 class Reactor
 {
 public:
-    Reactor(float temperature, float hydroConcentration, float methylConcentration)
-        : _temperature(temperature), _hydrogenConcentration(hydroConcentration), _methylConcentration(methylConcentration) {}
+    Reactor() {
+        const Handbook *hb = Handbook::instance();
+        _temperature = hb->value("reactor", "T");
+        _hydrogenConcentration = hb->value("reactor", "C(H)");
+        _methylConcentration = hb->value("reactor", "C(CH3)");
+    }
 
     float temperature() const { return _temperature; }
     float hydrogenConcentration() const { return _hydrogenConcentration; }

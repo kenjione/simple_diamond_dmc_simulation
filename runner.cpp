@@ -2,19 +2,28 @@
 #include <iostream>
 #include <cstring>
 
-Runner::Runner() {
-    _crystal = new Crystal(4, 4); // 25 15
+Runner::Runner(const Configurator &configurator) : _configurator(configurator), _handbook(configurator.configFileName())
+{
+    int sizeX, sizeY;
+    if (_configurator.sizeX() > 0 && _configurator.sizeY() > 0) {
+        sizeX = _configurator.sizeX();
+        sizeY = _configurator.sizeY();
+    } else {
+        sizeX = _handbook.sizeX();
+        sizeY = _handbook.sizeY();
+    }
+    _crystal = new Crystal(sizeX, sizeY); // 25 15
     _surface = new Surface(_crystal);
-    _reactor = new Reactor(1200, 1e-9, 1e-10); // TODO: забрать из Handbook
-    _reactionsPool = new ReactionsPool(_surface, _crystal);
 
+    _reactor = new Reactor();
+    _reactionsPool = new ReactionsPool(_surface, _crystal);
     Reaction::setReactor(_reactor); // t=1200K, [H]=10e-9, [CH2]=10e-10 mol/cm3
 
     //char outFileName[] = "/home/alex/Monte-Carlo/";
 
-    _savers[0] = new ReactionPoolSaver("../dmc-results/ReactionsSaver.txt", _reactionsPool);
-    _savers[1] = new SurfaceSaver("../dmc-results/SurfaceSaver.txt", _surface);
-    _savers[2] = new CrystalSaver("../dmc-results/CrystalSaver.txt", _crystal);
+    _savers[0] = new ReactionPoolSaver(_configurator.outFileName("reactions"), _reactionsPool);
+    _savers[1] = new SurfaceSaver(_configurator.outFileName("species"), _surface);
+    _savers[2] = new CrystalSaver(_configurator.outFileName("crystal"), _crystal);
 }
 
 Runner::~Runner() {
@@ -25,11 +34,11 @@ Runner::~Runner() {
 }
 
 void Runner::run() {
-    for (int i = 0; i < 20; i++)
-    {
+    for (size_t i = 0; i < _configurator.steps(); i++) {
         std::cout << "___________________________ " << i << " ___________________________\n\n";
         _surface->doReaction(_reactionsPool);
-        save();
+
+        if (i % _configurator.anyStep() == 0) save();
     }
 }
 
