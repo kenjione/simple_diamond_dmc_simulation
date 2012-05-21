@@ -4,9 +4,9 @@
 
 #include <iostream>
 
-Layer::Layer(int sizeX, int sizeY): _sizeX(sizeX), _sizeY(sizeY) {
+Layer::Layer(int sizeX, int sizeY) : _sizeX(sizeX), _sizeY(sizeY) {
     size_t total = _sizeX * _sizeY;
-    _carbons = new Carbon*[total];
+    _carbons = new Carbon *[total];
     for (size_t i = 0; i < total; i++) _carbons[i] = 0;
     std::cout << "          ... new layer init done\n"; //
 }
@@ -23,7 +23,7 @@ void Layer::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
 }
 
 Carbon *Layer::carbon(int x, int y) {
-    return _carbons[_sizeX * y  + x];
+    return _carbons[_sizeX * y + x];
 }
 
 void Layer::add(Carbon *crb, int x, int y) {

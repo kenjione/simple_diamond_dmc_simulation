@@ -96,7 +96,10 @@ double ReactionsPool::doReaction() {
         if (reactionIndex < valuetedRates[i]) {
             _reactions[i]->doIt();
             _reactions[i]->incTimes();
-            dt = -log(random01()) / commonRates[i];
+
+            double random = 0.0;
+            while (random == 0.0) random = random01();
+            dt = -log(random) / commonRates[i];
             break;
         }
     }

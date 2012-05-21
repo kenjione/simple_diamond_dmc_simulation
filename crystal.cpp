@@ -26,9 +26,9 @@ void Crystal::createLayer(int actives, int hydrogens) {
 
     int currZ = _layers.size() - 1 + _completedLayers;
     auto layersIter = _layers.rbegin();
-    for (int i = 0; i < _sizeY; i++) {
-        for (int j = 0; j < _sizeX; j++) {
-            layersIter->add(new Carbon(int3(j, i, currZ), actives, hydrogens), j, i);
+    for (int y = 0; y < _sizeY; y++) {
+        for (int x = 0; x < _sizeX; x++) {
+            layersIter->add(new Carbon(int3(x, y, currZ), actives, hydrogens), x, y);
         }
     }
 }
@@ -40,11 +40,12 @@ void Crystal::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
 bool Crystal::hasAbove(Carbon *first, Carbon *second) {
     int3 coords = topPosition(first, second);
 
-    if ((size_t)coords.z <= _layers.size() - 1) return (getLayer(coords.z)->carbon(coords.x, coords.y));
+    if ((size_t)coords.z <= _layers.size() - 1) return getLayer(coords.z)->carbon(coords.x, coords.y);
     else return false;
 }
 
-void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &, Carbon *, Carbon *, Carbon *, Carbon *)> reaction) {
+void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &,
+                                                              Carbon *, Carbon *, Carbon *, Carbon *)> reaction) {
     const int3 &currentCoords = carbon->coords();
     int3 flatNeighboursCoords[4];
     for (int3 &neighbourCoords : flatNeighboursCoords) neighbourCoords = currentCoords;
