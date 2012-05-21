@@ -29,11 +29,11 @@ Runner::Runner(const Configurator &configurator)
 }
 
 Runner::~Runner() {
-    delete _crystal;
-    delete _surface;
-    delete _reactor;
-    delete _reactionsPool;
     for (int i = 0; i < 3; i++) delete _savers[i];
+    delete _reactionsPool;
+    delete _reactor;
+    delete _surface;
+    delete _crystal;
 }
 
 void Runner::run() {
