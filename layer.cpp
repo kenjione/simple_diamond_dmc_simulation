@@ -13,6 +13,7 @@ Layer::Layer(int sizeX, int sizeY): _sizeX(sizeX), _sizeY(sizeY) {
 
 Layer::~Layer() {
     for (int i = 0; i < _sizeX * _sizeY; i++) delete _carbons[i];
+    delete [] _carbons;
 }
 
 void Layer::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
@@ -32,7 +33,8 @@ void Layer::add(Carbon *crb, int x, int y) {
 
 void Layer::remove(int x, int y) {
     assert(!carbon(x, y)); // проверяем что там уже есть (на этапе разработки)
-    _carbons[_sizeX * y + x] = 0;
+    delete carbon(x, y);
+    add(0, x, y);
 }
 
 void Layer::move(int from_x, int from_y, int to_x, int to_y) {
