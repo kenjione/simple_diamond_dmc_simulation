@@ -181,6 +181,6 @@ void ReactionsPool::reset() {
 double ReactionsPool::totalRate() {
     double sum = 0.0;
     for (int i = 0; i < REACTIONS_NUM; i++) sum += _reactions[i]->commonRate();
-    std::cout << "\n    ...sumRate: " << sum << std::endl;
+    //std::cout << "\n    ...sumRate: " << sum << std::endl;
     return sum;
 }

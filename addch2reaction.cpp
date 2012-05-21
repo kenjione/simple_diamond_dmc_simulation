@@ -20,9 +20,9 @@ void AddCH2Reaction::seeAt(Carbon *first, Carbon *second) {
         };
 
     if (first->actives() > 0) pushPair(first, second);
-    else std::cout << "         ...addch2::seeAt message: can't push first coz hasn't actives\n";
+    //else std::cout << "         ...addch2::seeAt message: can't push first coz hasn't actives\n";
     if (second->actives() > 0) pushPair(second, first);
-    else std::cout << "         ...addch2::seeAt message: can't push second coz hasn't actives\n";
+    //else std::cout << "         ...addch2::seeAt message: can't push second coz hasn't actives\n";
 }
 
 void AddCH2Reaction::doIt() {
