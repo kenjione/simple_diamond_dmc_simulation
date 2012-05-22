@@ -6,7 +6,7 @@
 class Carbon
 {
 public:
-    Carbon(int3 coords, int actives, int hydrogens)
+    Carbon(const int3 &coords, int actives, int hydrogens)
         : _coords(coords), _actives(actives), _hydrogens(hydrogens), _isDimer(false) {}
 
     int actives() const { return _actives; }
@@ -29,7 +29,7 @@ public:
     void setAsDimer() { _isDimer = true; }
     void setAsNotDimer() { _isDimer = false; }
 
-    int3 coords() const { return _coords; }
+    const int3 &coords() const { return _coords; }
     void move(const int3 &to) { _coords = to; }
 
 private:
