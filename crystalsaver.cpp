@@ -16,20 +16,21 @@ void CrystalSaver::operator() (Carbon *carbon) {
     int3 coords = carbon->coords();
     int state = -333;
 
-    switch (carbon->hydrogens())
-    {
-    case 0:
-        state = (carbon->actives() == 0) ? 1 : 2;
-        break;
-    case 1:
-        state = 3;
-        break;
-    case 2:
-        state = 4;
-        break;
+
+    if (!carbon->isDimer()) {
+        if (carbon->actives() == 0) {
+            if (carbon->hydrogens() == 0) state = 1;
+            if (carbon->hydrogens() == 1) state = 2;
+            if (carbon->hydrogens() == 2) state = 3;
+        } else if (carbon->actives() == 1) {
+            if (carbon->hydrogens() == 0) state = 4;
+            if (carbon->hydrogens() == 1) state = 5;
+        } else /* actives == 2 */ state = 6;
+    } else {
+        if (carbon->actives() == 0) state = 7;
+        else state = 8;  /* hydrogens = 0 */
     }
 
-    if (carbon->isDimer()) state = 6;
     _outFile << state << " " << coords.x << " " << coords.y << " " << coords.z << "\n";
 
 }
