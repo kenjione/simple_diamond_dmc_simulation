@@ -7,6 +7,7 @@
 DropDimerReaction::DropDimerReaction(Surface *surface) : DualReaction(surface) {}
 
 double DropDimerReaction::coef() const {
+                  //13
     return 4.79 * 1e5 * exp(-7196.8 / __reactor->temperature());
 }
 

@@ -13,7 +13,7 @@ public:
     void seeAt(Carbon *carbon);
     void doIt();
 
-    void operator() (Carbon *first, Carbon *second);
+    void operator() (Carbon *carbon, Carbon *first, Carbon *second);
 
 protected:
     double coef() const;

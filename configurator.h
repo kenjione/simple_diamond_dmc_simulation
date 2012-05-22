@@ -12,7 +12,7 @@
 
 #define DEFAULT_CONFIG_FILE "handbook.cnf"
 #define DEFAULT_PREFIX "../dmc-results/000"
-#define STEPS 500
+#define STEPS 1000
 #define ANY_STEP 1
 
 class Configurator {
