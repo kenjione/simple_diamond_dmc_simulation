@@ -25,9 +25,9 @@ public:
     std::deque<std::string> reactionsNames() const;
     std::deque<int> reactionsTimes() const;
 
-    void seeAtActives(std::set<Carbon *> activeCarbons);
-    void seeAtHydrogens(std::set<Carbon *> hydroCarbons);
-    void seeAtDimer(std::map<Carbon *, Carbon *> dimers);
+    void seeAtActives(const std::set<Carbon *> &activeCarbons);
+    void seeAtHydrogens(const std::set<Carbon *> &hydroCarbons);
+    void seeAtDimer(const std::map<Carbon *, Carbon *> &dimers);
 
     double doReaction();
     void reset();
