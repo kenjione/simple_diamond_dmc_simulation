@@ -9,7 +9,7 @@ MigrationBridgeReaction::MigrationBridgeReaction(Surface *surface, Crystal *crys
 
 double MigrationBridgeReaction::coef() const {
                  //13
-    return 6.13 * 1e5 * exp(-18.269 / __reactor->temperature());
+    return 6.13 * 1e7 * exp(-18.269 / __reactor->temperature());
 }
 
 void MigrationBridgeReaction::seeAt(Carbon *carbon) {

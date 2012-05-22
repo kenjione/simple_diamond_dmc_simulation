@@ -17,7 +17,7 @@ double EtchingReaction::coef() const {
                  5.9123 * 10e16 * pow(__reactor->hydrogenConcentration(), 2)) / __reactor->temperature()));
     */ // не считает скорость. Вернее считает но результат получается inf
                  //10
-    return 2.6 * 1e3; // поставил вручную просто для проверки
+    return 2.6 * 1e1; // поставил вручную просто для проверки
 }
 
 void EtchingReaction::seeAt(Carbon *carbon) {
