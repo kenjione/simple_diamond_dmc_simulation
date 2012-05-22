@@ -1,4 +1,4 @@
-#define NDEBUG // убрать в релизной версии
+//#define NDEBUG // убрать в релизной версии
 #include <assert.h>
 #include <iostream>
 #include "configurator.h"

@@ -3,6 +3,11 @@
 
 Crystal::Crystal(int sizeX, int sizeY) : _sizeX(sizeX), _sizeY(sizeY), _completedLayers(0) {
 //    std::cout << "CRYSTAL SIZE: " << _sizeX << "x" << _sizeY << std::endl;
+    init();
+}
+
+Crystal::~Crystal() {
+    for (Layer *layer : _layers) delete layer;
 }
 
 void Crystal::init() {
@@ -18,7 +23,7 @@ void Crystal::init() {
 }
 
 void Crystal::createLayer() {
-    _layers.push_back(Layer(_sizeX, _sizeY));
+    _layers.push_back(new Layer(_sizeX, _sizeY));
 }
 
 void Crystal::createLayer(int actives, int hydrogens) {
@@ -26,25 +31,28 @@ void Crystal::createLayer(int actives, int hydrogens) {
 
     int currZ = _layers.size() - 1 + _completedLayers;
     auto layersIter = _layers.rbegin();
-    for (int i = 0; i < _sizeY; i++) {
-        for (int j = 0; j < _sizeX; j++) {
-            layersIter->add(new Carbon(int3(j, i, currZ), actives, hydrogens), j, i);
+    for (int y = 0; y < _sizeY; y++) {
+        for (int x = 0; x < _sizeX; x++) {
+            int3 coords(x, y, currZ);
+            Carbon *carbon = new Carbon(coords, actives, hydrogens);
+            (*layersIter)->add(carbon, x, y);
         }
     }
 }
 
 void Crystal::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
-    for (auto &layer : _layers) layer.throughAllCarbonsIter(sf);
+    for (auto layer : _layers) layer->throughAllCarbonsIter(sf);
 }
 
 bool Crystal::hasAbove(Carbon *first, Carbon *second) {
     int3 coords = topPosition(first, second);
 
-    if ((size_t)coords.z <= _layers.size() - 1) return (getLayer(coords.z)->carbon(coords.x, coords.y));
+    if ((size_t)coords.z - _completedLayers <= _layers.size() - 1) return getLayer(coords.z)->carbon(coords.x, coords.y);
     else return false;
 }
 
-void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &, Carbon *, Carbon *, Carbon *, Carbon *)> reaction) {
+void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &,
+                                                              Carbon *, Carbon *, Carbon *, Carbon *)> reaction) {
     const int3 &currentCoords = carbon->coords();
     int3 flatNeighboursCoords[4];
     for (int3 &neighbourCoords : flatNeighboursCoords) neighbourCoords = currentCoords;
@@ -142,7 +150,7 @@ void Crystal::getBasis(Carbon *carbon, std::function<void (Carbon *, Carbon *)> 
 
 void Crystal::addCarbon(Carbon *carbon) {
 //    std::cout << "          ... _layers level = " << _layers.size() - 1 << ", z = " << carbon->coords().z << std::endl;
-    if ((size_t)carbon->coords().z == _layers.size()) {
+    if ((size_t)carbon->coords().z - _completedLayers == _layers.size()) {
         createLayer();
    //     std::cout << "\nLAYER CREATED!!!! D:";
     }

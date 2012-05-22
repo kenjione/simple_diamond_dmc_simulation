@@ -24,7 +24,7 @@ private:
     Layer();
 
     int _sizeX, _sizeY;
-    Carbon** _carbons;
+    Carbon **_carbons;
 };
 
 #endif // LAYER_H
