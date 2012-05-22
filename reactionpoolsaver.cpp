@@ -1,16 +1,11 @@
 #include "reactionpoolsaver.h"
 
 ReactionPoolSaver::ReactionPoolSaver(const char *outFileName, ReactionsPool *reactionPool) :
-    TimeNumberCurvesSaver(outFileName), _reactionPool(reactionPool), _totalTime(0)
-{
-    saveHeader(_reactionPool->reactionsNames());
-}
-
-ReactionPoolSaver::~ReactionPoolSaver() {
-    saveValuesLine(_totalTime, _reactionsTimes);
-}
+    TimeNumberCurvesSaver(outFileName), _reactionPool(reactionPool), _outFileName(outFileName) {}
 
 void ReactionPoolSaver::save(double time) {
-    _totalTime = time;
-    _reactionsTimes = _reactionPool->reactionsTimes();
+    _outFile.close();
+    _outFile.open(_outFileName, std::ios::trunc);
+    saveHeader(_reactionPool->reactionsNames());
+    saveValuesLine(time, _reactionPool->reactionsTimes());
 }
