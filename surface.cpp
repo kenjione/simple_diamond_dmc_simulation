@@ -83,9 +83,9 @@ void Surface::moveCarbon(Carbon *carbon, const int3 &to,
     // удаление из димеров
     first = toBasis.first;
     second = toBasis.second;
+    auto it = findDimer(first, second);
 
-    if (isDimer(first, second)) {
-        auto it = findDimer(first, second);
+    if (iteratorIsDimer(it, first, second)) {
         _dimerBonds.erase(it);
 
         first->setAsNotDimer();
@@ -113,13 +113,7 @@ void Surface::dropDimer(Carbon *first, Carbon *second) {
 
 bool Surface::isDimer(Carbon *first, Carbon *second) const {
     auto it = findDimer(first, second);
-    if (it == _dimerBonds.cend()) return false;
-
-    if ((it->first == first && it->second == second) || (it->second == first && it->first == second)) {
-        return true;
-    }
-
-    return false;
+    return iteratorIsDimer(it, first, second);
 }
 
 std::map<Carbon *,Carbon *>::const_iterator Surface::findDimer(Carbon *first, Carbon *second) const {
@@ -130,6 +124,15 @@ std::map<Carbon *,Carbon *>::const_iterator Surface::findDimer(Carbon *first, Ca
     }
 
     return it;
+}
+
+bool Surface::iteratorIsDimer(const std::map<Carbon *, Carbon *>::const_iterator &it, Carbon *first, Carbon *second) const {
+    if (it == _dimerBonds.cend()) return false;
+    if ((it->first == first && it->second == second) || (it->second == first && it->first == second)) {
+        return true;
+    }
+
+    return false;
 }
 
 void Surface::formBondsFor(Carbon *first, Carbon *second) {
