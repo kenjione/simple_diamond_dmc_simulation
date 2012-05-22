@@ -8,6 +8,7 @@ class Crystal
 {
 public:
     Crystal(int sizeX, int sizeY);
+    ~Crystal();
 
     void init();
 
@@ -23,12 +24,12 @@ public:
     void move(Carbon *carbon, const int3 &to);
 
     bool hasAbove(Carbon *first, Carbon *second);
-    void dropCompletedLayers();
+    void dropCompletedLayers(); // т.к. на Layer выделяем память через new необходимо не забыть отчистить эту память!
 
 private:
     Crystal();
 
-    Layer *getLayer(int z) { return &_layers[z - _completedLayers]; }
+    Layer *getLayer(int z) { return _layers[z - _completedLayers]; }
     void createLayer();
     void createLayer(int actives, int hydrogens);
 
@@ -36,7 +37,7 @@ private:
     void torusCoordinate(char coord, int current, int &less, int &more) const;
 
     int _sizeX, _sizeY;
-    std::deque<Layer> _layers;
+    std::deque<Layer *> _layers;
     int _completedLayers;
 };
 

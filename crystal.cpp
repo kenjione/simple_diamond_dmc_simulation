@@ -6,6 +6,10 @@ Crystal::Crystal(int sizeX, int sizeY) : _sizeX(sizeX), _sizeY(sizeY), _complete
     init();
 }
 
+Crystal::~Crystal() {
+    for (Layer *layer : _layers) delete layer;
+}
+
 void Crystal::init() {
     // инициализация первых двух слоев
     createLayer(0, 0);
@@ -19,7 +23,7 @@ void Crystal::init() {
 }
 
 void Crystal::createLayer() {
-    _layers.push_back(Layer(_sizeX, _sizeY));
+    _layers.push_back(new Layer(_sizeX, _sizeY));
 }
 
 void Crystal::createLayer(int actives, int hydrogens) {
@@ -31,19 +35,19 @@ void Crystal::createLayer(int actives, int hydrogens) {
         for (int x = 0; x < _sizeX; x++) {
             int3 coords(x, y, currZ);
             Carbon *carbon = new Carbon(coords, actives, hydrogens);
-            layersIter->add(carbon, x, y);
+            (*layersIter)->add(carbon, x, y);
         }
     }
 }
 
 void Crystal::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
-    for (auto &layer : _layers) layer.throughAllCarbonsIter(sf);
+    for (auto layer : _layers) layer->throughAllCarbonsIter(sf);
 }
 
 bool Crystal::hasAbove(Carbon *first, Carbon *second) {
     int3 coords = topPosition(first, second);
 
-    if ((size_t)coords.z <= _layers.size() - 1) return getLayer(coords.z)->carbon(coords.x, coords.y);
+    if ((size_t)coords.z - _completedLayers <= _layers.size() - 1) return getLayer(coords.z)->carbon(coords.x, coords.y);
     else return false;
 }
 
@@ -146,7 +150,7 @@ void Crystal::getBasis(Carbon *carbon, std::function<void (Carbon *, Carbon *)> 
 
 void Crystal::addCarbon(Carbon *carbon) {
 //    std::cout << "          ... _layers level = " << _layers.size() - 1 << ", z = " << carbon->coords().z << std::endl;
-    if ((size_t)carbon->coords().z == _layers.size()) {
+    if ((size_t)carbon->coords().z - _completedLayers == _layers.size()) {
         createLayer();
    //     std::cout << "\nLAYER CREATED!!!! D:";
     }
