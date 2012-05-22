@@ -23,7 +23,6 @@ double EtchingReaction::coef() const {
 void EtchingReaction::seeAt(Carbon *carbon) {
     if (carbon->actives() > 0 || carbon->coords().z == 0 || carbon->isDimer()) return;
 
-    _sites.push_back(carbon);
     _crystal->getBasis(carbon, std::ref(*this));
 }
 
@@ -34,6 +33,7 @@ void EtchingReaction::doIt() {
                            _basis[siteRandomIndex].second);
 }
 
-void EtchingReaction::operator() (Carbon *first, Carbon *second) {
+void EtchingReaction::operator() (Carbon *carbon, Carbon *first, Carbon *second) {
+    _sites.push_back(carbon);
     _basis.push_back(std::pair<Carbon *, Carbon *> (first, second));
 }
