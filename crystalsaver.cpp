@@ -19,7 +19,7 @@ void CrystalSaver::operator() (Carbon *carbon) {
 
     if (!carbon->isDimer()) {
         if (carbon->actives() == 0) {
-            if (carbon->hydrogens() == 0) state = 1;    // серый     :C:
+            if (carbon->hydrogens() == 0) state = 1;    // серый     >C<
             if (carbon->hydrogens() == 1) state = 2;    // желтый    CH
             if (carbon->hydrogens() == 2) state = 3;    // зеленый   CH2
         } else if (carbon->actives() == 1) {
@@ -29,6 +29,7 @@ void CrystalSaver::operator() (Carbon *carbon) {
     } else {
         if (carbon->actives() == 0 && carbon->hydrogens() == 1) state = 7;      // синий      HC--
         else if (carbon->actives() == 1 && carbon->hydrogens() == 0) state = 8; // оранжевый  *C--
+        else if (carbon->actives() == 0 && carbon->hydrogens() == 0) state = 9; // белый      >C--
     }
 
     _outFile << state << " " << coords.x << " " << coords.y << " " << coords.z << "\n";
