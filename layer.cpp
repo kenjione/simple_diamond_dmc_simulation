@@ -27,12 +27,12 @@ Carbon *Layer::carbon(int x, int y) {
 }
 
 void Layer::add(Carbon *crb, int x, int y) {
-//    if (crb) assert(carbon(x, y)); // проверяем что там ещё нет (на этапе разработки)
+//    if (crb) assert(!carbon(x, y)); // проверяем что там ещё нет (на этапе разработки)
     _carbons[_sizeX * y + x] = crb;
 }
 
 void Layer::remove(int x, int y) {
-    assert(!carbon(x, y)); // проверяем что там уже есть (на этапе разработки)
+    assert(carbon(x, y)); // проверяем что там уже есть (на этапе разработки)
     delete carbon(x, y);
     add(0, x, y);
 }
