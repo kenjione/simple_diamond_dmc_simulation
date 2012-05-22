@@ -27,12 +27,12 @@ void AddCH2Reaction::seeAt(Carbon *first, Carbon *second) {
 void AddCH2Reaction::doIt() {
     int siteRandomIndex = rand() % _sites.size();
 
-    std::cout << "    ...addch2::doIt message: new positions: { " << _positions[siteRandomIndex].x << ", " << _positions[siteRandomIndex].y << ", " << _positions[siteRandomIndex].z << " } \n";
+//    std::cout << "    ...addch2::doIt message: new positions: { " << _positions[siteRandomIndex].x << ", " << _positions[siteRandomIndex].y << ", " << _positions[siteRandomIndex].z << " } \n";
 
     _surface->addCarbon(new Carbon(_positions[siteRandomIndex], 0, 2),
                         _sites[siteRandomIndex].first,
                         _sites[siteRandomIndex].second);
-    std::cout << "\n    ...addCh2::doIt message:    add Ch2 done!\n";
+//    std::cout << "\n    ...addCh2::doIt message:    add Ch2 done!\n";
 }
 
 void AddCH2Reaction::reset() {

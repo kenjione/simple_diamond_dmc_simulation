@@ -127,10 +127,11 @@ void Crystal::removeCarbon(Carbon *carbon) {
 
 void Crystal::move(Carbon *carbon, const int3 &to) {
 
-    std::cout << "\nfrom : { " << carbon->coords().x << ", " << carbon->coords().y << ", " << carbon->coords().z << " }  to { "
-              << to.x << ", " << to.y << ", " << to.z << " }\n";
+//    std::cout << "\nfrom : { " << carbon->coords().x << ", " << carbon->coords().y << ", " << carbon->coords().z << " }  to { "
+//              << to.x << ", " << to.y << ", " << to.z << " }\n";
 
-    getLayer(carbon->coords().z)->move(carbon->coords().x, carbon->coords().y, to.x, to.y);
+    const int3 &from = carbon->coords();
+    getLayer(from.z)->move(from.x, from.y, to.x, to.y);
 }
 
 int3 Crystal::topPosition(Carbon *first, Carbon *second) {
