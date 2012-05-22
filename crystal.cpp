@@ -79,20 +79,17 @@ void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const in
     getBasisCarbons(carbon->coords(), currBasisCarbons);
 
     for (int3 &neighbourCoords : flatNeighboursCoords) {
+        if (getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y)) continue;
+
         Carbon *toBasisCarbons[2];
         getBasisCarbons(neighbourCoords, toBasisCarbons);
+        if (!toBasisCarbons[0] || !toBasisCarbons[1]) continue;
 
         reaction(carbon, neighbourCoords, currBasisCarbons[0], currBasisCarbons[1], toBasisCarbons[0], toBasisCarbons[1]);
     }
 }
 
 void Crystal::posDimerIter(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction) {
-
-//    std::cout << "\n ------------ \ncall Crystal::posDimerIter\n";
-
-  //  std::cout << "current carbon : {" << carbon->coords().x << carbon->coords().y << carbon->coords().z << "}";
-
-
     const int3 &currentCoords = carbon->coords();
     int3 directNeighboursCoords[2];
     for (int3 &neighbourCoords : directNeighboursCoords) neighbourCoords = currentCoords;
@@ -112,37 +109,12 @@ void Crystal::posDimerIter(Carbon *carbon, std::function<void (Carbon *, Carbon 
     }
 
     for (int3 &neighbourCoords : directNeighboursCoords) {
-       // std::cout << "\nneighb carbon : {" << neighbourCoords.x << neighbourCoords.y << neighbourCoords.z << "}";
-        if (getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y) != 0)
-            if (carbon->actives() < 4 && getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y)->actives() < 4)
-                reaction(carbon, getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y));
+        if (!getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y)) continue;
+        reaction(carbon, getLayer(neighbourCoords.z)->carbon(neighbourCoords.x, neighbourCoords.y));
     }
-
-    // выполнить проверку на выход за границы!
-//    int3 firstCarbonCoords = carbon->coords();
-
-//    std::cout << "  fcc: {" << firstCarbonCoords.x << ", " << firstCarbonCoords.y << "}";
-
-//    int dx = 0;
-//    int dy = 0;
-
-//    if ((firstCarbonCoords.z) % 2 == 0) dx = 1;
-//    else dy = 1;
-
-//    // проверка не выход за границу
-//    if (firstCarbonCoords.x + dx == _x_size) firstCarbonCoords.x = 0;
-//    if (firstCarbonCoords.y + dy == _y_size) firstCarbonCoords.y = 0;
-
-//    std::cout << "  scc: {" << firstCarbonCoords.x + dx << ", " << firstCarbonCoords.y + dy << "}\n";
-//    for (int i = 0; i < 2; ++i) {
-//        reaction(carbon, getLayer(carbon->coords().z)->carbon(firstCarbonCoords.x + dx,
-//                                                              firstCarbonCoords.y + dy));
-//    }
 }
 
 void Crystal::getBasis(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction) {
-    if (carbon->coords().z == 0) return; // костыль для первого слоя
-
     Carbon *bottomCarbons[2];
     getBasisCarbons(carbon->coords(), bottomCarbons);
     reaction(bottomCarbons[0], bottomCarbons[1]);

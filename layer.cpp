@@ -38,10 +38,11 @@ void Layer::remove(int x, int y) {
 }
 
 void Layer::move(int from_x, int from_y, int to_x, int to_y) {
-    assert(carbon(from_x, from_y)); // проверяем откуда мигрируем (на этапе разработки)
+    Carbon *targetCarbon = carbon(from_x, from_y);
+
+    assert(targetCarbon); // проверяем откуда мигрируем (на этапе разработки)
     assert(!carbon(to_x, to_y)); // проверяем куда мигрируем (на этапе разработки)
 
-    Carbon *targetCarbon = carbon(from_x, from_y);
     int3 newcoords = targetCarbon->coords();
     newcoords.x = to_x;
     newcoords.y = to_y;

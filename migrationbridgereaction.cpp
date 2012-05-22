@@ -8,12 +8,12 @@ MigrationBridgeReaction::MigrationBridgeReaction(Surface *surface, Crystal *crys
     MonoReaction(surface), _crystal(crystal) {}
 
 double MigrationBridgeReaction::coef() const {
-    return 6.13 * 1e13 * exp(-18.269 / __reactor->temperature());
+    return 6.13 * 1e5 * exp(-18.269 / __reactor->temperature());
 }
 
 void MigrationBridgeReaction::seeAt(Carbon *carbon) {
     // на первых итерациях лезет искать bottomNeighbours у карбонов на первом слое (т.е пытается применить getLayer для z = -1)
-    if ((carbon->actives() + carbon->hydrogens() <= 1) || carbon->isDimer()) return;
+    if ((carbon->actives() + carbon->hydrogens() <= 1) || carbon->coords().z == 0 || carbon->isDimer()) return;
     _crystal->posMigrIter(carbon, std::ref(*this));
 }
 
@@ -22,7 +22,7 @@ void MigrationBridgeReaction::operator() (Carbon *carbon, const int3 &to,
                                            Carbon *tfBasis, Carbon *tsBasis)
 {
     // проверяем куда мигрируем
-    if (!(tfBasis->isDimer() && tsBasis->isDimer()) && !(tfBasis->actives() > 0 && tsBasis->actives() > 0)) return;
+    if (!tfBasis->isDimer() || !tsBasis->isDimer() || tfBasis->actives() == 0 || tsBasis->actives() == 0) return;
 
     auto migrationInfoLambda = [&to, &tfBasis, &tsBasis]() {
         return MigrationBridgeInfo(to, std::pair<Carbon *, Carbon *>(tfBasis, tsBasis));
