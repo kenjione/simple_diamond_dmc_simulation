@@ -23,7 +23,7 @@ void MigrationBridgeReaction::operator() (Carbon *carbon, const int3 &to,
                                            Carbon *tfBasis, Carbon *tsBasis)
 {
     // проверяем куда мигрируем
-    if (!tfBasis->isDimer() || !tsBasis->isDimer() || tfBasis->actives() == 0 || tsBasis->actives() == 0) return;
+    if (!_surface->isDimer(tfBasis, tsBasis) || tfBasis->actives() == 0 || tsBasis->actives() == 0) return;
 
     auto migrationInfoLambda = [this, &to, &tfBasis, &tsBasis]() {
         _infos[_infos.size() - 1].push_back(MigrationBridgeInfo(to, std::pair<Carbon *, Carbon *>(tfBasis, tsBasis)));
