@@ -111,6 +111,10 @@ void Surface::dropDimer(Carbon *first, Carbon *second) {
     dropBondsFor(first, second);
 }
 
+bool Surface::isDimer(Carbon *first, Carbon *second) const {
+    return findDimer(first, second) != _dimerBonds.cend();
+}
+
 std::map<Carbon *,Carbon *>::const_iterator Surface::findDimer(Carbon *first, Carbon *second) const {
     std::map<Carbon *,Carbon *>::const_iterator it = _dimerBonds.find(first);
     if (it == _dimerBonds.cend()) {
