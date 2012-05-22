@@ -30,7 +30,7 @@ void MigrationBridgeReaction::operator() (Carbon *carbon, const int3 &to,
     };
 
     // проверка на наличие мостовой группы в _sites
-    if (_sites[_sites.size() - 1] == carbon) {
+    if (_sites.size() > 0 && _sites[_sites.size() - 1] == carbon) {
         migrationInfoLambda();
     } else {
         _sites.push_back(carbon);
