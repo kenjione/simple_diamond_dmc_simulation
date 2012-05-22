@@ -34,6 +34,7 @@ public:
 
     void addDimer(Carbon *first, Carbon *second);
     void dropDimer(Carbon *first, Carbon *second);
+    bool isDimer(Carbon *first, Carbon *second) const;
 
     double doReaction(ReactionsPool *reactionPool);
 

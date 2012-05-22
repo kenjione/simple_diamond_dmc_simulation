@@ -80,7 +80,7 @@ double ReactionsPool::doReaction() {
     auto random01 = []() { return rand() / double(RAND_MAX); };
     // кидаем случайное число, выбираем реакцию и проводим ее.
     double reactionIndex = random01();
-    double dt = 0; 
+    double dt = 0;
 
     for (int i = 0; i < REACTIONS_NUM; i++) {
         if (reactionIndex < valuetedRates[i]) {

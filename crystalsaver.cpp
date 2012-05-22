@@ -12,10 +12,8 @@ void CrystalSaver::separator() {
 }
 
 void CrystalSaver::operator() (Carbon *carbon) {
-
     int3 coords = carbon->coords();
     int state = -1;
-
 
     if (!carbon->isDimer()) {
         if (carbon->actives() == 0) {
@@ -33,5 +31,4 @@ void CrystalSaver::operator() (Carbon *carbon) {
     }
 
     _outFile << state << " " << coords.x << " " << coords.y << " " << coords.z << "\n";
-
 }
