@@ -40,9 +40,6 @@ std::deque<int> ReactionsPool::reactionsTimes() const {
 }
 
 void ReactionsPool::seeAtActives(std::set<Carbon *> activeCarbons) {
-
-//    std::cout << "\n (param) Active: " << activeCarbons.size();
-
     for (Carbon *carbon : activeCarbons) {
         _addH.seeAt(carbon);
         _formDimer.seeAt(carbon, 0);

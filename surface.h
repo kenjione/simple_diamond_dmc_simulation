@@ -23,7 +23,7 @@ public:
     void init();
     void operator() (Carbon *carbon);
 
-    int numberOfSites(); // TODO: этот метод используется?
+//    int numberOfSites(); // TODO: этот метод используется?
 
     void addHydrogen(Carbon *carbon);
     void removeHydrogen(Carbon *carbon);
@@ -39,9 +39,11 @@ public:
 
     double doReaction(ReactionsPool *reactionPool);
 
-
-
 private:
+    void formBondsFor(Carbon *first, Carbon *second);
+    void dropBondsFor(Carbon *first, Carbon *second);
+    void removeFromDimersHash(Carbon *first, Carbon *second);
+
     Crystal *_crystal;
 
     std::set<Carbon *> _activeCarbons, _hydroCarbons;

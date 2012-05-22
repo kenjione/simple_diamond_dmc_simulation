@@ -33,6 +33,8 @@ public:
     void reset();
 
 private:
+    double totalRate();
+
     AbsHReaction _absH;
     AddHReaction _addH;
     FormDimerReaction _formDimer;
@@ -45,9 +47,6 @@ private:
     Reaction *_reactions[REACTIONS_NUM];
 
     Surface *_surface;
-    Crystal *_crystal;
-
-    double totalRate();
 
 };
 

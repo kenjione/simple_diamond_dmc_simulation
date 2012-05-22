@@ -9,7 +9,7 @@ AddHReaction::AddHReaction(Surface *surface) : MonoReaction(surface) {
 }
 
 double AddHReaction::coef() const {
-    return 2 * 1e13 * __reactor->hydrogenConcentration();
+    return 2e13 * __reactor->hydrogenConcentration();
     // return _k * __reactor->hydrogenConcentration();
 }
 
