@@ -29,7 +29,9 @@ void Crystal::createLayer(int actives, int hydrogens) {
     auto layersIter = _layers.rbegin();
     for (int y = 0; y < _sizeY; y++) {
         for (int x = 0; x < _sizeX; x++) {
-            layersIter->add(new Carbon(int3(x, y, currZ), actives, hydrogens), x, y);
+            int3 coords(x, y, currZ);
+            Carbon *carbon = new Carbon(coords, actives, hydrogens);
+            layersIter->add(carbon, x, y);
         }
     }
 }

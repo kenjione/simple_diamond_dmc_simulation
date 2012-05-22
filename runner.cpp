@@ -4,7 +4,8 @@
 
 
 Runner::Runner(const Configurator &configurator)
-    : _configurator(configurator), _handbook(configurator.configFileName()), _totalTime(0)
+    : _configurator(configurator), _handbook(configurator.configFileName()), _totalTime(0),
+      _crystal(0), _surface(0), _reactor(0), _reactionsPool(0)
 {
     int sizeX, sizeY;
     if (_configurator.sizeX() > 0 && _configurator.sizeY() > 0) {
@@ -37,7 +38,7 @@ Runner::~Runner() {
 }
 
 void Runner::run() {
-    for (size_t i = 0; i < _configurator.steps(); i++) {
+    for (size_t i = 0; i < _configurator.steps() + 1; i++) {
 //        std::cout << "___________________________ " << i << " ___________________________\n\n";
         _totalTime += _surface->doReaction(_reactionsPool);
         if (i % _configurator.anyStep() == 0) {

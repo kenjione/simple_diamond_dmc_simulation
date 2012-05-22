@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-Layer::Layer(int sizeX, int sizeY) : _sizeX(sizeX), _sizeY(sizeY) {
+Layer::Layer(int sizeX, int sizeY) : _sizeX(sizeX), _sizeY(sizeY), _carbons(0) {
     size_t total = _sizeX * _sizeY;
     _carbons = new Carbon *[total];
     for (size_t i = 0; i < total; i++) _carbons[i] = 0;
