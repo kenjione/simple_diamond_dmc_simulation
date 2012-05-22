@@ -25,14 +25,16 @@ public:
     std::deque<std::string> reactionsNames() const;
     std::deque<int> reactionsTimes() const;
 
-    void seeAtActives(std::set<Carbon *> activeCarbons);
-    void seeAtHydrogens(std::set<Carbon *> hydroCarbons);
-    void seeAtDimer(std::map<Carbon *, Carbon *> dimers);
+    void seeAtActives(const std::set<Carbon *> &activeCarbons);
+    void seeAtHydrogens(const std::set<Carbon *> &hydroCarbons);
+    void seeAtDimer(const std::map<Carbon *, Carbon *> &dimers);
 
     double doReaction();
     void reset();
 
 private:
+    double totalRate();
+
     AbsHReaction _absH;
     AddHReaction _addH;
     FormDimerReaction _formDimer;
@@ -45,9 +47,6 @@ private:
     Reaction *_reactions[REACTIONS_NUM];
 
     Surface *_surface;
-    Crystal *_crystal;
-
-    double totalRate();
 
 };
 

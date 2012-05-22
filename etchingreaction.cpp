@@ -33,6 +33,11 @@ void EtchingReaction::doIt() {
                            _basis[siteRandomIndex].second);
 }
 
+void EtchingReaction::reset() {
+    MonoReaction::reset();
+    _basis.clear();
+}
+
 void EtchingReaction::operator() (Carbon *carbon, Carbon *first, Carbon *second) {
     _sites.push_back(carbon);
     _basis.push_back(std::pair<Carbon *, Carbon *> (first, second));

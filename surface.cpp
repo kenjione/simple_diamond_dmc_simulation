@@ -2,13 +2,13 @@
 #include <cmath>
 #include "surface.h"
 #include "reactionspool.h"
+#include <assert.h>
 
 Surface::Surface(Crystal *crystal) : _crystal(crystal) {
     init();
 }
 
-Surface::~Surface() {
-}
+Surface::~Surface() {}
 
 std::deque<std::string> Surface::setsNames() const {
     std::deque<std::string> names;
@@ -58,38 +58,16 @@ void Surface::removeHydrogen(Carbon *carbon) {
 
 void Surface::addCarbon(Carbon *carbon, Carbon *bottomFirst, Carbon *bottomSecond) {
     _crystal->addCarbon(carbon);
-
-    // надо ли? и так же связь остается у каждого.
-    // bottomFirst->formBond();
-    // bottomSecond->formBond();
-
-    // а вот из множества димеров их исключить наверное следовало бы
-    auto it = _dimerBonds.find(bottomFirst);
-    if (it == _dimerBonds.end()) {
-        // если не нашли по first, ищем по second
-        it = _dimerBonds.find(bottomSecond);
-    }
-
-    _dimerBonds.erase(it); // удаляем димер из хеша
-
-    bottomFirst->setAsNotDimer();
-    bottomSecond->setAsNotDimer();
-
-
     _hydroCarbons.insert(carbon);
-    if (bottomFirst->actives() == 0) _activeCarbons.erase(bottomFirst);
-    if (bottomSecond->actives() == 0) _activeCarbons.erase(bottomSecond);
+
+    removeFromDimersHash(bottomFirst, bottomSecond);
 }
 
 void Surface::removeCarbon(Carbon *carbon, Carbon *bottomFirst, Carbon *bottomSecond) {
     _crystal->removeCarbon(carbon);
-
-    bottomFirst->dropBond();
-    bottomSecond->dropBond();
-
     _hydroCarbons.erase(carbon); // т.к. только те, что с водородами могут отлетать (проверка внутри реакции)
-    _activeCarbons.insert(bottomFirst);
-    _activeCarbons.insert(bottomSecond);
+
+    dropBondsFor(bottomFirst, bottomSecond);
 }
 
 void Surface::moveCarbon(Carbon *carbon, const int3 &to,
@@ -98,81 +76,77 @@ void Surface::moveCarbon(Carbon *carbon, const int3 &to,
 {
     _crystal->move(carbon, to);
 
-    /*
-        надо разорвать димер так чтобы у него не было активных связей,
-        т.к димерная связь идет на мостовую группу. Аналогичная ситуация
-        и с образованием димера после перемещения мостовой группы.
-    */
-
-    // добавление к димерам
-    // TODO: димер не образуется автоматически, при миграции мостовой группы, образуются просто активные связи
     Carbon *first = fromBasis.first;
-    first->dropBond();
-    _activeCarbons.insert(first);
     Carbon *second = fromBasis.second;
-    fromBasis.second->dropBond();
-    _activeCarbons.insert(second);
-//    _dimerBonds[first] = second;
-
-
+    dropBondsFor(first, second);
 
     // удаление из димеров
     first = toBasis.first;
     second = toBasis.second;
-    auto it = _dimerBonds.find(first);
-    if (it == _dimerBonds.end()) {
-        it = _dimerBonds.find(second);
-    }
+    auto it = findDimer(first, second);
 
-    if (it != _dimerBonds.end()) {
+    if (it != _dimerBonds.cend()) {
         _dimerBonds.erase(it);
+
         first->setAsNotDimer();
         second->setAsNotDimer();
     } else {
         // может мигрировать не только на димеры, но и на активные атомы
-        first->formBond();
-        second->formBond();
+        formBondsFor(first, second);
     }
 }
-
 
 void Surface::addDimer(Carbon *first, Carbon *second) {
     _dimerBonds[first] = second;
 //    _dimerBonds[second] = first;
 
-    first->formBond();
-    second->formBond();
+    formBondsFor(first, second);
 
     first->setAsDimer();
     second->setAsDimer();
-
-    if (first->actives() == 0) _activeCarbons.erase(first);
-    if (second->actives() == 0) _activeCarbons.erase(second);
 }
 
 void Surface::dropDimer(Carbon *first, Carbon *second) {
-    auto it = _dimerBonds.find(first);
-    if (it == _dimerBonds.end()) {
+    removeFromDimersHash(first, second);
+    dropBondsFor(first, second);
+}
+
+std::map<Carbon *,Carbon *>::const_iterator Surface::findDimer(Carbon *first, Carbon *second) const {
+    std::map<Carbon *,Carbon *>::const_iterator it = _dimerBonds.find(first);
+    if (it == _dimerBonds.cend()) {
         // если не нашли по first, ищем по second
         it = _dimerBonds.find(second);
     }
 
-    _dimerBonds.erase(it); // удаляем димер из хеша
+    return it;
+}
 
-    second->dropBond();
-    first->dropBond();
+void Surface::formBondsFor(Carbon *first, Carbon *second) {
+    auto formBondLambda = [this](Carbon *c) {
+        c->formBond();
+        if (c->actives() == 0) _activeCarbons.erase(c);
+    };
+
+    formBondLambda(first);
+    formBondLambda(second);
+}
+
+void Surface::dropBondsFor(Carbon *first, Carbon *second) {
+    auto dropBondLambda = [this](Carbon *c) {
+        c->dropBond();
+        _activeCarbons.insert(c);
+    };
+
+    dropBondLambda(first);
+    dropBondLambda(second);
+}
+
+void Surface::removeFromDimersHash(Carbon *first, Carbon *second) {
+    auto it = findDimer(first, second);
+
+    assert(it != _dimerBonds.cend());
+    _dimerBonds.erase(it); // удаляем димер из хеша
 
     first->setAsNotDimer();
     second->setAsNotDimer();
-
-    _activeCarbons.insert(first);
-    _activeCarbons.insert(second);
-}
-
-int Surface::numberOfSites() {
-    std::set<Carbon*> allSites;
-    allSites.insert(_activeCarbons.begin(),_activeCarbons.end());
-    allSites.insert(_hydroCarbons.begin(), _hydroCarbons.end());
-
-    return allSites.size();
 }

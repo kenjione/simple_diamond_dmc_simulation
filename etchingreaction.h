@@ -12,6 +12,7 @@ public:
 
     void seeAt(Carbon *carbon);
     void doIt();
+    void reset();
 
     void operator() (Carbon *carbon, Carbon *first, Carbon *second);
 

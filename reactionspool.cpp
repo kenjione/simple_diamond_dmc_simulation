@@ -39,34 +39,30 @@ std::deque<int> ReactionsPool::reactionsTimes() const {
     return times;
 }
 
-void ReactionsPool::seeAtActives(std::set<Carbon *> activeCarbons) {
-
-//    std::cout << "\n (param) Active: " << activeCarbons.size();
-
+void ReactionsPool::seeAtActives(const std::set<Carbon *> &activeCarbons) {
     for (Carbon *carbon : activeCarbons) {
         _addH.seeAt(carbon);
         _formDimer.seeAt(carbon, 0);
     }
 }
 
-void ReactionsPool::seeAtHydrogens(std::set<Carbon *> hydroCarbons) {
+void ReactionsPool::seeAtHydrogens(const std::set<Carbon *> &hydroCarbons) {
     for (Carbon *carbon : hydroCarbons) {
         _absH.seeAt(carbon);
         _migrationBridge.seeAt(carbon);
         _etching.seeAt(carbon);
     }
 }
-void ReactionsPool::seeAtDimer(std::map<Carbon *, Carbon *> dimers) {
-    for (auto &carbons_pair : dimers) {
+void ReactionsPool::seeAtDimer(const std::map<Carbon *, Carbon *> &dimers) {
+    for (auto &carbonsPair : dimers) {
         // TODO: стоит пересмотреть метод SeeAt для DualReaction, в плане аргументов (чтобы принмало &pair вместо двух Carbon *)
-        _addCH2.seeAt(carbons_pair.first, carbons_pair.second);
-        _dropDimer.seeAt(carbons_pair.first, carbons_pair.second);
-        _migrationH.seeAt(carbons_pair.first, carbons_pair.second);
+        _addCH2.seeAt(carbonsPair.first, carbonsPair.second);
+        _dropDimer.seeAt(carbonsPair.first, carbonsPair.second);
+        _migrationH.seeAt(carbonsPair.first, carbonsPair.second);
     }
 }
 
 double ReactionsPool::doReaction() {
-
     double commonRates[8];
     for (int i = 0; i < REACTIONS_NUM; i++) commonRates[i] = _reactions[i]->commonRate();
 
