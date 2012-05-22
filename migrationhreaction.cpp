@@ -12,10 +12,14 @@ double MigrationHReaction::coef() const {
 }
 
 void MigrationHReaction::seeAt(Carbon *first, Carbon *second) {
-    if (first->hydrogens() > 0 && second->actives() > 0) {
+    auto savePairLambda = [this](Carbon *first, Carbon *second) {
         _sites.push_back(std::pair<Carbon *, Carbon *>(first, second));
+    };
+
+    if (first->hydrogens() > 0 && second->actives() > 0) {
+        savePairLambda(first, second);
     } else if (first->actives() > 0 && second->hydrogens() > 0) {
-        _sites.push_back(std::pair<Carbon *, Carbon *>(second, first));
+        savePairLambda(second, first);
     }
 }
 

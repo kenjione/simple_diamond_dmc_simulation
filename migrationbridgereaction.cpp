@@ -25,26 +25,18 @@ void MigrationBridgeReaction::operator() (Carbon *carbon, const int3 &to,
     // проверяем куда мигрируем
     if (!tfBasis->isDimer() || !tsBasis->isDimer() || tfBasis->actives() == 0 || tsBasis->actives() == 0) return;
 
-    auto migrationInfoLambda = [&to, &tfBasis, &tsBasis]() {
-        return MigrationBridgeInfo(to, std::pair<Carbon *, Carbon *>(tfBasis, tsBasis));
+    auto migrationInfoLambda = [this, &to, &tfBasis, &tsBasis]() {
+        _infos[_infos.size() - 1].push_back(MigrationBridgeInfo(to, std::pair<Carbon *, Carbon *>(tfBasis, tsBasis)));
     };
 
-    bool exist = false;
-
     // проверка на наличие мостовой группы в _sites
-    for (size_t i = 0; i < _sites.size(); i++) {
-        if (_sites[i] == carbon) {
-            exist = true;
-            _infos[i].push_back(migrationInfoLambda());
-            break;
-        }
-    }
-
-    if (!exist) {
+    if (_sites[_sites.size() - 1] == carbon) {
+        migrationInfoLambda();
+    } else {
         _sites.push_back(carbon);
         _currBasis.push_back(std::pair<Carbon *, Carbon *> (ffBasis, fsBasis));
         _infos.push_back(std::vector<MigrationBridgeInfo>());
-        _infos[_infos.size() - 1].push_back(migrationInfoLambda());
+        migrationInfoLambda();
     }
 }
 
@@ -57,7 +49,7 @@ void MigrationBridgeReaction::doIt() {
 
 void MigrationBridgeReaction::reset() {
     MonoReaction::reset();
-    _infos.clear();
     _currBasis.clear();
+    _infos.clear();
 }
 

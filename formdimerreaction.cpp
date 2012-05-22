@@ -8,7 +8,7 @@ FormDimerReaction::FormDimerReaction(Surface *surface, Crystal *crystal) :
     DualReaction(surface), _crystal(crystal) {}
 
 void FormDimerReaction::operator() (Carbon *first, Carbon *second) {
-    if ((_pairs.find(first) != _pairs.end()) || _crystal->hasAbove(first, second)) return;
+    if (_pairs.find(first) != _pairs.end() || _crystal->hasAbove(first, second)) return;
 
     if (!first->isDimer() && !second->isDimer() && second->actives() > 0) {
         _sites.push_back(std::pair<Carbon *, Carbon *> (first, second));
@@ -28,9 +28,7 @@ void FormDimerReaction::seeAt(Carbon *first, Carbon *second) {
 
 void FormDimerReaction::doIt() {
     int siteRandomIndex = rand() % _sites.size();
-    Carbon *first = _sites[siteRandomIndex].first;
-    Carbon *second = _sites[siteRandomIndex].second;
-    _surface->addDimer(first, second);
+    _surface->addDimer(_sites[siteRandomIndex].first, _sites[siteRandomIndex].second);
 }
 
 void FormDimerReaction::reset() {
