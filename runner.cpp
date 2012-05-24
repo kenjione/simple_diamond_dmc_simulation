@@ -38,12 +38,32 @@ Runner::~Runner() {
 }
 
 void Runner::run() {
-    for (size_t i = 0; i < _configurator.steps() + 1; i++) {
-//        std::cout << "___________________________ " << i << " ___________________________\n\n";
-        _totalTime += _surface->doReaction(_reactionsPool);
-        if (i % _configurator.anyStep() == 0) {
-            std::cout << ((double)i * 100 / _configurator.steps()) << "%" << std::endl;
-            save();
+    auto doReaction = [this]() {
+        return _surface->doReaction(_reactionsPool);
+    };
+
+    auto printPercentAndSave = [this](double percent) {
+        std::cout << percent << "%" << std::endl;
+        save();
+    };
+
+    if (_configurator.isSteps()) {
+        for (size_t i = 0; i < _configurator.steps() + 1; i++) {
+            _totalTime += doReaction();
+            if (i % _configurator.anyStep() == 0) {
+                printPercentAndSave((double)(i * 100) / _configurator.steps());
+            }
+        }
+    } else {
+        double dt, currStepPart = 0;
+        while (_totalTime < _configurator.fullTime()) {
+            dt = doReaction();
+            _totalTime += dt;
+            currStepPart += dt;
+            if (currStepPart >= _configurator.anyTime()) {
+                printPercentAndSave((_totalTime * 100) / _configurator.fullTime());
+                currStepPart = 0;
+            }
         }
     }
 }
