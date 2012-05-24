@@ -10,6 +10,7 @@ void TimeNumberCurvesSaver::saveHeader(const std::deque<std::string> &names) {
 }
 
 void TimeNumberCurvesSaver::saveValuesLine(double time, const std::deque<int> &numbers) {
+    _outFile.precision(12);
     _outFile << time;
     for (int number : numbers) _outFile << "\t" << number;
     _outFile << std::endl;
