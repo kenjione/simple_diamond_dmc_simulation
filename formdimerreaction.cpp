@@ -21,25 +21,28 @@ double FormDimerReaction::coef() const {
     return 1e5 * exp(-352.3 / __reactor->temperature());
 }
 
-
 void FormDimerReaction::seeAt(Carbon *first, Carbon *second) {
     _crystal->posDimerIter(first, std::ref(*this));
 }
 
 void FormDimerReaction::doIt() {
-    int siteRandomIndex = rand() % _sites.size();
-    _surface->addDimer(_sites[siteRandomIndex].first, _sites[siteRandomIndex].second);
+    size_t siteRandomIndex = rand() % _sites.size();
+    makeDimer(siteRandomIndex);
 }
 
 void FormDimerReaction::initDimerLayer() {
-    for (int i = 0; i < _sites.size(); i++)
-    {
-        if (!_sites[i].first->isDimer() && !_sites[i].second->isDimer())
-            _surface->addDimer(_sites[i].first, _sites[i].second);
+    for (size_t i = 0; i < _sites.size(); i++) {
+        if (!_sites[i].first->isDimer() && !_sites[i].second->isDimer()) {
+            makeDimer(i);
+        }
     }
 }
 
 void FormDimerReaction::reset() {
     DualReaction::reset();
     _pairs.clear();
+}
+
+void FormDimerReaction::makeDimer(size_t siteIndex) {
+    _surface->addDimer(_sites[siteIndex].first, _sites[siteIndex].second);
 }
