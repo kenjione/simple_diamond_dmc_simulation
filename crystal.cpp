@@ -14,12 +14,6 @@ void Crystal::init() {
     // инициализация первых двух слоев
     createLayer(0, 0);
     createLayer(1, 1);
-
-    //createLayer();
-    //addCarbon(new Carbon(int3(5,5,2),0,2));
-
-    //createLayer();
-    //addCarbon(new Carbon(int3(5,5,3),0,2));
 }
 
 void Crystal::createLayer() {

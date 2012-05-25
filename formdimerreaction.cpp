@@ -31,6 +31,14 @@ void FormDimerReaction::doIt() {
     _surface->addDimer(_sites[siteRandomIndex].first, _sites[siteRandomIndex].second);
 }
 
+void FormDimerReaction::initDimerLayer() {
+    for (int i = 0; i < _sites.size(); i++)
+    {
+        if (!_sites[i].first->isDimer() && !_sites[i].second->isDimer())
+            _surface->addDimer(_sites[i].first, _sites[i].second);
+    }
+}
+
 void FormDimerReaction::reset() {
     DualReaction::reset();
     _pairs.clear();

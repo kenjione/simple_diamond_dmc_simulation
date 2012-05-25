@@ -28,6 +28,8 @@ std::deque<int> Surface::setsNumbers() const {
 
 void Surface::init() {
     _crystal->throughAllCarbonsIter(std::ref(*this));
+    initDimerLayer();
+    _crystal->throughAllCarbonsIter(std::ref(*this));
 }
 
 void Surface::operator() (Carbon *carbon) {
@@ -133,6 +135,15 @@ bool Surface::iteratorIsDimer(const std::map<Carbon *, Carbon *>::const_iterator
     }
 
     return false;
+}
+
+void Surface::initDimerLayer()
+{
+    FormDimerReaction formDimer(this, _crystal);
+    for (Carbon *carbon : _activeCarbons) {
+        formDimer.seeAt(carbon, 0);
+    }
+    formDimer.initDimerLayer();
 }
 
 void Surface::formBondsFor(Carbon *first, Carbon *second) {
