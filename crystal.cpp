@@ -13,14 +13,14 @@ Crystal::~Crystal() {
 void Crystal::init() {
     // инициализация первых двух слоев
     createLayer(0, 0);
-    createLayer(1, 1);
+    createTopLayer();
 }
 
 void Crystal::createLayer() {
     _layers.push_back(new Layer(_sizeX, _sizeY));
 }
 
-void Crystal::createLayer(int actives, int hydrogens) {
+void Crystal::createLayerByCarbonLambda(std::function<Carbon * (const int3 &)> carbonLambda) {
     createLayer();
 
     int currZ = _layers.size() - 1 + _completedLayers;
@@ -28,16 +28,30 @@ void Crystal::createLayer(int actives, int hydrogens) {
     for (int y = 0; y < _sizeY; y++) {
         for (int x = 0; x < _sizeX; x++) {
             int3 coords(x, y, currZ);
-
-            if (currZ == 1) {
-                actives = (coords.x % 3 == 0) ? 0 : 1;
-                hydrogens = (actives == 0) ? 2 : 1;
-            }
-
-            Carbon *carbon = new Carbon(coords, actives, hydrogens);
+            Carbon *carbon = carbonLambda(coords);
             (*layersIter)->add(carbon, x, y);
         }
     }
+}
+
+void Crystal::createLayer(int actives, int hydrogens) {
+    createLayerByCarbonLambda([&actives, &hydrogens](const int3 &coords) {
+        return new Carbon(coords, actives, hydrogens);
+    });
+}
+
+void Crystal::createTopLayer() {
+    createLayerByCarbonLambda([](const int3 &coords) {
+        int actives, hydrogens;
+        if (coords.x % 3 == 0) {
+            actives = 0;
+            hydrogens = 2;
+        } else {
+            actives = 1;
+            hydrogens = 1;
+        }
+        return new Carbon(coords, actives, hydrogens);
+    });
 }
 
 
