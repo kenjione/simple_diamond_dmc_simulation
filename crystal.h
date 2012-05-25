@@ -31,7 +31,9 @@ private:
 
     Layer *getLayer(int z) { return _layers[z - _completedLayers]; }
     void createLayer();
+    template <typename CarbonLambda> void createLayerByCarbonLambda(CarbonLambda carbonLambda);
     void createLayer(int actives, int hydrogens);
+    void createTopLayer();
 
     void getBasisCarbons(const int3 &currentCoords, Carbon *bottomCarbons[]);
     void getAroundCarbons(int targetZMod, const int3 &currentCoords, Carbon *frontCarbons[]);
