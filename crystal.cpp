@@ -13,7 +13,7 @@ Crystal::~Crystal() {
 void Crystal::init() {
     // инициализация первых двух слоев
     createLayer(0, 0);
-    createLayer(1, 1);
+    createLayer(2, 0);
 }
 
 void Crystal::createLayer() {

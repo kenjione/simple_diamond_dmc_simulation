@@ -29,6 +29,8 @@ std::deque<int> Surface::setsNumbers() const {
 void Surface::init() {
     _crystal->throughAllCarbonsIter(std::ref(*this));
     initDimerLayer();
+    initBridgeRows();
+    fillFreeBondsByH();
 }
 
 void Surface::operator() (Carbon *carbon) {
@@ -143,6 +145,29 @@ void Surface::initDimerLayer()
         formDimer.seeAt(carbon, 0);
     }
     formDimer.initDimerLayer();
+}
+
+void Surface::initBridgeRows()
+{
+    AddCH2Reaction addch2(this, _crystal);
+    AbsHReaction absh(this);
+
+    for (auto &carbonsPair : _dimerBonds) {
+        if ((carbonsPair.first->coords().x % 4 == 0)) {
+            addch2.seeAt(carbonsPair.first, carbonsPair.second);
+        }
+    }
+
+    addch2.doItForDimerRow();
+}
+
+void Surface::fillFreeBondsByH()
+{
+    AddHReaction addh(this);
+    for (Carbon *carbon : _activeCarbons) {
+        addh.seeAt(carbon);
+    }
+    addh.doItForAllActives();
 }
 
 void Surface::formBondsFor(Carbon *first, Carbon *second) {

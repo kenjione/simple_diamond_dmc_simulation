@@ -11,12 +11,15 @@ public:
 
     void seeAt(Carbon *first, Carbon *second);
     void doIt();
+    void doItForDimerRow();
     void reset();
 
 protected:
     double coef() const;
 
 private:
+    void makeAddCh2(size_t siteIndex);
+
     Crystal *_crystal;
     std::vector<int3> _positions;
 };

@@ -10,8 +10,11 @@ public:
 
     void seeAt(Carbon *carbon);
     void doIt();
+    void doItForAllActives();
 
 protected:
+    void makeAddH(size_t siteIndex);
+
     double coef() const;
 };
 
