@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    // TODO: чтобы программа запускалась в Qt Creator, сделай в папке, которую создаёт Creator такую штуку
+    // чтобы программа запускалась в Qt Creator, сделай в папке, которую создаёт Creator такую штуку
     // ln -s ../#{папка_с_текущим_проектом}/handbook.cnf .
 
     srand(time(NULL));

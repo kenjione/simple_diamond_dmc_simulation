@@ -15,11 +15,30 @@ void Crystal::init() {
     createLayer(0, 0);
     createLayer(1, 1);
 
-    //createLayer();
-    //addCarbon(new Carbon(int3(5,5,2),0,2));
+    // TODO: инициализация димеров на первом слое.
 
-    //createLayer();
-    //addCarbon(new Carbon(int3(5,5,3),0,2));
+    //initDimerLayer(1);
+}
+
+void Crystal::initDimerLayer(int layer) {
+    for (int y = 0; y < _sizeY; y++)
+        for (int x = 0; x < _sizeX; x++)
+            setDimer(getLayer(layer)->carbon(x, y));
+}
+
+void Crystal::setDimer(Carbon *carbon)
+{
+    if (carbon->isDimer()) return;
+    Carbon *frontCarbons[2];
+    getFrontDirectionCarbons(carbon->coords(), frontCarbons);
+    for (Carbon *neighbourCarbon : frontCarbons) {
+        if ((!neighbourCarbon) || neighbourCarbon->isDimer()) continue;
+        carbon->formBond();
+        carbon->setAsDimer();
+        neighbourCarbon->formBond();
+        neighbourCarbon->setAsDimer();
+        break;
+    }
 }
 
 void Crystal::createLayer() {

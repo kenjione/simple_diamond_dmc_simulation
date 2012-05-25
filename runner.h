@@ -1,6 +1,8 @@
 #ifndef RUNNER_H
 #define RUNNER_H
 
+#define SAVERS_NUM 3
+
 #include "configurator.h"
 #include "handbook.h"
 
@@ -32,7 +34,7 @@ private:
     Surface *_surface;
     Reactor *_reactor;
     ReactionsPool *_reactionsPool;
-    Saver *_savers[3]; // TODO: циферка!!
+    Saver *_savers[SAVERS_NUM];
 };
 
 #endif // RUNNER_H
