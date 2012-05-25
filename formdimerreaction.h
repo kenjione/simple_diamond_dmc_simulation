@@ -19,6 +19,8 @@ protected:
     double coef() const;
 
 private:
+    void makeDimer(size_t siteIndex);
+
     Crystal *_crystal;
     std::set<Carbon *>  _pairs;
 };
