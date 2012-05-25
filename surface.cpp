@@ -29,7 +29,6 @@ std::deque<int> Surface::setsNumbers() const {
 void Surface::init() {
     _crystal->throughAllCarbonsIter(std::ref(*this));
     initDimerLayer();
-    _crystal->throughAllCarbonsIter(std::ref(*this));
 }
 
 void Surface::operator() (Carbon *carbon) {
