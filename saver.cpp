@@ -1,11 +1,12 @@
 #include "saver.h"
-#include <iostream> //
+#include "parse_error.h"
+#include <sstream>
 
 Saver::Saver(const char *outFileName) : _outFile(outFileName) {
     if (!_outFile) {
-        std::cerr << " file \"" << outFileName << "\" NOT created!\n";
-    } else {
-        std::cout << "   ...file \"" << outFileName << "\" created!\n";
+        std::stringstream ss;
+        ss << "File \"" << outFileName << "\" couldn't be created\n";
+        throw ParseError(ss.str().c_str());
     }
 }
 
