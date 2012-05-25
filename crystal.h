@@ -31,7 +31,7 @@ private:
 
     Layer *getLayer(int z) { return _layers[z - _completedLayers]; }
     void createLayer();
-    template <typename CarbonLambda> void createLayerByCarbonLambda(CarbonLambda carbonLambda);
+    void createLayerByCarbonLambda(std::function<Carbon * (const int3 &coords)> carbonLambda);
     void createLayer(int actives, int hydrogens);
     void createTopLayer();
 

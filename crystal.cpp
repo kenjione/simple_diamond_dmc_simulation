@@ -20,8 +20,7 @@ void Crystal::createLayer() {
     _layers.push_back(new Layer(_sizeX, _sizeY));
 }
 
-template <typename CarbonLambda>
-void Crystal::createLayerByCarbonLambda(CarbonLambda carbonLambda) {
+void Crystal::createLayerByCarbonLambda(std::function<Carbon * (const int3 &)> carbonLambda) {
     createLayer();
 
     int currZ = _layers.size() - 1 + _completedLayers;
