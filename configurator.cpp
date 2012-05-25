@@ -50,7 +50,7 @@ void Configurator::parseParams(int argc, char* argv[]) {
     }
 
     if ((_steps != STEPS || _any_step != ANY_STEP) && (_full_time != FULL_TIME || _any_time != ANY_TIME)) {
-        throw ParseError("Нельзя использовать одновременно параметры установки частоты сохранения, из разных пар. Для уточнения смотрите справку (--help).");
+        throw ParseError("Нельзя использовать одновременно параметры установки частоты сохранения, из разных пар.");
     }
 }
 
