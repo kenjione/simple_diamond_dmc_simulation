@@ -13,7 +13,7 @@ Crystal::~Crystal() {
 void Crystal::init() {
     // инициализация первых двух слоев
     createLayer(0, 0);
-    createLayer(2, 0);
+    createLayer(1, 1);
 }
 
 void Crystal::createLayer() {
@@ -28,11 +28,18 @@ void Crystal::createLayer(int actives, int hydrogens) {
     for (int y = 0; y < _sizeY; y++) {
         for (int x = 0; x < _sizeX; x++) {
             int3 coords(x, y, currZ);
+
+            if (currZ == 1) {
+                actives = (coords.x % 3 == 0) ? 0 : 1;
+                hydrogens = (actives == 0) ? 2 : 1;
+            }
+
             Carbon *carbon = new Carbon(coords, actives, hydrogens);
             (*layersIter)->add(carbon, x, y);
         }
     }
 }
+
 
 void Crystal::throughAllCarbonsIter(std::function<void (Carbon *)> sf) {
     for (auto layer : _layers) layer->throughAllCarbonsIter(sf);

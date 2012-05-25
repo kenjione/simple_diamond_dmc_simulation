@@ -43,8 +43,6 @@ private:
     bool iteratorIsDimer(const std::map<Carbon *,Carbon *>::const_iterator &it, Carbon *first, Carbon *second) const;
 
     void initDimerLayer();
-    void initBridgeRows();
-    void fillFreeBondsByH();
 
     void formBondsFor(Carbon *first, Carbon *second);
     void dropBondsFor(Carbon *first, Carbon *second);

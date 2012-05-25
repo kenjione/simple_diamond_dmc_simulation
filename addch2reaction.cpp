@@ -28,27 +28,14 @@ void AddCH2Reaction::doIt() {
     int siteRandomIndex = rand() % _sites.size();
 
 //    std::cout << "    ...addch2::doIt message: new positions: { " << _positions[siteRandomIndex].x << ", " << _positions[siteRandomIndex].y << ", " << _positions[siteRandomIndex].z << " } \n";
-    makeAddCh2(siteRandomIndex);
-    //    std::cout << "\n    ...addCh2::doIt message:    add Ch2 done!\n";
-}
 
-void AddCH2Reaction::doItForDimerRow()
-{
-    for (int i = 0; i < _sites.size(); i++) {
-        if (_sites[i].first->isDimer() && _sites[i].second->isDimer()) {
-            makeAddCh2(i);
-        }
-    }
+    _surface->addCarbon(new Carbon(_positions[siteRandomIndex], 0, 2),
+                        _sites[siteRandomIndex].first,
+                        _sites[siteRandomIndex].second);
+//    std::cout << "\n    ...addCh2::doIt message:    add Ch2 done!\n";
 }
 
 void AddCH2Reaction::reset() {
     DualReaction::reset();
     _positions.clear();
-}
-
-void AddCH2Reaction::makeAddCh2(size_t siteIndex)
-{
-    _surface->addCarbon(new Carbon(_positions[siteIndex], 0, 2),
-                        _sites[siteIndex].first,
-                        _sites[siteIndex].second);
 }

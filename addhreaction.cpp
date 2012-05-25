@@ -18,15 +18,5 @@ void AddHReaction::seeAt(Carbon *carbon)  {
 }
 
 void AddHReaction::doIt() {
-    makeAddH(rand() % _sites.size());//_surface->addHydrogen(_sites[rand() % _sites.size()]);
-}
-
-void AddHReaction::doItForAllActives()
-{
-    for (int i = 0; i < _sites.size(); i++) makeAddH(i);
-}
-
-void AddHReaction::makeAddH(size_t siteIndex)
-{
-    _surface->addHydrogen(_sites[siteIndex]);
+    _surface->addHydrogen(_sites[rand() % _sites.size()]);
 }
