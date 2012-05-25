@@ -12,6 +12,7 @@ public:
     void seeAt(Carbon *first, Carbon *second);
     void reset();
     void doIt();
+    void initDimerLayer();
     void operator() (Carbon *first, Carbon *second);
 
 protected:

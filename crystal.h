@@ -32,8 +32,6 @@ private:
     Layer *getLayer(int z) { return _layers[z - _completedLayers]; }
     void createLayer();
     void createLayer(int actives, int hydrogens);
-    void initDimerLayer(int layer);
-    void setDimer(Carbon *carbon);
 
     void getBasisCarbons(const int3 &currentCoords, Carbon *bottomCarbons[]);
     void getAroundCarbons(int targetZMod, const int3 &currentCoords, Carbon *frontCarbons[]);
