@@ -5,12 +5,13 @@
 #include <iostream> //
 
 AddHReaction::AddHReaction(Surface *surface) : MonoReaction(surface) {
-    // _k = Handbook.instance()->value("addhreaction", "k");
+    _k = Handbook::instance()->value("Add H reaction", "k");
 }
 
 double AddHReaction::coef() const {
-    return 2e13 * __reactor->hydrogenConcentration();
-    // return _k * __reactor->hydrogenConcentration();
+           //13
+    //return 2e5 * __reactor->hydrogenConcentration();
+    return _k * __reactor->hydrogenConcentration();
 }
 
 void AddHReaction::seeAt(Carbon *carbon)  {

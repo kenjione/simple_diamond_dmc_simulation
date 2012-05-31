@@ -5,11 +5,16 @@
 #include <iostream> //
 
 MigrationBridgeReaction::MigrationBridgeReaction(Surface *surface, Crystal *crystal) :
-    MonoReaction(surface), _crystal(crystal) {}
+    MonoReaction(surface), _crystal(crystal) {
+    _k = Handbook::instance()->value("Migration bridge reaction", "k");
+    _E = Handbook::instance()->value("Migration bridge reaction", "E");
+}
 
 double MigrationBridgeReaction::coef() const {
                  //13
-    return 6.13 * 1e7 * exp(-18.269 / __reactor->temperature());
+    //return 6.13 * 1e30 * exp(-18.269 / __reactor->temperature());
+
+    return _k * exp (-_E / R / __reactor->temperature());
 }
 
 void MigrationBridgeReaction::seeAt(Carbon *carbon) {

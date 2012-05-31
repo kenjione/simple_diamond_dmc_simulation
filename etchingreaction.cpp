@@ -5,7 +5,9 @@
 #include <iostream> //
 
 EtchingReaction::EtchingReaction(Surface *surface, Crystal *crystal) :
-    MonoReaction(surface), _crystal(crystal) {}
+    MonoReaction(surface), _crystal(crystal) {
+
+}
 
 double EtchingReaction::coef() const {
     // TODO: надо прочекать всю формулу и чётко проверить размерности. проверить __reactor->temperature() на равенство нулю %)
@@ -20,8 +22,9 @@ double EtchingReaction::coef() const {
 
     //return pow(2.72, degree);
 
+    return Handbook::instance()->value("Etching reaction", "coef");
                  //10
-    return 2.6 * 1e1; // поставил вручную просто для проверки
+    //return 2.6 * 1e-5; // поставил вручную просто для проверки
 }
 
 void EtchingReaction::seeAt(Carbon *carbon) {

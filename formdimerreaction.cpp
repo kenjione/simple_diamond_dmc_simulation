@@ -5,7 +5,10 @@
 #include <iostream> //
 
 FormDimerReaction::FormDimerReaction(Surface *surface, Crystal *crystal) :
-    DualReaction(surface), _crystal(crystal) {}
+    DualReaction(surface), _crystal(crystal) {
+    _k = Handbook::instance()->value("Form dimer reaction", "k");
+    _E = Handbook::instance()->value("Form dimer reaction", "E");
+}
 
 void FormDimerReaction::operator() (Carbon *first, Carbon *second) {
     if (_pairs.find(first) != _pairs.end() || _crystal->hasAbove(first, second)) return;
@@ -18,7 +21,9 @@ void FormDimerReaction::operator() (Carbon *first, Carbon *second) {
 
 double FormDimerReaction::coef() const {
            //12
-    return 1e5 * exp(-352.3 / __reactor->temperature());
+    //return 1e3 * exp(-352.3 / __reactor->temperature());
+
+    return _k * exp (-_E / R / __reactor->temperature());
 }
 
 void FormDimerReaction::seeAt(Carbon *first, Carbon *second) {
