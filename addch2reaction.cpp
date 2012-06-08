@@ -5,11 +5,15 @@
 #include <iostream> //
 
 AddCH2Reaction::AddCH2Reaction(Surface *surface, Crystal *crystal) :
-    DualReaction(surface), _crystal(crystal) {}
+    DualReaction(surface), _crystal(crystal) {
+    _k = Handbook::instance()->value("Add CH2 reaction", "k");
+}
 
 double AddCH2Reaction::coef() const {
     // 1e13 * [CH3];
-    return 1e13 * __reactor->methylConcentration();
+    //return 1e13 * __reactor->methylConcentration();
+
+    return _k * __reactor->methylConcentration();
 }
 
 void AddCH2Reaction::seeAt(Carbon *first, Carbon *second) {

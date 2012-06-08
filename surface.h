@@ -42,6 +42,8 @@ private:
     std::map<Carbon *,Carbon *>::const_iterator findDimer(Carbon *first, Carbon *second) const;
     bool iteratorIsDimer(const std::map<Carbon *,Carbon *>::const_iterator &it, Carbon *first, Carbon *second) const;
 
+    void initDimerLayer();
+
     void formBondsFor(Carbon *first, Carbon *second);
     void dropBondsFor(Carbon *first, Carbon *second);
     void removeFromDimersHash(Carbon *first, Carbon *second);

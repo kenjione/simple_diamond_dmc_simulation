@@ -13,5 +13,38 @@ C(H) = 1e-9
 C(CH3) = 1e-10
 
 
-#[addhreaction]
-#k =
+[Abs H reaction]
+
+k = 5.2e13
+E =	6652.8
+
+[Form dimer reaction]
+
+k =	1e12
+E =	697.554
+
+[Drop dimer reaction]
+
+k = 4.79e13
+E = 14248.08
+
+[Add CH2 reaction]
+
+k =	1e13
+E =	0
+
+[Etching reaction]
+k = 0
+E = 0
+coef = 20000
+
+[Migration bridge reaction]
+k = 6.13e13
+E =	36.17262
+
+[Migration H reaction]
+k = 2.3e5
+E = 51100
+
+[Add H reaction]
+k = 2.0e13

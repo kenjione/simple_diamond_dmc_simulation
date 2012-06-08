@@ -38,6 +38,7 @@ Runner::~Runner() {
 }
 
 void Runner::run() {
+    save();
     auto doReaction = [this]() {
         return _surface->doReaction(_reactionsPool);
     };

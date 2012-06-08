@@ -12,12 +12,15 @@ public:
     void seeAt(Carbon *first, Carbon *second);
     void reset();
     void doIt();
+    void initDimerLayer();
     void operator() (Carbon *first, Carbon *second);
 
 protected:
     double coef() const;
 
 private:
+    void makeDimer(size_t siteIndex);
+
     Crystal *_crystal;
     std::set<Carbon *>  _pairs;
 };

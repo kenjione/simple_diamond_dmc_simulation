@@ -22,7 +22,9 @@ protected:
     static Reactor *__reactor;
     static float R;
 
-    Reaction(Surface *surface) : _surface(surface), _times(0) {}
+    float _k, _E;
+
+    Reaction(Surface *surface) : _surface(surface), _times(0), _k(0), _E(0) {}
 
     virtual double coef() const = 0;
 

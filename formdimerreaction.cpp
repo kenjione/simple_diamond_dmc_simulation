@@ -5,7 +5,10 @@
 #include <iostream> //
 
 FormDimerReaction::FormDimerReaction(Surface *surface, Crystal *crystal) :
-    DualReaction(surface), _crystal(crystal) {}
+    DualReaction(surface), _crystal(crystal) {
+    _k = Handbook::instance()->value("Form dimer reaction", "k");
+    _E = Handbook::instance()->value("Form dimer reaction", "E");
+}
 
 void FormDimerReaction::operator() (Carbon *first, Carbon *second) {
     if (_pairs.find(first) != _pairs.end() || _crystal->hasAbove(first, second)) return;
@@ -18,20 +21,33 @@ void FormDimerReaction::operator() (Carbon *first, Carbon *second) {
 
 double FormDimerReaction::coef() const {
            //12
-    return 1e5 * exp(-352.3 / __reactor->temperature());
-}
+    //return 1e3 * exp(-352.3 / __reactor->temperature());
 
+    return _k * exp (-_E / R / __reactor->temperature());
+}
 
 void FormDimerReaction::seeAt(Carbon *first, Carbon *second) {
     _crystal->posDimerIter(first, std::ref(*this));
 }
 
 void FormDimerReaction::doIt() {
-    int siteRandomIndex = rand() % _sites.size();
-    _surface->addDimer(_sites[siteRandomIndex].first, _sites[siteRandomIndex].second);
+    size_t siteRandomIndex = rand() % _sites.size();
+    makeDimer(siteRandomIndex);
+}
+
+void FormDimerReaction::initDimerLayer() {
+    for (size_t i = 0; i < _sites.size(); i++) {
+        if (!_sites[i].first->isDimer() && !_sites[i].second->isDimer()) {
+            makeDimer(i);
+        }
+    }
 }
 
 void FormDimerReaction::reset() {
     DualReaction::reset();
     _pairs.clear();
+}
+
+void FormDimerReaction::makeDimer(size_t siteIndex) {
+    _surface->addDimer(_sites[siteIndex].first, _sites[siteIndex].second);
 }

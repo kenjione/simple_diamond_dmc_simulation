@@ -49,15 +49,15 @@ void Configurator::parseParams(int argc, char* argv[]) {
         else throw ParseParamsError("Неизвестный парамер", current_param.c_str());
     }
 
-    if ((_steps != STEPS || _any_step != ANY_STEP) && (_full_time != FULL_TIME || _any_time != ANY_TIME)) {
-        throw ParseError("Нельзя использовать одновременно параметры установки частоты сохранения, из разных пар. Для уточнения смотрите справку (--help).");
+    if ((_steps != STEPS || _any_step != ANY_STEP) && !isSteps()) {
+        throw ParseError("Нельзя использовать одновременно параметры установки частоты сохранения, из разных пар.");
     }
 }
 
 std::string Configurator::help() const {
     std::stringstream result;
     result << "Расчёт процесса роста кристалла алмаза CVD методом Динамическим методом Монте Карло\n"
-            << "(c) 2012 РХТУ им. Д.И. Менделеева, каф. ИКТ, А.Чернышёв, Г.Аверчук\n" // TODO: можно и отчества указать ;)
+            << "(c) 2012 РХТУ им. Д.И. Менделеева, каф. ИКТ, А.М. Чернышёв, Г.Ю. Аверчук\n" // TODO: можно и отчества указать ;)
             << "\n"
             << "Запуск программы:\n"
             << "  " << _program_name << " [параметры] [префикс_выходных_файлов]\n"
@@ -88,7 +88,10 @@ std::string Configurator::help() const {
 }
 
 bool Configurator::isSteps() const {
-    return _full_time != FULL_TIME || _any_time != ANY_TIME;
+    auto mulAndRound = [](float number) {
+        return (int)(1000000000 * number + 0.5); // билятский костыль, потому что 1e-5 != 1e-5 :(
+    };
+    return !(mulAndRound(_full_time) != mulAndRound(FULL_TIME) || _any_time != ANY_TIME);
 }
 
 std::string Configurator::outFileName(const char *suffix) const {

@@ -1,5 +1,5 @@
 .idea
 *~
-*.pro.user
+*.pro.user*
 *.autosave
 simple_dmc

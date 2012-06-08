@@ -4,7 +4,10 @@
 
 //#include <iostream> //
 
-MigrationHReaction::MigrationHReaction(Surface *surface) : DualReaction(surface) {}
+MigrationHReaction::MigrationHReaction(Surface *surface) : DualReaction(surface) {
+    _k = Handbook::instance()->value("Migration H reaction", "k");
+    _E = Handbook::instance()->value("Migration H reaction", "E");
+}
 
 double MigrationHReaction::coef() const {
             // 13
