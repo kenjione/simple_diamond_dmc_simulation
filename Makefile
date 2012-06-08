@@ -7,4 +7,4 @@ all :
 
 clean :
 	rm -rf *.o
-	rm diamond_easy
+	rm $(APP_NAME)
