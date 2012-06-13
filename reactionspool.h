@@ -10,11 +10,12 @@
 #include "formdimerreaction.h"
 #include "dropdimerreaction.h"
 #include "etchingreaction.h"
-#include "migrationbridgereaction.h"
 #include "migrationhreaction.h"
+#include "migrationbridgereaction.h"
+#include "migrationfrontdown.h"
 
 
-#define REACTIONS_NUM 8
+#define REACTIONS_NUM 9
 
 
 class ReactionsPool
@@ -32,6 +33,8 @@ public:
     double doReaction();
     void reset();
 
+    FormDimerReaction &formDimerReaction();
+
 private:
     double totalRate();
 
@@ -41,8 +44,9 @@ private:
     DropDimerReaction _dropDimer;
     AddCH2Reaction _addCH2;
     EtchingReaction _etching;
-    MigrationBridgeReaction _migrationBridge;
     MigrationHReaction _migrationH;
+    MigrationBridgeReaction _migrationBridge;
+    MigrationFrontDown _migrationFrontDown;
 
     Reaction *_reactions[REACTIONS_NUM];
 

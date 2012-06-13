@@ -8,7 +8,7 @@
 class EtchingReaction : public MonoReaction
 {
 public:
-    EtchingReaction(Surface *surface, Crystal *crystal);
+    EtchingReaction(Surface *surface, Crystal *crystal, const char *paragraphName);
 
     void seeAt(Carbon *carbon);
     void doIt();
@@ -21,6 +21,7 @@ protected:
 
 private:
     Crystal *_crystal;
+    float _coef;
     std::vector<std::pair<Carbon*, Carbon*> >  _basis;
 };
 

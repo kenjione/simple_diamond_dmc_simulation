@@ -15,7 +15,7 @@ public:
     virtual void seeAt(Carbon *first, Carbon *second) = 0;
 
 protected:
-    DualReaction(Surface *surface);
+    DualReaction(Surface *surface, const char *paragraphName);
 
     std::vector<std::pair<Carbon*, Carbon*> > _sites;
 };

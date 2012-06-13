@@ -7,7 +7,7 @@
 class AddCH2Reaction : public DualReaction
 {
 public:
-    AddCH2Reaction(Surface *surface, Crystal *crystal);
+    AddCH2Reaction(Surface *surface, Crystal *crystal, const char *paragraphName);
 
     void seeAt(Carbon *first, Carbon *second);
     void doIt();

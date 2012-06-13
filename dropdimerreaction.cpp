@@ -2,17 +2,12 @@
 #include <cmath>
 #include <cstdlib>
 
-#include <iostream> //
 
-DropDimerReaction::DropDimerReaction(Surface *surface) : DualReaction(surface) {
-    _k = Handbook::instance()->value("Drop dimer reaction", "k");
-    _E = Handbook::instance()->value("Drop dimer reaction", "E");
+DropDimerReaction::DropDimerReaction(Surface *surface, const char *paragraphName) :
+    DualReaction(surface, paragraphName) {
 }
 
 double DropDimerReaction::coef() const {
-                  //13
-    // return 4.79 * 1e2 * exp(-7196.8 / __reactor->temperature());
-
     return _k * exp(-_E / R / __reactor->temperature());
 }
 

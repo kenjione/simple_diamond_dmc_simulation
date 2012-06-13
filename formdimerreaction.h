@@ -7,7 +7,7 @@
 class FormDimerReaction : public DualReaction
 {
 public:
-    FormDimerReaction(Surface *surface, Crystal *crystal);
+    FormDimerReaction(Surface *surface, Crystal *crystal, const char *paragraphName);
 
     void seeAt(Carbon *first, Carbon *second);
     void reset();

@@ -10,6 +10,10 @@ struct int3 {
     bool operator< (const int3& oi) const {
         return (z < oi.z || y < oi.y || x < oi.x);
     }
+
+    bool operator== (const int3& oi) const {
+        return (z == oi.z && y == oi.y && x == oi.x);
+    }
 };
 
 #endif // INT3_H

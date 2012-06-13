@@ -5,7 +5,6 @@
 #include <assert.h>
 
 Surface::Surface(Crystal *crystal) : _crystal(crystal) {
-    init();
 }
 
 Surface::~Surface() {}
@@ -26,9 +25,9 @@ std::deque<int> Surface::setsNumbers() const {
     return numbers;
 }
 
-void Surface::init() {
+void Surface::init(ReactionsPool *reactionPool) {
     _crystal->throughAllCarbonsIter(std::ref(*this));
-    initDimerLayer();
+    initDimerLayer(reactionPool);
 }
 
 void Surface::operator() (Carbon *carbon) {
@@ -136,9 +135,8 @@ bool Surface::iteratorIsDimer(const std::map<Carbon *, Carbon *>::const_iterator
     return false;
 }
 
-void Surface::initDimerLayer()
-{
-    FormDimerReaction formDimer(this, _crystal);
+void Surface::initDimerLayer(ReactionsPool *reactionPool) {
+    FormDimerReaction &formDimer = reactionPool->formDimerReaction();
     for (Carbon *carbon : _activeCarbons) {
         formDimer.seeAt(carbon, 0);
     }

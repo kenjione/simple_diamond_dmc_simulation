@@ -38,7 +38,8 @@ SOURCES += main.cpp\
     surfacesaver.cpp \
     crystalsaver.cpp \
     timenumbercurvessaver.cpp \
-    configurator.cpp
+    configurator.cpp \
+    migrationfrontdown.cpp
 
 HEADERS  += \
     surface.h \
@@ -70,7 +71,8 @@ HEADERS  += \
     timenumbercurvessaver.h \
     configurator.h \
     parse_error.h \
-    parse_params_error.h
+    parse_params_error.h \
+    migrationfrontdown.h
 
 FORMS    +=
 

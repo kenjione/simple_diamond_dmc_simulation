@@ -2,24 +2,23 @@
 #include <cmath>
 #include <cstdlib>
 
-#include <iostream> //
+#include <iostream>
 
-MigrationBridgeReaction::MigrationBridgeReaction(Surface *surface, Crystal *crystal) :
-    MonoReaction(surface), _crystal(crystal) {
-    _k = Handbook::instance()->value("Migration bridge reaction", "k");
-    _E = Handbook::instance()->value("Migration bridge reaction", "E");
-}
+MigrationBridgeReaction::MigrationBridgeReaction(Surface *surface, Crystal *crystal, const char *paragraphName) :
+    MonoReaction(surface, paragraphName), _crystal(crystal)
+{}
 
 double MigrationBridgeReaction::coef() const {
-                 //13
-    //return 6.13 * 1e30 * exp(-18.269 / __reactor->temperature());
+    return _k * exp (-_E / (R * __reactor->temperature()));
+}
 
-    return _k * exp (-_E / R / __reactor->temperature());
+bool MigrationBridgeReaction::checkConditions(Carbon *carbon) const {
+    return ((carbon->actives() + carbon->hydrogens() <= 1) || carbon->coords().z == 0 || carbon->isDimer());
 }
 
 void MigrationBridgeReaction::seeAt(Carbon *carbon) {
     // на первых итерациях лезет искать bottomNeighbours у карбонов на первом слое (т.е пытается применить getLayer для z = -1)
-    if ((carbon->actives() + carbon->hydrogens() <= 1) || carbon->coords().z == 0 || carbon->isDimer()) return;
+    if (checkConditions(carbon)) return;
     _crystal->posMigrIter(carbon, std::ref(*this));
 }
 
@@ -28,7 +27,7 @@ void MigrationBridgeReaction::operator() (Carbon *carbon, const int3 &to,
                                            Carbon *tfBasis, Carbon *tsBasis)
 {
     // проверяем куда мигрируем
-    if (!_surface->isDimer(tfBasis, tsBasis) || tfBasis->actives() == 0 || tsBasis->actives() == 0) return;
+    if (!(_surface->isDimer(tfBasis, tsBasis) || (tfBasis->actives() > 0 && tsBasis->actives() > 0))) return;
 
     auto migrationInfoLambda = [this, &to, &tfBasis, &tsBasis]() {
         _infos[_infos.size() - 1].push_back(MigrationBridgeInfo(to, std::pair<Carbon *, Carbon *>(tfBasis, tsBasis)));

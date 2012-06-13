@@ -20,6 +20,7 @@ Runner::Runner(const Configurator &configurator)
 
     _reactor = new Reactor();
     _reactionsPool = new ReactionsPool(_surface, _crystal);
+    _surface->init(_reactionsPool);
     Reaction::setReactor(_reactor); // t=1200K, [H]=10e-9, [CH2]=10e-10 mol/cm3
 
     //char outFileName[] = "/home/alex/Monte-Carlo/";

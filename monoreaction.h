@@ -14,7 +14,7 @@ public:
     virtual void seeAt(Carbon *carbon) = 0;
 
 protected:
-    MonoReaction(Surface *surface);
+    MonoReaction(Surface *surface, const char *paragraphName);
 
     std::vector<Carbon *> _sites;
 };

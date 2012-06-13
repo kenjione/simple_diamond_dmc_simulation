@@ -67,28 +67,10 @@ bool Crystal::hasAbove(Carbon *first, Carbon *second) {
 }
 
 void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &,
-                                                              Carbon *, Carbon *, Carbon *, Carbon *)> reaction) {
-    const int3 &currentCoords = carbon->coords();
+                                                              Carbon *, Carbon *, Carbon *, Carbon *)> reaction)
+{
     int3 flatNeighboursCoords[4];
-    for (int3 &neighbourCoords : flatNeighboursCoords) neighbourCoords = currentCoords;
-
-    int less_x, more_x;
-    torusCoordinate('x', currentCoords.x, less_x, more_x);
-
-    int less_y, more_y;
-    torusCoordinate('y', currentCoords.y, less_y, more_y);
-
-    if (currentCoords.z % 2 == 0) {
-        flatNeighboursCoords[0].y = less_y;
-        flatNeighboursCoords[1].y = more_y;
-        flatNeighboursCoords[2].x = less_x;
-        flatNeighboursCoords[3].x = more_x;
-    } else {
-        flatNeighboursCoords[0].x = less_x;
-        flatNeighboursCoords[1].x = more_x;
-        flatNeighboursCoords[2].y = less_y;
-        flatNeighboursCoords[3].y = more_y;
-    }
+    getFlatNeighbourCoords(carbon->coords(), flatNeighboursCoords);
 
     Carbon *currBasisCarbons[2];
     getBasisCarbons(carbon->coords(), currBasisCarbons);
@@ -101,6 +83,33 @@ void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const in
         if (!toBasisCarbons[0] || !toBasisCarbons[1]) continue;
 
         reaction(carbon, neighbourCoords, currBasisCarbons[0], currBasisCarbons[1], toBasisCarbons[0], toBasisCarbons[1]);
+    }
+}
+
+void Crystal::posMigrDownFrontIter(Carbon *carbon, std::function<void (Carbon *, const int3 &,
+                                                                       Carbon *, Carbon *,
+                                                                       Carbon *, Carbon *)> reaction)
+{
+    Carbon *currBasisCarbons[2];
+    getBasisCarbons(carbon->coords(), currBasisCarbons);
+
+    for (int i = 0; i < 2; ++i) {
+//        if (currBasisCarbons[i]->actives() == 0) continue;
+
+        int3 crossNeighbourCoords[2];
+        getCrossDirectionCoords(currBasisCarbons[i]->coords(), crossNeighbourCoords);
+
+        int anotherBaseIndex = (i == 0) ? 1 : 0;
+        int3 &toCoord = (currBasisCarbons[anotherBaseIndex]->coords() == crossNeighbourCoords[0]) ?
+                    crossNeighbourCoords[1] : crossNeighbourCoords[0];
+        if (getLayer(toCoord.z)->carbon(toCoord.x, toCoord.y)) continue;
+
+        Carbon *toLowBasisCarbons[2];
+        getBasisCarbons(toCoord, toLowBasisCarbons);
+
+        reaction(carbon, toCoord,
+                 currBasisCarbons[0], currBasisCarbons[1],
+                 toLowBasisCarbons[0], toLowBasisCarbons[1]);
     }
 }
 
@@ -141,10 +150,6 @@ void Crystal::removeCarbon(Carbon *carbon) {
 }
 
 void Crystal::move(Carbon *carbon, const int3 &to) {
-
-//    std::cout << "\nfrom : { " << carbon->coords().x << ", " << carbon->coords().y << ", " << carbon->coords().z << " }  to { "
-//              << to.x << ", " << to.y << ", " << to.z << " }\n";
-
     const int3 &from = carbon->coords();
     getLayer(from.z)->move(from.x, from.y, to.x, to.y);
 }
@@ -203,23 +208,9 @@ void Crystal::getBasisCarbons(const int3 &currentCoords, Carbon *bottomCarbons[2
     }
 }
 
-void Crystal::getAroundCarbons(int targetZMod, const int3 &currentCoords, Carbon *frontCarbons[]) {
+void Crystal::getAroundCarbons(int targetZMod, const int3 &currentCoords, Carbon *frontCarbons[2]) {
     int3 directNeighboursCoords[2];
-    for (int3 &neighbourCoords : directNeighboursCoords) neighbourCoords = currentCoords;
-
-    if (currentCoords.z % 2 == targetZMod) {
-        int less_y, more_y;
-        torusCoordinate('y', currentCoords.y, less_y, more_y);
-
-        directNeighboursCoords[0].y = less_y;
-        directNeighboursCoords[1].y = more_y;
-    } else {
-        int less_x, more_x;
-        torusCoordinate('x', currentCoords.x, less_x, more_x);
-
-        directNeighboursCoords[0].x = less_x;
-        directNeighboursCoords[1].x = more_x;
-    }
+    getAroundCoords(targetZMod, currentCoords, directNeighboursCoords);
 
     for (int i = 0; i < 2; i++) {
         const int3 &neighbourCoords = directNeighboursCoords[i];
@@ -229,6 +220,37 @@ void Crystal::getAroundCarbons(int targetZMod, const int3 &currentCoords, Carbon
 
 void Crystal::getFrontDirectionCarbons(const int3 &currentCoords, Carbon *frontCarbons[2]) {
     getAroundCarbons(0, currentCoords, frontCarbons);
+}
+
+void Crystal::getAroundCoords(int targetZMod, const int3 &currentCoords, int3 aroundCoords[2]) {
+    for (int i = 0; i < 2; ++i) aroundCoords[i] = currentCoords;
+
+    if (currentCoords.z % 2 == targetZMod) {
+        int less_y, more_y;
+        torusCoordinate('y', currentCoords.y, less_y, more_y);
+
+        aroundCoords[0].y = less_y;
+        aroundCoords[1].y = more_y;
+    } else {
+        int less_x, more_x;
+        torusCoordinate('x', currentCoords.x, less_x, more_x);
+
+        aroundCoords[0].x = less_x;
+        aroundCoords[1].x = more_x;
+    }
+}
+
+void Crystal::getFrontDirectionCoords(const int3 &currentCoords, int3 frontCoords[2]) {
+    getAroundCoords(0, currentCoords, frontCoords);
+}
+
+void Crystal::getCrossDirectionCoords(const int3 &currentCoords, int3 crossCoords[2]) {
+    getAroundCoords(1, currentCoords, crossCoords);
+}
+
+void Crystal::getFlatNeighbourCoords(const int3 &currentCoords, int3 neighbourCoords[4]) {
+    getFrontDirectionCoords(currentCoords, neighbourCoords);
+    getCrossDirectionCoords(currentCoords, neighbourCoords + 2);
 }
 
 void Crystal::torusCoordinate(char coord, int current, int& less, int& more) const {

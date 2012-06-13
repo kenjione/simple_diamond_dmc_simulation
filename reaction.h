@@ -22,13 +22,15 @@ protected:
     static Reactor *__reactor;
     static float R;
 
-    float _k, _E;
-
-    Reaction(Surface *surface) : _surface(surface), _times(0), _k(0), _E(0) {}
+    Reaction(Surface *surface, const char *paragraphName) : _surface(surface), _k(0), _E(0), _times(0) {
+        _k = Handbook::instance()->value(paragraphName, "k");
+        _E = Handbook::instance()->value(paragraphName, "E");
+    }
 
     virtual double coef() const = 0;
 
     Surface *_surface;
+    float _k, _E;
     int _times;
 };
 

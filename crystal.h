@@ -16,6 +16,7 @@ public:
 
     void posDimerIter(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction);
     void posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &, Carbon *, Carbon *, Carbon *, Carbon *)> reaction);
+    void posMigrDownFrontIter(Carbon *carbon, std::function<void (Carbon *, const int3 &, Carbon *, Carbon *, Carbon *, Carbon *)> reaction);
     void getBasis(Carbon *carbon, std::function<void (Carbon *, Carbon *, Carbon *)> reaction);
     int3 topPosition(Carbon *first, Carbon* second);
 
@@ -38,6 +39,12 @@ private:
     void getBasisCarbons(const int3 &currentCoords, Carbon *bottomCarbons[]);
     void getAroundCarbons(int targetZMod, const int3 &currentCoords, Carbon *frontCarbons[]);
     void getFrontDirectionCarbons(const int3 &currentCoords, Carbon *frontCarbons[]);
+
+    void getAroundCoords(int targetZMod, const int3 &currentCoords, int3 aroundCoords[]);
+    void getFrontDirectionCoords(const int3 &currentCoords, int3 frontCoords[]);
+    void getCrossDirectionCoords(const int3 &currentCoords, int3 crossCoords[]);
+    void getFlatNeighbourCoords(const int3 &currentCoords, int3 neighbourCoords[]);
+
     void torusCoordinate(char coord, int current, int &less, int &more) const;
 
     int _sizeX, _sizeY;

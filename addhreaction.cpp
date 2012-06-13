@@ -2,15 +2,10 @@
 #include <cmath>
 #include <cstdlib>
 
-#include <iostream> //
-
-AddHReaction::AddHReaction(Surface *surface) : MonoReaction(surface) {
-    _k = Handbook::instance()->value("Add H reaction", "k");
-}
+AddHReaction::AddHReaction(Surface *surface, const char *paragraphName) : MonoReaction(surface, paragraphName)
+{}
 
 double AddHReaction::coef() const {
-           //13
-    //return 2e5 * __reactor->hydrogenConcentration();
     return _k * __reactor->hydrogenConcentration();
 }
 

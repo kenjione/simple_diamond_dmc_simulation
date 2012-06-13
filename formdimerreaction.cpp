@@ -2,12 +2,8 @@
 #include <cmath>
 #include <cstdlib>
 
-#include <iostream> //
-
-FormDimerReaction::FormDimerReaction(Surface *surface, Crystal *crystal) :
-    DualReaction(surface), _crystal(crystal) {
-    _k = Handbook::instance()->value("Form dimer reaction", "k");
-    _E = Handbook::instance()->value("Form dimer reaction", "E");
+FormDimerReaction::FormDimerReaction(Surface *surface, Crystal *crystal, const char *paragraphName) :
+    DualReaction(surface, paragraphName), _crystal(crystal) {
 }
 
 void FormDimerReaction::operator() (Carbon *first, Carbon *second) {
@@ -20,10 +16,7 @@ void FormDimerReaction::operator() (Carbon *first, Carbon *second) {
 }
 
 double FormDimerReaction::coef() const {
-           //12
-    //return 1e3 * exp(-352.3 / __reactor->temperature());
-
-    return _k * exp (-_E / R / __reactor->temperature());
+    return _k * exp (-_E / (R * __reactor->temperature()));
 }
 
 void FormDimerReaction::seeAt(Carbon *first, Carbon *second) {

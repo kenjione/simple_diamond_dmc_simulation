@@ -1,11 +1,9 @@
 #include "monoreaction.h"
 
-#include <iostream> //
-
-MonoReaction::MonoReaction(Surface *surface) : Reaction(surface) {}
+MonoReaction::MonoReaction(Surface *surface, const char *paragraphName) :
+    Reaction(surface, paragraphName) {}
 
 double MonoReaction::commonRate()  {
-   //std:: cout << "siteSize: " << _sites.size() << "\n";
     return coef() * _sites.size();
 }
 

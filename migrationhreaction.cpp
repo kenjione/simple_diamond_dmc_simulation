@@ -2,16 +2,12 @@
 #include <cmath>
 #include <cstdlib>
 
-//#include <iostream> //
-
-MigrationHReaction::MigrationHReaction(Surface *surface) : DualReaction(surface) {
-    _k = Handbook::instance()->value("Migration H reaction", "k");
-    _E = Handbook::instance()->value("Migration H reaction", "E");
+MigrationHReaction::MigrationHReaction(Surface *surface, const char *paragraphName) :
+    DualReaction(surface, paragraphName) {
 }
 
 double MigrationHReaction::coef() const {
-            // 13
-    return 2.3e5 * exp(-51100 / (__reactor->temperature() * R));
+    return _k * exp(_E / (__reactor->temperature() * R));
 }
 
 void MigrationHReaction::seeAt(Carbon *first, Carbon *second) {

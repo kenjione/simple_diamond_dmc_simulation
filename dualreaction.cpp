@@ -1,12 +1,8 @@
 #include "dualreaction.h"
 
-
-#include <iostream> //
-
-DualReaction::DualReaction(Surface *surface) : Reaction(surface) {}
+DualReaction::DualReaction(Surface *surface, const char *paragraphName) : Reaction(surface, paragraphName) {}
 
 double DualReaction::commonRate() {
- //   std:: cout << "siteSize: " << _sites.size() << "\n";
     return coef() * _sites.size();
 }
 
