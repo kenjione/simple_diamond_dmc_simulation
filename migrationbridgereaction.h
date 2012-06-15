@@ -26,10 +26,10 @@ protected:
     bool checkConditions(Carbon *carbon) const;
 
     Crystal *_crystal;
+    std::vector<std::vector<MigrationBridgeInfo> > _infos; // в private
+    std::vector<std::pair<Carbon *,  Carbon *> > _currBasis; // в private
 
 private:
-    std::vector<std::pair<Carbon *,  Carbon *> > _currBasis;
-    std::vector<std::vector<MigrationBridgeInfo> > _infos;
 };
 
 #endif // MIGRATIONBRIDGE_H

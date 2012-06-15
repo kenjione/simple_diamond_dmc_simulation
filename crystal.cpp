@@ -1,6 +1,9 @@
 #include "crystal.h"
 #include <iostream>
 
+#include "migrationbridgereaction.h"
+#include "migrationfrontdown.h"
+
 Crystal::Crystal(int sizeX, int sizeY) : _sizeX(sizeX), _sizeY(sizeY), _completedLayers(0) {
 //    std::cout << "CRYSTAL SIZE: " << _sizeX << "x" << _sizeY << std::endl;
     init();
@@ -66,8 +69,7 @@ bool Crystal::hasAbove(Carbon *first, Carbon *second) {
     else return false;
 }
 
-void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &,
-                                                              Carbon *, Carbon *, Carbon *, Carbon *)> reaction)
+void Crystal::posMigrIter(Carbon *carbon, MigrationBridgeReaction &reaction)
 {
     int3 flatNeighboursCoords[4];
     getFlatNeighbourCoords(carbon->coords(), flatNeighboursCoords);
@@ -86,27 +88,32 @@ void Crystal::posMigrIter(Carbon *carbon, std::function<void (Carbon *, const in
     }
 }
 
-void Crystal::posMigrDownFrontIter(Carbon *carbon, std::function<void (Carbon *, const int3 &,
-                                                                       Carbon *, Carbon *,
-                                                                       Carbon *, Carbon *)> reaction)
+void Crystal::posMigrDownFrontIter(Carbon *carbon, MigrationFrontDown &reaction)
 {
     Carbon *currBasisCarbons[2];
     getBasisCarbons(carbon->coords(), currBasisCarbons);
 
+    // костыль на hasAbove :D
+//    if (carbon->isDimer() ||
+//            (carbon->actives() == 0 && carbon->hydrogens() == 0) ||
+//            (carbon->hydrogens() == 1 && carbon->actives()  == 0) ||
+//            (carbon->hydrogens() == 0 && carbon->actives() == 0)
+//            ) return;
+
     for (int i = 0; i < 2; ++i) {
 //        if (currBasisCarbons[i]->actives() == 0) continue;
-
-        int3 crossNeighbourCoords[2];
-        getCrossDirectionCoords(currBasisCarbons[i]->coords(), crossNeighbourCoords);
+        if (!currBasisCarbons[i]) return;
+        int3 frontNeighbourCoords[2];
+        getFrontDirectionCoords(currBasisCarbons[i]->coords(), frontNeighbourCoords);
 
         int anotherBaseIndex = (i == 0) ? 1 : 0;
-        int3 &toCoord = (currBasisCarbons[anotherBaseIndex]->coords() == crossNeighbourCoords[0]) ?
-                    crossNeighbourCoords[1] : crossNeighbourCoords[0];
+        int3 &toCoord = (currBasisCarbons[anotherBaseIndex]->coords() == frontNeighbourCoords[0]) ?
+                    frontNeighbourCoords[1] : frontNeighbourCoords[0];
         if (getLayer(toCoord.z)->carbon(toCoord.x, toCoord.y)) continue;
 
         Carbon *toLowBasisCarbons[2];
         getBasisCarbons(toCoord, toLowBasisCarbons);
-
+        if (!toLowBasisCarbons[0] || !toLowBasisCarbons[1]) return;
         reaction(carbon, toCoord,
                  currBasisCarbons[0], currBasisCarbons[1],
                  toLowBasisCarbons[0], toLowBasisCarbons[1]);
@@ -151,7 +158,15 @@ void Crystal::removeCarbon(Carbon *carbon) {
 
 void Crystal::move(Carbon *carbon, const int3 &to) {
     const int3 &from = carbon->coords();
-    getLayer(from.z)->move(from.x, from.y, to.x, to.y);
+    if (to.z == from.z) {
+        getLayer(from.z)->move(from.x, from.y, to.x, to.y);
+    } else {
+        assert(carbon); // проверяем откуда мигрируем (на этапе разработки)
+        assert(!getLayer(to.z)->carbon(to.x, to.y)); // проверяем куда мигрируем (на этапе разработки)
+        getLayer(from.z)->add(0, from.x, from.y);
+        carbon->move(to);
+        getLayer(to.z)->add(carbon, to.x, to.y);
+    }
 }
 
 int3 Crystal::topPosition(Carbon *first, Carbon *second) {

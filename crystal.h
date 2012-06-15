@@ -4,6 +4,9 @@
 #include <deque>
 #include "layer.h"
 
+class MigrationBridgeReaction;
+class MigrationFrontDown;
+
 class Crystal
 {
 public:
@@ -15,8 +18,10 @@ public:
     void throughAllCarbonsIter(std::function<void (Carbon *)> sf);
 
     void posDimerIter(Carbon *carbon, std::function<void (Carbon *, Carbon *)> reaction);
-    void posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &, Carbon *, Carbon *, Carbon *, Carbon *)> reaction);
-    void posMigrDownFrontIter(Carbon *carbon, std::function<void (Carbon *, const int3 &, Carbon *, Carbon *, Carbon *, Carbon *)> reaction);
+//    void posMigrIter(Carbon *carbon, std::function<void (Carbon *, const int3 &, Carbon *, Carbon *, Carbon *, Carbon *)> reaction);
+//    void posMigrDownFrontIter(Carbon *carbon, std::function<void (Carbon *, const int3 &, Carbon *, Carbon *, Carbon *, Carbon *)> reaction);
+    void posMigrIter(Carbon *carbon, MigrationBridgeReaction &reaction);
+    void posMigrDownFrontIter(Carbon *carbon, MigrationFrontDown &reaction);
     void getBasis(Carbon *carbon, std::function<void (Carbon *, Carbon *, Carbon *)> reaction);
     int3 topPosition(Carbon *first, Carbon* second);
 

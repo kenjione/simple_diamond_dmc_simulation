@@ -51,4 +51,3 @@ void Layer::move(int from_x, int from_y, int to_x, int to_y) {
     add(targetCarbon, to_x, to_y);
     add(0, from_x, from_y);
 }
-
