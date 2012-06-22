@@ -2,7 +2,9 @@
 #include <cmath>
 #include <cstdlib>
 
-#include <iostream>
+MigrationBridgeReaction::MigrationBridgeReaction(Surface *surface, Crystal *crystal) :
+    MonoReaction(surface, "Migration bridge reaction"), _crystal(crystal)
+{}
 
 MigrationBridgeReaction::MigrationBridgeReaction(Surface *surface, Crystal *crystal, const char *paragraphName) :
     MonoReaction(surface, paragraphName), _crystal(crystal)

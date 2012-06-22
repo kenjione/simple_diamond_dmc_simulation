@@ -2,10 +2,12 @@
 #include <cmath>
 #include <cstdlib>
 
-EtchingReaction::EtchingReaction(Surface *surface, Crystal *crystal, const char *paragraphName) :
-    MonoReaction(surface, paragraphName), _crystal(crystal)
+#define ETCHING_PARAGRAPH_NAME "Etching reaction"
+
+EtchingReaction::EtchingReaction(Surface *surface, Crystal *crystal) :
+    MonoReaction(surface, ETCHING_PARAGRAPH_NAME), _crystal(crystal)
 {
-    _coef = Handbook::instance()->value(paragraphName, "coef");
+    _coef = Handbook::instance()->value(ETCHING_PARAGRAPH_NAME, "coef");
 }
 
 double EtchingReaction::coef() const {

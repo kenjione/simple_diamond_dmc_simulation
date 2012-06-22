@@ -93,27 +93,23 @@ void Crystal::posMigrDownFrontIter(Carbon *carbon, MigrationFrontDown &reaction)
     Carbon *currBasisCarbons[2];
     getBasisCarbons(carbon->coords(), currBasisCarbons);
 
-    // костыль на hasAbove :D
-//    if (carbon->isDimer() ||
-//            (carbon->actives() == 0 && carbon->hydrogens() == 0) ||
-//            (carbon->hydrogens() == 1 && carbon->actives()  == 0) ||
-//            (carbon->hydrogens() == 0 && carbon->actives() == 0)
-//            ) return;
-
     for (int i = 0; i < 2; ++i) {
+//        if (!currBasisCarbons[i]) return;
+
 //        if (currBasisCarbons[i]->actives() == 0) continue;
-        if (!currBasisCarbons[i]) return;
+
         int3 frontNeighbourCoords[2];
         getFrontDirectionCoords(currBasisCarbons[i]->coords(), frontNeighbourCoords);
 
-        int anotherBaseIndex = (i == 0) ? 1 : 0;
+        int anotherBaseIndex = 1 - i;
         int3 &toCoord = (currBasisCarbons[anotherBaseIndex]->coords() == frontNeighbourCoords[0]) ?
                     frontNeighbourCoords[1] : frontNeighbourCoords[0];
         if (getLayer(toCoord.z)->carbon(toCoord.x, toCoord.y)) continue;
 
         Carbon *toLowBasisCarbons[2];
         getBasisCarbons(toCoord, toLowBasisCarbons);
-        if (!toLowBasisCarbons[0] || !toLowBasisCarbons[1]) return;
+        if (!toLowBasisCarbons[0] || !toLowBasisCarbons[1]) continue;
+
         reaction(carbon, toCoord,
                  currBasisCarbons[0], currBasisCarbons[1],
                  toLowBasisCarbons[0], toLowBasisCarbons[1]);
@@ -163,6 +159,7 @@ void Crystal::move(Carbon *carbon, const int3 &to) {
     } else {
         assert(carbon); // проверяем откуда мигрируем (на этапе разработки)
         assert(!getLayer(to.z)->carbon(to.x, to.y)); // проверяем куда мигрируем (на этапе разработки)
+
         getLayer(from.z)->add(0, from.x, from.y);
         carbon->move(to);
         getLayer(to.z)->add(carbon, to.x, to.y);

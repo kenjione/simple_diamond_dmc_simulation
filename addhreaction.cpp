@@ -2,7 +2,7 @@
 #include <cmath>
 #include <cstdlib>
 
-AddHReaction::AddHReaction(Surface *surface, const char *paragraphName) : MonoReaction(surface, paragraphName)
+AddHReaction::AddHReaction(Surface *surface) : MonoReaction(surface, "Add H reaction")
 {}
 
 double AddHReaction::coef() const {

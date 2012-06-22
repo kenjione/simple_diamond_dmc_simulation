@@ -2,8 +2,8 @@
 #include <cmath>
 #include <cstdlib>
 
-AddCH2Reaction::AddCH2Reaction(Surface *surface, Crystal *crystal, const char *paragraphName) :
-    DualReaction(surface, paragraphName), _crystal(crystal) {
+AddCH2Reaction::AddCH2Reaction(Surface *surface, Crystal *crystal) :
+    DualReaction(surface, "Add CH2 reaction"), _crystal(crystal) {
 }
 
 double AddCH2Reaction::coef() const {
