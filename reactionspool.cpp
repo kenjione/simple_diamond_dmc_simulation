@@ -4,15 +4,10 @@
 #include <cmath>
 
 ReactionsPool::ReactionsPool(Surface *surface, Crystal *crystal) :
-    _absH(surface, "Abs H reaction"),
-    _addH(surface, "Add H reaction"),
-    _formDimer(surface, crystal, "Form dimer reaction"),
-    _dropDimer(surface, "Drop dimer reaction"),
-    _addCH2(surface, crystal, "Add CH2 reaction"),
-    _etching(surface, crystal, "Etching reaction"),
-    _migrationH(surface, "Migration H reaction"),
-    _migrationBridge(surface, crystal, "Migration bridge reaction"),
-    _migrationFrontDown(surface, crystal, "Migration down front reaction")
+    _absH(surface), _addH(surface),
+    _formDimer(surface, crystal), _dropDimer(surface),
+    _addCH2(surface, crystal), _etching(surface, crystal),
+    _migrationH(surface), _migrationBridge(surface, crystal), _migrationFrontDown(surface, crystal)
 {
     _reactions[0] = &_absH;
     _reactions[1] = &_addH;

@@ -2,7 +2,7 @@
 #include <cmath>
 #include <cstdlib>
 
-AbsHReaction::AbsHReaction(Surface *surface, const char *paragraphName) : MonoReaction(surface, paragraphName)
+AbsHReaction::AbsHReaction(Surface *surface) : MonoReaction(surface, "Abs H reaction")
 {}
 
 double AbsHReaction::coef() const {

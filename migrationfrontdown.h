@@ -6,7 +6,7 @@
 class MigrationFrontDown : public MigrationBridgeReaction
 {
 public:
-    MigrationFrontDown(Surface *surface, Crystal *crystal, const char *paragraphName);
+    MigrationFrontDown(Surface *surface, Crystal *crystal);
 
     void seeAt(Carbon *carbon);
 };

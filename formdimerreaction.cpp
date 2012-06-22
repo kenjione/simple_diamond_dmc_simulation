@@ -2,8 +2,8 @@
 #include <cmath>
 #include <cstdlib>
 
-FormDimerReaction::FormDimerReaction(Surface *surface, Crystal *crystal, const char *paragraphName) :
-    DualReaction(surface, paragraphName), _crystal(crystal) {
+FormDimerReaction::FormDimerReaction(Surface *surface, Crystal *crystal) :
+    DualReaction(surface, "Form dimer reaction"), _crystal(crystal) {
 }
 
 void FormDimerReaction::operator() (Carbon *first, Carbon *second) {

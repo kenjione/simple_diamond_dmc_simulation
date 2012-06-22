@@ -2,9 +2,8 @@
 #include <cmath>
 #include <cstdlib>
 
-MigrationHReaction::MigrationHReaction(Surface *surface, const char *paragraphName) :
-    DualReaction(surface, paragraphName) {
-}
+MigrationHReaction::MigrationHReaction(Surface *surface) : DualReaction(surface, "Migration H reaction")
+{}
 
 double MigrationHReaction::coef() const {
     return _k * exp(_E / (__reactor->temperature() * R));
