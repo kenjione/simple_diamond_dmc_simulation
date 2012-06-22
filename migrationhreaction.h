@@ -6,7 +6,7 @@
 class MigrationHReaction : public DualReaction
 {
 public:
-    MigrationHReaction(Surface *surface, const char *paragraphName);
+    MigrationHReaction(Surface *surface);
 
     void seeAt(Carbon *first, Carbon* second);
     void doIt() ;

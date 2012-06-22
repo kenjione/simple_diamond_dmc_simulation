@@ -6,7 +6,7 @@
 class DropDimerReaction : public DualReaction
 {
 public:
-    DropDimerReaction(Surface *surface, const char *paragraphName);
+    DropDimerReaction(Surface *surface);
 
     void seeAt(Carbon *first, Carbon* second);
     void doIt();

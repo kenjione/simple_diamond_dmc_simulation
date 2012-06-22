@@ -8,7 +8,7 @@
 class EtchingReaction : public MonoReaction
 {
 public:
-    EtchingReaction(Surface *surface, Crystal *crystal, const char *paragraphName);
+    EtchingReaction(Surface *surface, Crystal *crystal);
 
     void seeAt(Carbon *carbon);
     void doIt();

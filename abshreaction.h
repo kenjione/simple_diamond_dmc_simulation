@@ -6,7 +6,7 @@
 class AbsHReaction : public MonoReaction
 {
 public:
-    AbsHReaction(Surface *surface, const char *paragraphName);
+    AbsHReaction(Surface *surface);
 
     void seeAt(Carbon *carbon);
     void doIt();

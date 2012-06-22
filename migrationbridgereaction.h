@@ -10,7 +10,7 @@
 class MigrationBridgeReaction : public MonoReaction
 {
 public:
-    MigrationBridgeReaction(Surface *surface, Crystal *crystal, const char *paragraphName);
+    MigrationBridgeReaction(Surface *surface, Crystal *crystal);
 
     void seeAt(Carbon *carbon);
     void doIt();
@@ -22,6 +22,8 @@ public:
                      //const std::pair<Carbon *, Carbon *> &toBasis);
 
 protected:
+    MigrationBridgeReaction(Surface *surface, Crystal *crystal, const char *paragraphName);
+
     double coef() const;
     bool checkConditions(Carbon *carbon) const;
 

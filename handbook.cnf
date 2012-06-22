@@ -18,7 +18,7 @@ C(CH3) = 1e-10
 k = 5.2e14
 #real
 #k = 5.2e13
-E =	6652.8
+E = 6652.8
 
 [Add H reaction]
 #fake
@@ -32,7 +32,7 @@ E = 0
 k = 1e4
 #real
 #k = 1e12
-E =	697.554
+E = 697.554
 
 [Drop dimer reaction]
 #fake
@@ -45,8 +45,8 @@ E = 14248.08
 #fake
 k = 1e16
 #real
-#k =	1e13
-E =	0
+#k = 1e13
+E = 0
 
 [Etching reaction]
 k = 0
@@ -62,12 +62,11 @@ E = 51100
 
 [Migration bridge reaction]
 #fake
-k = 6.13e4
+k = 6.13e5
 #real
 #k = 6.13e13
-E =	36.17262
+E = 36.17262
 
 [Migration down front reaction]
-k = 6.13e3
-E =	36.17262
-
+k = 6.13e4
+E = 36.17262
