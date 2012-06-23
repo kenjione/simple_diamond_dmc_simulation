@@ -9,15 +9,15 @@ ReactionsPool::ReactionsPool(Surface *surface, Crystal *crystal) :
     _addCH2(surface, crystal), _etching(surface, crystal),
     _migrationH(surface), _migrationBridge(surface, crystal), _migrationFrontDown(surface, crystal)
 {
-    _reactions[0] = &_absH;
-    _reactions[1] = &_addH;
-    _reactions[2] = &_etching;
-    _reactions[3] = &_migrationBridge;
-    _reactions[4] = &_addCH2;
-    _reactions[5] = &_formDimer;
-    _reactions[6] = &_dropDimer;
-    _reactions[7] = &_migrationH;
-    _reactions[8] = &_migrationFrontDown;
+    _reactions.push_back(&_absH);
+    _reactions.push_back(&_addH);
+    _reactions.push_back(&_etching);
+    _reactions.push_back(&_migrationBridge);
+    _reactions.push_back(&_addCH2);
+    _reactions.push_back(&_formDimer);
+    _reactions.push_back(&_dropDimer);
+    _reactions.push_back(&_migrationH);
+    _reactions.push_back(&_migrationFrontDown);
 }
 
 std::deque<std::string> ReactionsPool::reactionsNames() const {
@@ -36,8 +36,8 @@ std::deque<std::string> ReactionsPool::reactionsNames() const {
 
 std::deque<int> ReactionsPool::reactionsTimes() const {
     std::deque<int> times;
-    for (int i = 0; i < REACTIONS_NUM; i++) {
-        times.push_back(_reactions[i]->times());
+    for (Reaction *reaction : _reactions) {
+        times.push_back(reaction->times());
     }
 
     return times;
@@ -68,26 +68,30 @@ void ReactionsPool::seeAtDimer(const std::map<Carbon *, Carbon *> &dimers) {
 }
 
 double ReactionsPool::doReaction() {
-    double commonRates[REACTIONS_NUM];
-    for (int i = 0; i < REACTIONS_NUM; i++) commonRates[i] = _reactions[i]->commonRate();
+    double *commonRates = new double[_reactions.size()];
+    for (unsigned int i = 0; i < _reactions.size(); ++i) {
+        commonRates[i] = _reactions[i]->commonRate();
+    }
 
     // нормируем реакции.
-    double valuetedRates[REACTIONS_NUM];
     double tr = totalRate();
-    for (int i = 0; i < REACTIONS_NUM; i++) {
+    double *valuetedRates = new double[_reactions.size()];
+    for (unsigned int i = 0; i < _reactions.size(); ++i) {
         valuetedRates[i] = commonRates[i] / tr;
 //        std::cout << valuetedRates[i] << std::endl;
     }
 
     // строим линию
-    for (int i = 1; i < REACTIONS_NUM; i++) valuetedRates[i] += valuetedRates[i-1];
+    for (unsigned int i = 1; i < _reactions.size(); ++i) {
+        valuetedRates[i] += valuetedRates[i-1];
+    }
 
     auto random01 = []() { return rand() / double(RAND_MAX); };
     // кидаем случайное число, выбираем реакцию и проводим ее.
     double reactionIndex = random01();
     double dt = 0;
 
-    for (int i = 0; i < REACTIONS_NUM; i++) {
+    for (unsigned int i = 0; i < _reactions.size(); ++i) {
         if (reactionIndex < valuetedRates[i]) {
             _reactions[i]->doIt();
             _reactions[i]->incTimes();
@@ -99,12 +103,15 @@ double ReactionsPool::doReaction() {
         }
     }
 
+    delete [] valuetedRates;
+    delete [] commonRates;
+
 //    std::cout << "\ndt = " << dt << std::endl;
     return dt;
 }
 
 void ReactionsPool::reset() {
-    for (int i = 0; i < REACTIONS_NUM; i++) _reactions[i]->reset();
+    for (Reaction *reaction : _reactions) reaction->reset();
 }
 
 FormDimerReaction &ReactionsPool::formDimerReaction() {
@@ -114,7 +121,7 @@ FormDimerReaction &ReactionsPool::formDimerReaction() {
 // считаем сумму скоростей во всем реакциям.
 double ReactionsPool::totalRate() {
     double sum = 0.0;
-    for (int i = 0; i < REACTIONS_NUM; i++) sum += _reactions[i]->commonRate();
+    for (Reaction *reaction : _reactions) sum += reaction->commonRate();
     //std::cout << "\n    ...sumRate: " << sum << std::endl;
     return sum;
 }
