@@ -2,6 +2,7 @@
 #define REACTIONSPOOL_H
 
 #include <deque>
+#include <vector>
 #include <string>
 
 #include "abshreaction.h"
@@ -13,10 +14,6 @@
 #include "migrationhreaction.h"
 #include "migrationbridgereaction.h"
 #include "migrationfrontdown.h"
-
-
-#define REACTIONS_NUM 9
-
 
 class ReactionsPool
 {
@@ -48,7 +45,7 @@ private:
     MigrationBridgeReaction _migrationBridge;
     MigrationFrontDown _migrationFrontDown;
 
-    Reaction *_reactions[REACTIONS_NUM];
+    std::vector<Reaction *> _reactions;
 
     Surface *_surface;
 
